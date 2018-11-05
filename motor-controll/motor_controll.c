@@ -22,7 +22,7 @@ void initializePWM()
      // Timer 0
     TCCR0A = (1<<WGM00) | (1<<WGM01) | (1<<COM0A1) | (1<<COM0B1) | (1<<COM0A0) | (1<<COM0B0); // fast PWM, set OC0A and OC0B on compare
     TCCR0B = (1<<CS00); // fast PWM, top at 0xFF, no prescaler
-    OCR0A = OCR0B = 0; // duty cycle // pulse width
+    OCR0A = OCR0B = 0xFF; // duty cycle // pulse width
 
     // Timer 1
     TCCR1 = (1<<CS10); // no prescaler
