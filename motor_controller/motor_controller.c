@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include "usiTwiSlave.h"
+#include "usi_twi_slave.h"
 
 void initializeI2C()
 {
@@ -40,7 +40,7 @@ void initialize()
     initializePWM();
 }
 
-void controllMotor(uint8_t command)
+void controlMotor(uint8_t command)
 {
     if (command & 0x80)
     {
@@ -60,6 +60,6 @@ int main()
 
     while (1)
     {
-        controllMotor(usiTwiReceiveByte());
+        controlMotor(usiTwiReceiveByte());
     }
 }

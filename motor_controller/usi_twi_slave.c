@@ -44,7 +44,7 @@ Change Activity:
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include "usiTwiSlave.h"
+#include "usi_twi_slave.h"
 //#include "../common/util.h"
 
 

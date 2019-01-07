@@ -1,0 +1,31 @@
+= Modular Recon Code Repository
+
+Implementation of the drone functionality.
+
+== Required libraries
+The project is based on the ESP32 SoC by Espressif. It is possible to use the Arduino IDE to write software for the ESP32 but many developers already experienced a bad support for the chip. The recommanded way is to use Espressif's ESP-IDF. The IDF is a SDK that contains many wrappers for the chips functionality, e.g.: 
+
+* FreeRTOS -> real time operating system for embedded devices
+** Tasks
+** Semaphores
+** Concurrent queues
+* TCP/IP stack
+** Socket implementation provided by lwip (lightweight ip)
+* GPIO abstraction 
+* System wide event handler
+
+An instruction on how to install the ESP-IDF is found on their https://esp-idf.readthedocs.io/en/latest/get-started/index.html#setup-toolchain[official developers page].
+
+== Motor Controller
+
+== Main Control Unit
+=== Basic Makefile usage
+The ESP-IDF provides a pre configured Makefile environment. 
+
+*Build*: make all
+
+*Flash*: make flash -> Implicitly triggers build process
+
+*Clean*: make clean
+
+*Monitor*: make monitor -> ESP toolchain monitor. Use in own terminal as it cannot be killed
