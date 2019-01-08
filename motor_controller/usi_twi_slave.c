@@ -414,8 +414,6 @@ usiTwiTransmitByte(
 )
 {
 
-  uint8_t tmphead;
-
   // wait for free space in buffer
   while ( txCount == TWI_TX_BUFFER_SIZE) ;
 
@@ -599,6 +597,7 @@ ISR( USI_OVERFLOW_VECTOR )
       }
       // from here we just drop straight into USI_SLAVE_SEND_DATA if the
       // master sent an ACK
+      __attribute__((fallthrough));
 
     // copy data from buffer to USIDR and set USI to shift byte
     // next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
