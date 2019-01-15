@@ -6,4 +6,3 @@
 PROJECT_NAME := drone
 
 include $(IDF_PATH)/make/project.mk
-

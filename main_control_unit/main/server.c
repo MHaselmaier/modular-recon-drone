@@ -9,7 +9,7 @@ static void server_task()
 
     host_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     host_addr.sin_family = AF_INET;
-    host_addr.sin_port = htons(4242);
+    host_addr.sin_port = htons(SERVER_PORT);
 
     server_socket_desc = socket(host_addr.sin_family, SOCK_DGRAM, IPPROTO_IP);
     err = bind(server_socket_desc, (struct sockaddr*) &host_addr, sizeof(host_addr));
