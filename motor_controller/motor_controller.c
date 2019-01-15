@@ -40,7 +40,7 @@ void initialize()
 
 void controlMotor(uint8_t command)
 {
-    OCR1B = command & 0x7F;
+    OCR1B = (unsigned char)(127 * ((command & 0x7F) / 100.0));
     if (command & 0x80)
     {
         PORTB &= ~(1 << PIN1);
