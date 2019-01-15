@@ -1,6 +1,11 @@
 == Software
 
 === Main Control Unit
+==== Motor Data
+
+==== Camera Data
+
+==== Status Information
 
 === Motor Controller
 Die Motorcontroller basieren auf Atmel Attiny 25-20. 

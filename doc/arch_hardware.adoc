@@ -1,1 +1,8 @@
 == Hardware
+=== Main Control Unit
+
+=== Motor Controller
+
+=== Kameramodul
+
+=== Bildschirm

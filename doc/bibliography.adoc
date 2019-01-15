@@ -1,3 +1,6 @@
 [bibliography]
 == Quellen
 - [[[Example, ex]]]: http://example.ex/
+- [[[u8g2, u8g2]]] Graustufenbildschirm Bibliothek: https://github.com/olikraus/u8g2
+- [[[u8g2 esp, u8g2_esp]]] esp idf wrapper: https://github.com/nkolban/esp32-snippets/tree/master/hardware/displays/U8G2
+- [[[esp32 cam, esp_cam]]] esp idf Kamera Bibliothek: https://github.com/igrr/esp32-cam-demo.git
