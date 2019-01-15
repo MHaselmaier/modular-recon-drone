@@ -1,0 +1,6 @@
+== Software
+
+=== Main Control Unit
+
+=== Motor Controller
+Die Motorcontroller basieren auf Atmel Attiny 25-20. 

@@ -1,0 +1,17 @@
+= Modular Recon Drone: Dokumentation
+:author: Matthias Haselmaier, B.Sc. und Andreas M. Brunnet, B.Sc.
+:toc:
+
+== Vorwort
+include::intro.adoc[]
+
+== Architektur
+
+//---- Hardware
+include::arch_hardware.adoc[]
+
+//---- Software
+include::arch_software.adoc[]
+
+//---- Quellen
+include::bibliography.adoc[]
