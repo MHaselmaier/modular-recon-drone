@@ -46,14 +46,12 @@ void init()
     accesspoint_init("ESP Wifi", NULL);
     //i2c_master_init();
     camera_module_init();
-    //motor_control_init();
 }
 
 void app_main()
 {
     init();
     //i2c_master_bus_start();
-    //motor_control_start();
     accesspoint_start();
     camera_module_start_sending();
 }

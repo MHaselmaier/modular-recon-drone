@@ -79,17 +79,6 @@ struct MotorData
 void camera_module_init();
 void camera_module_start_sending();
 
-// --- Motor Control - PWM ----
-#define MOTOR_A_PWM 32               /*!< gpio number for I2C master clock */
-#define MOTOR_B_PWM 33
-#define MOTOR_A_LEFT 25
-#define MOTOR_A_RIGHT 26
-#define MOTOR_B_LEFT 27
-#define MOTOR_B_RIGHT 14
-
-void motor_control_init();
-void motor_control_start();
-
 //---- I2C --------------
 #define I2C_NO_ACK 0x0
 #define I2C_ACK 0x1
