@@ -25,6 +25,15 @@
 #include "lwip/netdb.h"
 #include "lwip/dns.h"
 
+#include "camera.h"
+
+//---- Event Groups -----
+#define CLIENT_CONNECTED BIT0
+
+EventGroupHandle_t wifi_event_group;
+
+void event_group_init();
+
 //---- GPIO -------------
 #define RED 32
 #define GREEN 33
@@ -44,6 +53,31 @@ struct MotorData
     char motor_b_speed_percent;
     char motor_b_direction;
 };
+
+// --- Camera Module ----
+#define CAMERA_SOCKET_PORT 4343
+
+#define CAMERA_PIXEL_FORMAT CAMERA_PF_GRAYSCALE
+#define CAMERA_FRAME_SIZE CAMERA_FS_QVGA
+#define CAMERA_XCLK_FREQ 20000000
+#define CAMERA_D0 35
+#define CAMERA_D1 17
+#define CAMERA_D2 34
+#define CAMERA_D3 5
+#define CAMERA_D4 39
+#define CAMERA_D5 18
+#define CAMERA_D6 36
+#define CAMERA_D7 19
+#define CAMERA_XCLK 27
+#define CAMERA_PCLK 21
+#define CAMERA_VSYNC 22
+#define CAMERA_HREF 26
+#define CAMERA_SDA 25
+#define CAMERA_SCL 23
+#define CAMERA_RESET 15
+
+void camera_module_init();
+void camera_module_start_sending();
 
 // --- Motor Control - PWM ----
 #define MOTOR_A_PWM 32               /*!< gpio number for I2C master clock */
@@ -82,6 +116,8 @@ void accesspoint_start();
 void accesspoint_stop();
 
 //---- UDP Server -------
+#define SERVER_PORT 4242
+
 void server_start();
 void server_stop();
 
