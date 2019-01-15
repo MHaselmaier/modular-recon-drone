@@ -342,7 +342,7 @@ esp_err_t camera_init(const camera_config_t* config)
     ESP_LOGD(TAG, "Init done");
 
 
-    SCCB_Write(s_state->sensor.slv_addr, 0x11, 0x01);
+    /*SCCB_Write(s_state->sensor.slv_addr, 0x11, 0x01);
     SCCB_Write(s_state->sensor.slv_addr, 0x0d, 0x41);
     SCCB_Write(s_state->sensor.slv_addr, 0x2a, 0x00);
     SCCB_Write(s_state->sensor.slv_addr, 0x2b, 0x00);
@@ -351,7 +351,7 @@ esp_err_t camera_init(const camera_config_t* config)
     SCCB_Write(s_state->sensor.slv_addr, 0x2d, 0x00);
     SCCB_Write(s_state->sensor.slv_addr, 0x2e, 0x00);
     SCCB_Write(s_state->sensor.slv_addr, 0x0e, 0x65);
-
+*/
     return ESP_OK;
 
 fail:

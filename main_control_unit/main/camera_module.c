@@ -2,6 +2,7 @@
 #include "bitmap.h"
 #include <errno.h>
 
+static const char* TAG = "camera_module";
 
 void camera_module_init(){
     camera_config_t camera_config = {
@@ -48,34 +49,45 @@ static void camera_module_task(void* args){
     struct sockaddr_in server_address;
     server_address.sin_addr.s_addr = htonl(INADDR_ANY);
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(4343);
+    server_address.sin_port = htons(CAMERA_SOCKET_PORT);
+
+    //xEventGroupWaitBits(wifi_event_group, CLIENT_CONNECTED, pdFALSE, pdTRUE, portMAX_DELAY);
 
     if((server_socket = socket(server_address.sin_family, SOCK_STREAM, 0)) < 0){
-        ESP_LOGE("camera_module_task::", "Could not create camera module socket");
+        ESP_LOGE(TAG, "Could not create camera module socket");
         vTaskDelete(NULL);
     }
 
     bind(server_socket, (struct sockaddr*) &server_address, sizeof(server_address));
 
-    //bitmap_header_t* header = bmp_create_header(camera_get_fb_width(), camera_get_fb_height());
-    char* pgm_header;
+    /*char* pgm_header;
     asprintf(&pgm_header, "P5 %d %d %d\n", camera_get_fb_width(), camera_get_fb_height(), 255);
-
+    */
     listen(server_socket, 0);
+
+    ESP_LOGI(TAG, "Client socket created");
 
     while(true){
 
-        ESP_LOGI("camera_module_task::", "Camera socket waiting for new client connection");
-        client_socket = accept(server_socket, (struct sockaddr*) NULL, NULL); 
-        ESP_LOGI("camera_module_task::", "New client connected to socket. Sending bitmap header: %s ", pgm_header);
-        write(client_socket, pgm_header, strlen(pgm_header));
-        ESP_LOGI("camera_module_task::", "Start streaming bitmap data section");
+        ESP_LOGI(TAG, "Camera socket waiting for new client connection");
+        if((client_socket = accept(server_socket, (struct sockaddr*) NULL, NULL)) < 0){
+            ESP_LOGE(TAG, "Error while waiting for new connection to socket");
+            continue;
+        } 
+        
+        //ESP_LOGI(TAG, "New client connected to socket. Sending bitmap header: %s ", pgm_header);
+        //write(client_socket, pgm_header, strlen(pgm_header));
+        ESP_LOGI(TAG, "Client connected to socket. Start image data stream");
         while(xEventGroupGetBits(wifi_event_group) & CLIENT_CONNECTED){
             if(camera_run() != ESP_OK){
-                ESP_LOGE("camera_module_task::","Capture failed");
+                ESP_LOGE(TAG,"Capture failed");
                 continue;
             }
-            write(client_socket, camera_get_fb(), camera_get_data_size());
+            
+            if(write(client_socket, camera_get_fb(), camera_get_data_size()) < 0){
+                ESP_LOGE(TAG, "Socket writing returned with an error");
+                break;
+            }
 
             //vTaskDelay(port_delay_ms(10));
             //ESP_LOGI("Sent::", "%d", camera_get_data_size());
@@ -83,10 +95,10 @@ static void camera_module_task(void* args){
     }
 
 
-    free(pgm_header);
+    //free(pgm_header);
     vTaskDelete(NULL);
 }
 
-void camera_module_start_sending(){
+void camera_module_start(){
     xTaskCreate(camera_module_task, "Camera Module Task", 2048, NULL, 5, NULL);
 }

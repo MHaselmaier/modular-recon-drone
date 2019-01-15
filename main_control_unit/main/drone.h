@@ -55,7 +55,7 @@ struct MotorData
 };
 
 // --- Camera Module ----
-#define CAMERA_SOCKET_PORT 4343
+#define CAMERA_SOCKET_PORT 1234
 
 #define CAMERA_PIXEL_FORMAT CAMERA_PF_GRAYSCALE
 #define CAMERA_FRAME_SIZE CAMERA_FS_QVGA
@@ -77,7 +77,7 @@ struct MotorData
 #define CAMERA_RESET 15
 
 void camera_module_init();
-void camera_module_start_sending();
+void camera_module_start();
 
 //---- I2C --------------
 #define I2C_NO_ACK 0x0

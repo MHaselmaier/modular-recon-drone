@@ -1,7 +1,10 @@
 #include "drone.h"
 
+static const char* TAG = "accesspoint";
+
 void accesspoint_init(const char* ssid, const char* password)
 {
+    ESP_LOGI(TAG, "Initializing access point controller using SSID: %s", ssid);
     nvs_flash_init();
     tcpip_adapter_init();
     
@@ -28,6 +31,7 @@ void accesspoint_init(const char* ssid, const char* password)
 
 void accesspoint_start()
 {
+    ESP_LOGI(TAG, "Starting access point controller");
     ESP_ERROR_CHECK(esp_wifi_start());
 }
 
