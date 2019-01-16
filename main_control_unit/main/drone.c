@@ -48,13 +48,13 @@ void init()
     ESP_LOGI(TAG, "Installing gpio interrupt service");
     gpio_install_isr_service(0);
     accesspoint_init("ESP Wifi", NULL);
-    //i2c_master_init();
+    i2c_master_init();
     camera_module_init();
 }
 
 void app_main()
 {
     init();
-    //i2c_master_bus_start();
+    i2c_master_bus_start();
     accesspoint_start();
 }
