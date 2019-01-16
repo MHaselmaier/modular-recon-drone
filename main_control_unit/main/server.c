@@ -1,5 +1,7 @@
 #include "drone.h"
 
+static const char* TAG = "udp_server";
+
 static void server_task()
 {
     struct sockaddr_in host_addr;
@@ -16,7 +18,7 @@ static void server_task()
 
     if(err < 0)
     {
-        ESP_LOGE("server_task()::", "Unable to bind socket");
+        ESP_LOGE(TAG, "Could not bind to udp socket");
         vTaskDelete(NULL);
     }
 
@@ -31,7 +33,7 @@ static void server_task()
         int len = recvfrom(server_socket_desc, rx_buffer, sizeof(rx_buffer), 0, (struct sockaddr *) &client_addr, &client_socket_len);
         if(len < 0)
         {
-            ESP_LOGE("server_task()::", "Error while trying to receive data");
+            ESP_LOGE(TAG, "Could not successfully receive data from udp socket.");
             break;
         }
         else
@@ -58,7 +60,7 @@ static void server_task()
 
     if(server_socket_desc != -1)
     {
-        ESP_LOGI("server_task()::", "Shutting down socket");
+        ESP_LOGI(TAG, "Went out of receive loop. Closing socket.");
         shutdown(server_socket_desc, 0);
         close(server_socket_desc);
     }
@@ -68,10 +70,6 @@ static void server_task()
 
 void server_start()
 {
-    xTaskCreate(server_task, "server", 4096, NULL, 5, NULL);
-}
-
-void server_stop()
-{
-
+    ESP_LOGI(TAG, "Starting udp server task");
+    xTaskCreate(server_task, "UDP Server Task", 4096, NULL, 5, NULL);
 }

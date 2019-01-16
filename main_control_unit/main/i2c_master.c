@@ -1,7 +1,10 @@
 #include "drone.h"
 
+static const char* TAG = "i2c_master";
+
 void i2c_master_init()
 {
+    ESP_LOGI(TAG, "Initializing i2c master bus using ports [sda:%d, scl:%d]", I2C_MASTER_SDA_IO, I2C_MASTER_SCL_IO);
     i2c_config_t config;
     config.mode = I2C_MODE_MASTER;
     config.sda_io_num = I2C_MASTER_SDA_IO;
@@ -27,6 +30,7 @@ static void i2c_master_send_data(char address, uint direction, uint speed)
 
 static void i2c_master_task(void* p)
 {
+    ESP_LOGI(TAG, "Start sending incoming data from queue to slave controller");
     struct MotorData motor_data;
     motor_data.motor_a_speed_percent = 0;
     motor_data.motor_a_direction = 0;
@@ -51,5 +55,6 @@ static void i2c_master_task(void* p)
 
 void i2c_master_bus_start()
 {
+    ESP_LOGI(TAG, "Creating i2c task");
     xTaskCreate(i2c_master_task, "i2c master", 4096, NULL, 5, NULL);
 }

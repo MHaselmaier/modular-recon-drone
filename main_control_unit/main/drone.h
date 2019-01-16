@@ -108,7 +108,6 @@ void accesspoint_stop();
 #define SERVER_PORT 4242
 
 void server_start();
-void server_stop();
 
 //---- Utility functions ------
 TickType_t port_delay_ms(uint32_t ms);
