@@ -60,9 +60,6 @@ static void camera_module_task(void* args){
 
     bind(server_socket, (struct sockaddr*) &server_address, sizeof(server_address));
 
-    /*char* pgm_header;
-    asprintf(&pgm_header, "P5 %d %d %d\n", camera_get_fb_width(), camera_get_fb_height(), 255);
-    */
     listen(server_socket, 0);
 
     ESP_LOGI(TAG, "Client socket created");
@@ -75,8 +72,6 @@ static void camera_module_task(void* args){
             continue;
         } 
         
-        //ESP_LOGI(TAG, "New client connected to socket. Sending bitmap header: %s ", pgm_header);
-        //write(client_socket, pgm_header, strlen(pgm_header));
         ESP_LOGI(TAG, "Client connected to socket. Start image data stream");
         while(xEventGroupGetBits(wifi_event_group) & CLIENT_CONNECTED){
             if(camera_run() != ESP_OK){
@@ -89,13 +84,11 @@ static void camera_module_task(void* args){
                 break;
             }
 
-            //vTaskDelay(port_delay_ms(10));
-            //ESP_LOGI("Sent::", "%d", camera_get_data_size());
+            vTaskDelay(port_delay_ms(10));
         }
     }
 
 
-    //free(pgm_header);
     vTaskDelete(NULL);
 }
 

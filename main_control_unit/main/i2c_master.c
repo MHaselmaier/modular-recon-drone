@@ -43,7 +43,7 @@ static void i2c_master_task(void* p)
         i2c_master_send_data(MOTOR_A, motor_data.motor_a_direction, motor_data.motor_a_speed_percent);
         i2c_master_send_data(MOTOR_B, motor_data.motor_b_direction, motor_data.motor_b_speed_percent);
 
-        vTaskDelay(port_delay_ms(20));
+        vTaskDelay(port_delay_ms(25));
     }
 
     vTaskDelete(NULL);

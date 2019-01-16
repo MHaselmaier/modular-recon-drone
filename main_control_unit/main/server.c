@@ -53,7 +53,7 @@ static void server_task()
             }
         }
 
-        vTaskDelay(port_delay_ms(20));
+        vTaskDelay(port_delay_ms(25));
     }
 
     if(server_socket_desc != -1)
