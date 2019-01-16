@@ -41,7 +41,7 @@ static void i2c_master_task(void* p)
     {
         if(xQueueReceive(udp_to_i2c_com_queue, &motor_data, 0))
         {
-            ESP_LOGI("Queue Receive: ", "%d %d, %d %d", motor_data.motor_a_direction, motor_data.motor_a_speed_percent, motor_data.motor_b_direction, motor_data.motor_b_speed_percent);
+            ESP_LOGI(TAG, "i2c task read from queue: L[dir:%d,speed:%d], R[dir:%d,speed:%d]", motor_data.motor_a_direction, motor_data.motor_a_speed_percent, motor_data.motor_b_direction, motor_data.motor_b_speed_percent);
         }
 
         i2c_master_send_data(MOTOR_A, motor_data.motor_a_direction, motor_data.motor_a_speed_percent);

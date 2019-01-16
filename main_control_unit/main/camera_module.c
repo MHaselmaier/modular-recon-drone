@@ -51,8 +51,6 @@ static void camera_module_task(void* args){
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(CAMERA_SOCKET_PORT);
 
-    //xEventGroupWaitBits(wifi_event_group, CLIENT_CONNECTED, pdFALSE, pdTRUE, portMAX_DELAY);
-
     if((server_socket = socket(server_address.sin_family, SOCK_STREAM, 0)) < 0){
         ESP_LOGE(TAG, "Could not create camera module socket");
         vTaskDelete(NULL);
@@ -84,7 +82,6 @@ static void camera_module_task(void* args){
                 break;
             }
 
-            vTaskDelay(port_delay_ms(10));
         }
     }
 
@@ -93,5 +90,5 @@ static void camera_module_task(void* args){
 }
 
 void camera_module_start(){
-    xTaskCreate(camera_module_task, "Camera Module Task", 2048, NULL, 5, NULL);
+    xTaskCreate(camera_module_task, "Camera Module Task", 2048, NULL, 8, NULL);
 }
