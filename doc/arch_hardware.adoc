@@ -1,8 +1,27 @@
 == Hardware
 === Main Control Unit
+Die MCU ist die Hauptkontrolleinheit. 
 
 === Motor Controller
 
 === Kameramodul
+Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision. 
+
+.Kameramodul OV7725
+[fig:camera_module]
+image::camera_module.png[width=200, align="center"]
+
 
 === Bildschirm
+Verwendung findet ein monochromes OLED-Display mit einer Auflösung von 128x64 Pixel. Dieses basiert auf dem verbreiteten SSD1306 Controller. 
+
+.Oled Diplay 128x64, SSD1306
+[fig:oled_display]
+image::oled_display.png[width=200, align="center"]
+
+Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout setzt sich wie folgt zusammen:
+
+* GND: Ground, Masse
+* VCC: Spannung, 3,3V - 5V
+* SDL: TWI, Datenleitung
+* SCL: TWI, Taktleitung
