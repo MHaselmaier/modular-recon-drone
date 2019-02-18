@@ -79,10 +79,19 @@ Kameramodul nötigen 3.3V werden von der MCU erzeugt. Bei der Realisierung diese
 entschieden, wodurch 11.1V als Batteriespannung anliegen.
 
 
-=== Printed Ciruit Board
-.PCB Vorderseite
-[fig:pcb_front]
-image::pcb_front.png[width=500, align="center"]
-.PCB Rückseite
-[fig:pcb_back]
-image::pcb_back.png[width=500, align="center"]
+=== Schaltplan und PCB
+Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard verkabelt und getestet und anschließend auf einer
+Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <<fig:prototyp>> zu sehen.
+
+.Lochrasterplatine
+[fig:prototyp]
+image::lochrasterplatine.png[width=500, align="center"]
+
+Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
+(siehe <<eagle>>). Die Eagle-Projektdateien sind im Ordner _schematic_and_pcb_ zu finden. Anschließend wurde JLCPCB (siehe <<jlcpcb>>)
+mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildung <<fig:pcb>> gezeigt.
+
+
+.Fertige bestücktes PCB
+[fig:pcb]
+image::pcb.png[width=500, align="center"]

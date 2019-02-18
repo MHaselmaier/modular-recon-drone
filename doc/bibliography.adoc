@@ -4,3 +4,4 @@
 - [[[u8g2_esp]]] esp idf wrapper: https://github.com/nkolban/esp32-snippets/tree/master/hardware/displays/U8G2
 - [[[esp_cam]]] esp idf Kamera Bibliothek: https://github.com/igrr/esp32-cam-demo.git
 - [[[arduino_programmer]]] Arduino Uno als Programmer: https://create.arduino.cc/projecthub/arjun/programming-attiny85-with-arduino-uno-afb829
+- [[[eagle]]] https://www.autodesk.co.uk/products/eagle/overview
