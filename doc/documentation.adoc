@@ -8,12 +8,7 @@
 include::intro.adoc[]
 
 == Architektur
-
-//---- Hardware
-include::arch_hardware.adoc[]
-
-//---- Software
-include::arch_software.adoc[]
+include::architecture.adoc[]
 
 //---- Vision
 include::vision.adoc[]

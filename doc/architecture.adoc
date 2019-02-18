@@ -1,4 +1,4 @@
-== Hardware
+== Architektur
 === Main Control Unit
 Die MCU ist die Hauptkontrolleinheit. 
 
@@ -10,7 +10,7 @@ der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Au
 Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
 
 .ATTiny25 Pinout
-[fig:attiny25_pinout]
+[[fig:attiny25_pinout,{counter:fig}]]
 image::attiny25_pinout.jpg[width=300, align="center"]
 
 Das höchstwertige Bit kodiert die Richtung. Wird eine _0_ empfangen, wird der Pin _DIR0_ auf _HIGH_
@@ -24,7 +24,7 @@ H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die bei
 gezeigt.
 
 .Schaltplan der Motorsteuerung
-[fig:motor_controller_schematic]
+[[fig:motor_controller_schematic, {counter:fig}]]
 image::ATTiny25_HBrücke_Schematic.png[width=500, align="center"]
 
 Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das TWI wird
@@ -44,7 +44,7 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <<arduino_prog
 Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision. 
 
 .Kameramodul OV7725
-[fig:camera_module]
+[[fig:camera_module, {counter:fig}]]
 image::camera_module.png[width=200, align="center"]
 
 
@@ -52,7 +52,7 @@ image::camera_module.png[width=200, align="center"]
 Verwendung findet ein monochromes OLED-Display mit einer Auflösung von 128x64 Pixel. Dieses basiert auf dem verbreiteten SSD1306 Controller. 
 
 .Oled Diplay 128x64, SSD1306
-[fig:oled_display]
+[[fig:oled_display, {counter:fig}]]
 image::oled_display.png[width=200, align="center"]
 
 Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout setzt sich wie folgt zusammen:
@@ -69,7 +69,7 @@ bis zu 12V für die Motoren. Auf Abbildung <<fig:powersupply>> wird gezeigt, wie
 erhalten werden.
 
 .Stromversorgung
-[fig:powersupply]
+[[fig:powersupply, {counter:fig}]]
 image::powersupply.png[width=400, align="center"]
 
 Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
@@ -84,7 +84,7 @@ Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard ver
 Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <<fig:prototyp>> zu sehen.
 
 .Lochrasterplatine
-[fig:prototyp]
+[[fig:prototyp, {counter:fig}]]
 image::lochrasterplatine.png[width=500, align="center"]
 
 Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
@@ -93,5 +93,5 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 
 
 .Fertige bestücktes PCB
-[fig:pcb]
+[[fig:pcb, {counter:fig}]]
 image::pcb.png[width=500, align="center"]
