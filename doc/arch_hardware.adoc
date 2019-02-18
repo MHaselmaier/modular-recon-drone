@@ -62,6 +62,23 @@ Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout set
 * SDL: TWI, Datenleitung
 * SCL: TWI, Taktleitung
 
+
+=== Stromversorgung
+Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
+bis zu 12V für die Motoren. Auf Abbildung <<fig:powersupply>> wird gezeigt, wie die einzelnen Versorgungsspannungen von der Batterie
+erhalten werden.
+
+.Stromversorgung
+[fig:powersupply]
+image::powersupply.png[width=400, align="center"]
+
+Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
+Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen. Um ein Schwanken
+der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für das
+Kameramodul nötigen 3.3V werden von der MCU erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
+entschieden, wodurch 11.1V als Batteriespannung anliegen.
+
+
 === Printed Ciruit Board
 .PCB Vorderseite
 [fig:pcb_front]

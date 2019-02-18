@@ -435,6 +435,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_motor_controller">Motor Controller</a></li>
 <li><a href="#_kameramodul">Kameramodul</a></li>
 <li><a href="#_bildschirm">Bildschirm</a></li>
+<li><a href="#_stromversorgung">Stromversorgung</a></li>
 <li><a href="#_printed_ciruit_board">Printed Ciruit Board</a></li>
 </ul>
 </li>
@@ -564,18 +565,39 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 </div>
 </div>
 <div class="sect2">
+<h3 id="_stromversorgung">Stromversorgung</h3>
+<div class="paragraph">
+<p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
+bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:powersupply">[fig:powersupply]</a> wird gezeigt, wie die einzelnen Versorgungsspannungen von der Batterie
+erhalten werden.</p>
+</div>
+<div class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/powersupply.png" alt="fig:powersupply" width="400">
+</div>
+<div class="title">Abbildung 5. Stromversorgung</div>
+</div>
+<div class="paragraph">
+<p>Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
+Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen. Um ein Schwanken
+der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für das
+Kameramodul nötigen 3.3V werden von der MCU erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
+entschieden, wodurch 11.1V als Batteriespannung anliegen.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_printed_ciruit_board">Printed Ciruit Board</h3>
 <div class="imageblock" style="text-align: center">
 <div class="content">
 <img src="imgs/pcb_front.png" alt="fig:pcb_front" width="500">
 </div>
-<div class="title">Abbildung 5. PCB Vorderseite</div>
+<div class="title">Abbildung 6. PCB Vorderseite</div>
 </div>
 <div class="imageblock" style="text-align: center">
 <div class="content">
 <img src="imgs/pcb_back.png" alt="fig:pcb_back" width="500">
 </div>
-<div class="title">Abbildung 6. PCB Rückseite</div>
+<div class="title">Abbildung 7. PCB Rückseite</div>
 </div>
 </div>
 </div>
