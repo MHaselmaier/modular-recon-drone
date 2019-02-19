@@ -7,12 +7,15 @@ Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor 
 Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit von
 der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
 <<fig:attiny25_pinout>> sind die Pins für die Takt- (_SCL_) und Datenleitung (_SDA_) des TWIs gezeigt.
-Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
+Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
+werden. Hierzu wurde eine bereits existierende Implementation von <<twi_implementation>> verwendet, welche
+die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <<attiny254585>>).
 
 .ATTiny25 Pinout
 [[fig:attiny25_pinout,{counter:fig}]]
 image::attiny25_pinout.jpg[width=300, align="center"]
 
+Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
 Das höchstwertige Bit kodiert die Richtung. Wird eine _0_ empfangen, wird der Pin _DIR0_ auf _HIGH_
 gesetzt und der Pin _DIR1_ auf _LOW_ gesetzt. Wird eine _1_ empfangen, wird enstprechend Pin _DIR0_
 auf _LOW_ und Pin _DIR1_ auf _HIGH_ gesetzt. Diese beiden Pins sind nie zeitgleich _HIGH_. Durch die 

@@ -1,3 +1,5 @@
+// Source: https://github.com/rambo/TinyWire
+
 /********************************************************************************
 
 USI TWI Slave driver.

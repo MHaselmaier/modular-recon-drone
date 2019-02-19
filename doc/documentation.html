@@ -429,7 +429,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_vorwort">Vorwort</a></li>
 <li><a href="#_architektur">Architektur</a></li>
-<li><a href="#_hardware">Hardware</a>
+<li><a href="#_architektur_2">Architektur</a>
 <ul class="sectlevel2">
 <li><a href="#_main_control_unit">Main Control Unit</a></li>
 <li><a href="#_motor_controller">Motor Controller</a></li>
@@ -437,13 +437,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_bildschirm">Bildschirm</a></li>
 <li><a href="#_stromversorgung">Stromversorgung</a></li>
 <li><a href="#_schaltplan_und_pcb">Schaltplan und PCB</a></li>
-</ul>
-</li>
-<li><a href="#_software">Software</a>
-<ul class="sectlevel2">
-<li><a href="#_main_control_unit_2">Main Control Unit</a></li>
-<li><a href="#_motor_controller_2">Motor Controller</a></li>
-<li><a href="#_android_app">Android App</a></li>
 </ul>
 </li>
 <li><a href="#_ausblick">Ausblick</a></li>
@@ -466,7 +459,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hardware">Hardware</h2>
+<h2 id="_architektur_2">Architektur</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_main_control_unit">Main Control Unit</h3>
@@ -480,29 +473,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
 Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit von
 der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
-<a href="#fig:attiny25_pinout">[fig:attiny25_pinout]</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
-Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.</p>
+<a href="#fig:attiny25_pinout">{counter:fig}</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
+Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
+werden. Hierzu wurde eine bereits existierende Implementation von <a href="#twi_implementation">[twi_implementation]</a> verwendet, welche
+die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny25/45/85">[attiny25/45/85]</a>).</p>
 </div>
-<div class="imageblock" style="text-align: center">
+<div id="fig:attiny25_pinout" class="imageblock" style="text-align: center">
 <div class="content">
-<img src="imgs/attiny25_pinout.jpg" alt="fig:attiny25_pinout" width="300">
+<img src="imgs/attiny25_pinout.jpg" alt="attiny25 pinout" width="300">
 </div>
 <div class="title">Abbildung 1. ATTiny25 Pinout</div>
 </div>
 <div class="paragraph">
-<p>Das höchstwertige Bit kodiert die Richtung. Wird eine <em>0</em> empfangen, wird der Pin <em>DIR0</em> auf <em>HIGH</em>
+<p>Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
+Das höchstwertige Bit kodiert die Richtung. Wird eine <em>0</em> empfangen, wird der Pin <em>DIR0</em> auf <em>HIGH</em>
 gesetzt und der Pin <em>DIR1</em> auf <em>LOW</em> gesetzt. Wird eine <em>1</em> empfangen, wird enstprechend Pin <em>DIR0</em>
 auf <em>LOW</em> und Pin <em>DIR1</em> auf <em>HIGH</em> gesetzt. Diese beiden Pins sind nie zeitgleich <em>HIGH</em>. Durch die
 unteren sieben Bit des empfangenen Bytes wird die Geschwindigkeit in Prozent angegeben. Intern
 betreiben die Mikrocontroller hiermit eine Pulsweitenmodulation, welche 127 Schritte unterstützt.
 Dieses Signal wird über den Pin <em>PWM</em> ausgegeben. Zwischen den ATTinys und dein Motoren wurde eine
 H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die beiden Mikrocontroller
-über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:motor_controller_schematic">[fig:motor_controller_schematic]</a>
+über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:motor_controller_schematic">{counter:fig}</a>
 gezeigt.</p>
 </div>
-<div class="imageblock" style="text-align: center">
+<div id="fig:motor_controller_schematic" class="imageblock" style="text-align: center">
 <div class="content">
-<img src="imgs/ATTiny25_HBrücke_Schematic.png" alt="fig:motor_controller_schematic" width="500">
+<img src="imgs/ATTiny25_HBrücke_Schematic.png" alt="ATTiny25 HBrücke Schematic" width="500">
 </div>
 <div class="title">Abbildung 2. Schaltplan der Motorsteuerung</div>
 </div>
@@ -526,9 +522,9 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="paragraph">
 <p>Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision.</p>
 </div>
-<div class="imageblock" style="text-align: center">
+<div id="fig:camera_module" class="imageblock" style="text-align: center">
 <div class="content">
-<img src="imgs/camera_module.png" alt="fig:camera_module" width="200">
+<img src="imgs/camera_module.png" alt="camera module" width="200">
 </div>
 <div class="title">Abbildung 3. Kameramodul OV7725</div>
 </div>
@@ -538,9 +534,9 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="paragraph">
 <p>Verwendung findet ein monochromes OLED-Display mit einer Auflösung von 128x64 Pixel. Dieses basiert auf dem verbreiteten SSD1306 Controller.</p>
 </div>
-<div class="imageblock" style="text-align: center">
+<div id="fig:oled_display" class="imageblock" style="text-align: center">
 <div class="content">
-<img src="imgs/oled_display.png" alt="fig:oled_display" width="200">
+<img src="imgs/oled_display.png" alt="oled display" width="200">
 </div>
 <div class="title">Abbildung 4. Oled Diplay 128x64, SSD1306</div>
 </div>
@@ -568,12 +564,12 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <h3 id="_stromversorgung">Stromversorgung</h3>
 <div class="paragraph">
 <p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
-bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:powersupply">[fig:powersupply]</a> wird gezeigt, wie die einzelnen Versorgungsspannungen von der Batterie
+bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:powersupply">{counter:fig}</a> wird gezeigt, wie die einzelnen Versorgungsspannungen von der Batterie
 erhalten werden.</p>
 </div>
-<div class="imageblock" style="text-align: center">
+<div id="fig:powersupply" class="imageblock" style="text-align: center">
 <div class="content">
-<img src="imgs/powersupply.png" alt="fig:powersupply" width="400">
+<img src="imgs/powersupply.png" alt="powersupply" width="400">
 </div>
 <div class="title">Abbildung 5. Stromversorgung</div>
 </div>
@@ -589,55 +585,25 @@ entschieden, wodurch 11.1V als Batteriespannung anliegen.</p>
 <h3 id="_schaltplan_und_pcb">Schaltplan und PCB</h3>
 <div class="paragraph">
 <p>Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard verkabelt und getestet und anschließend auf einer
-Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <a href="#fig:prototyp">[fig:prototyp]</a> zu sehen.</p>
+Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <a href="#fig:prototyp">{counter:fig}</a> zu sehen.</p>
 </div>
-<div class="imageblock" style="text-align: center">
+<div id="fig:prototyp" class="imageblock" style="text-align: center">
 <div class="content">
-<img src="imgs/lochrasterplatine.png" alt="fig:prototyp" width="500">
+<img src="imgs/lochrasterplatine.png" alt="lochrasterplatine" width="500">
 </div>
 <div class="title">Abbildung 6. Lochrasterplatine</div>
 </div>
 <div class="paragraph">
 <p>Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
 (siehe <a href="#eagle">[eagle]</a>). Die Eagle-Projektdateien sind im Ordner <em>schematic_and_pcb</em> zu finden. Anschließend wurde JLCPCB (siehe <a href="#jlcpcb">[jlcpcb]</a>)
-mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist in Abbildung <a href="#fig:pcb">[fig:pcb]</a> gezeigt.</p>
+mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildung <a href="#fig:pcb">{counter:fig}</a> gezeigt.</p>
 </div>
-<div class="imageblock" style="text-align: center">
+<div id="fig:pcb" class="imageblock" style="text-align: center">
 <div class="content">
-<img src="imgs/pcb.png" alt="fig:pcb" width="500">
+<img src="imgs/pcb.png" alt="pcb" width="500">
 </div>
 <div class="title">Abbildung 7. Fertige bestücktes PCB</div>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_software">Software</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_main_control_unit_2">Main Control Unit</h3>
-<div class="sect3">
-<h4 id="_motor_data">Motor Data</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_camera_data">Camera Data</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_status_information">Status Information</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_motor_controller_2">Motor Controller</h3>
-<div class="paragraph">
-<p>Die Motorcontroller basieren auf Atmel Attiny 25-20.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_android_app">Android App</h3>
-
 </div>
 </div>
 </div>
@@ -654,7 +620,7 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist in Abbildun
 <dl>
 <dt>TWI</dt>
 <dd>
-<p>Two Wire Interface (bekannt als i<sup>2</sup>c), zweiadriger Master-Slave Bus</p>
+<p>Two Wire Interface (bekannt als I<sup>2</sup>C), zweiadriger Master-Slave Bus</p>
 </dd>
 <dt>MCU</dt>
 <dd>
@@ -688,6 +654,12 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist in Abbildun
 <li>
 <p><a id="eagle"></a>[eagle] <a href="https://www.autodesk.co.uk/products/eagle/overview" class="bare">https://www.autodesk.co.uk/products/eagle/overview</a></p>
 </li>
+<li>
+<p><a id="twi_implementation"></a>[twi_implementation] <a href="https://github.com/rambo/TinyWire" class="bare">https://github.com/rambo/TinyWire</a></p>
+</li>
+<li>
+<p><a id="attiny254585"></a>[attiny254585] <a href="https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf" class="bare">https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -695,7 +667,7 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist in Abbildun
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-18 12:03:19 STD
+Last updated 2019-02-19 07:44:29 STD
 </div>
 </div>
 </body>
