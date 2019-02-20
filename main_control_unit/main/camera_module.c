@@ -43,8 +43,8 @@ void camera_module_init(){
 
 static void camera_module_task(void* args){
     
-    int server_socket;
-    int client_socket;
+    int server_socket = -1;
+    int client_socket = -1;
 
     struct sockaddr_in server_address;
     server_address.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -71,7 +71,7 @@ static void camera_module_task(void* args){
         } 
         
         ESP_LOGI(TAG, "Client connected to socket. Start image data stream");
-        while(xEventGroupGetBits(wifi_event_group) & CLIENT_CONNECTED){
+        while(xEventGroupGetBits(system_event_group) & CLIENT_CONNECTED){
             if(camera_run() != ESP_OK){
                 ESP_LOGE(TAG,"Capture failed");
                 continue;
@@ -83,6 +83,8 @@ static void camera_module_task(void* args){
             }
 
         }
+        
+        vTaskDelay(port_delay_ms(10));
     }
 
 
