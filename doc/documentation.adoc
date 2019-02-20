@@ -7,8 +7,11 @@
 //---- Vorwort
 include::intro.adoc[]
 
-== Architektur
+//---- Architektur
 include::architecture.adoc[]
+
+//---- Android App
+include::androidapp.adoc[]
 
 //---- Vision
 include::vision.adoc[]

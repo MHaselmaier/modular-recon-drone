@@ -428,8 +428,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_vorwort">Vorwort</a></li>
-<li><a href="#_architektur">Architektur</a></li>
-<li><a href="#_architektur_2">Architektur</a>
+<li><a href="#_architektur">Architektur</a>
 <ul class="sectlevel2">
 <li><a href="#_main_control_unit">Main Control Unit</a></li>
 <li><a href="#_motor_controller">Motor Controller</a></li>
@@ -439,6 +438,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_schaltplan_und_pcb">Schaltplan und PCB</a></li>
 </ul>
 </li>
+<li><a href="#_android_app">Android App</a></li>
 <li><a href="#_ausblick">Ausblick</a></li>
 <li><a href="#_glossar">Glossar</a></li>
 <li><a href="#_quellen">Quellen</a></li>
@@ -455,12 +455,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_architektur">Architektur</h2>
 <div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="_architektur_2">Architektur</h2>
-<div class="sectionbody">
 <div class="sect2">
 <h3 id="_main_control_unit">Main Control Unit</h3>
 <div class="paragraph">
@@ -476,7 +470,7 @@ der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Au
 <a href="#fig:attiny25_pinout">{counter:fig}</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
 Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
 werden. Hierzu wurde eine bereits existierende Implementation von <a href="#twi_implementation">[twi_implementation]</a> verwendet, welche
-die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny25/45/85">[attiny25/45/85]</a>).</p>
+die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny254585">[attiny254585]</a>).</p>
 </div>
 <div id="fig:attiny25_pinout" class="imageblock" style="text-align: center">
 <div class="content">
@@ -608,6 +602,43 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 </div>
 </div>
 <div class="sect1">
+<h2 id="_android_app">Android App</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
+Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drone
+und eine zum Steuern der Drone. Beide Ansichten sind auf Abbildung <a href="#fig:app">{counter:fig}</a>
+gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drone bereitgestellt
+wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
+Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum
+Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button
+gedrückt, baut die App die Verbindung zur Drone auf. Damit die App mit der Drone
+kommunizieren kann, müssen die mobile Internet deaktiviert sein. Hat sich das
+Smartphone mit der Drone verbunden, wird automatisch zur nächsten Ansicht der
+App gewechselt.</p>
+</div>
+<div id="fig:app" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/app.jpg" alt="app" width="500">
+</div>
+<div class="title">Abbildung 8. Ansichten der App</div>
+</div>
+<div class="paragraph">
+<p>Aus dieser zweiten Ansicht kann die Drone gesteuert werden und das Kamerasignal
+eingesehen werden. Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
+der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto
+schneller bewegt sich die Drohne. Die linke Hälft des Bildschirms dient zur Lenkung
+der Drone.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
+</div>
+<div class="title">Abbildung 10. Test</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_ausblick">Ausblick</h2>
 <div class="sectionbody">
 
@@ -629,6 +660,10 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <dt>PCB</dt>
 <dd>
 <p>Printed Ciruit Board</p>
+</dd>
+<dt>USI</dt>
+<dd>
+<p>Universial Serial Interface</p>
 </dd>
 </dl>
 </div>
@@ -667,7 +702,7 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-19 07:44:29 STD
+Last updated 2019-02-20 13:48:52 STD
 </div>
 </div>
 </body>

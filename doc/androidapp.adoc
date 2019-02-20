@@ -1,0 +1,76 @@
+== Android App
+
+Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
+Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drone
+und eine zum Steuern der Drone. Beide Ansichten sind auf Abbildung <<fig:app>>
+gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drone bereitgestellt
+wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
+Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum 
+Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button 
+gedrückt, baut die App die Verbindung zur Drone auf. Damit die App mit der Drone
+kommunizieren kann, müssen die mobile Internet deaktiviert sein. Hat sich das
+Smartphone mit der Drone verbunden, wird automatisch zur nächsten Ansicht der
+App gewechselt.
+
+.Ansichten der App
+[[fig:app,{counter:fig}]]
+image::app.jpg[width=500, align="center"]
+
+Aus dieser zweiten Ansicht kann die Drone gesteuert werden und das Kamerasignal 
+eingesehen werden. Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
+der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto 
+schneller bewegt sich die Drohne. Die linke Hälft des Bildschirms dient zur Lenkung
+der Drone.
+
+.Test
+[plantuml, diagram-classes, png]     
+....
+@startuml
+skinparam classAttributeIconSize 0
+class ReconDroneConnection extends Activity {
+    - status: TextView
+    - passwordLabel: TextView
+    - password: EditText
+    - connect: Button
+    - wifiManager: WifiManager
+    - handler: Handler
+    - removeReconDroneNetwork()
+    - foundReconDrone()
+    - lostReconDrone()
+    - searchForReconDrone()
+}
+class ReconDrone extends Activity {
+    - enableFullScreen()
+}
+class TouchController implements OnTouchListener {
+    - context: Context
+    - acceleration: int
+    - steering: int
+    - startingPositions: float[]
+    - currentPositions: float[]
+    + TouchController(context: Context)
+    + onTouch(view: View, event: MotionEvent): boolean
+    - getSideOfScreen(x: float): SIDE_OF_SCREEN
+    - sendControllerUpdate()
+    - setAccerleration(buffer: byte[])
+    - setSteering(buffer: byte[])
+    - setDirection(buffer: byte[])
+    - adjustForInPlaceTurn(buffer: byte[])
+}
+enum SIDE_OF_SCREEN {
+    LEFT
+    RIGHT
+}
+class CameraFeed {
+    - imageView: ImageView
+    - handler: Handler
+    - backgroundThread: Thread
+    + CameraFeed(imageView: ImageView)
+    + startFeed()
+}
+
+ReconDrone *-- TouchController : controller
+TouchController +-- SIDE_OF_SCREEN
+ReconDrone *-- CameraFeed : feed
+@enduml
+....

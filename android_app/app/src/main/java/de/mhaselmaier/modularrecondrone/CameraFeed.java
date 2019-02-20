@@ -27,54 +27,6 @@ public class CameraFeed
     private Handler handler = new Handler();
 
     private Thread backgroundThread;
-    private Runnable streamingConnection = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            while (true)
-            {
-                try (Socket socket = new Socket(ReconDrone.ESP_HOST_ADDRESS, 1234))
-                {
-                    DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-
-                    while (true)
-                    {
-                        final byte receivedImage[] = new byte[IMAGE_WIDTH * IMAGE_HEIGHT];
-                        inputStream.readFully(receivedImage);
-
-
-                        CameraFeed.this.handler.post(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                byte modifiedImage[] = new byte[IMAGE_WIDTH * IMAGE_HEIGHT * 4];
-                                for (int i = 0; receivedImage.length > i; ++i)
-                                {
-                                    modifiedImage[i * 4] = receivedImage[i];
-                                    modifiedImage[i * 4 + 1] = receivedImage[i];
-                                    modifiedImage[i * 4 + 2] = receivedImage[i];
-                                    modifiedImage[i * 4 + 3] = (byte) 255;
-
-                                }
-
-                                Bitmap bitmap = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
-                                bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(modifiedImage));
-                                bitmap = Bitmap.createBitmap(bitmap, 0, 0, CameraFeed.IMAGE_WIDTH,
-                                    CameraFeed.IMAGE_HEIGHT, CameraFeed.ROTATION_MATRIX, true);
-                                CameraFeed.this.imageView.setImageBitmap(bitmap);
-                            }
-                        });
-                    }
-                }
-                catch (IOException e)
-                {
-                    Log.e("CameraFeed", e.getMessage());
-                }
-            }
-        }
-    };
 
     public CameraFeed(ImageView imageView)
     {
@@ -88,7 +40,54 @@ public class CameraFeed
             this.backgroundThread.interrupt();
         }
 
-        this.backgroundThread = new Thread(this.streamingConnection);
+        this.backgroundThread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                while (true)
+                {
+                    try (Socket socket = new Socket(ReconDrone.ESP_HOST_ADDRESS, 1234))
+                    {
+                        DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+
+                        while (true)
+                        {
+                            final byte receivedImage[] = new byte[IMAGE_WIDTH * IMAGE_HEIGHT];
+                            inputStream.readFully(receivedImage);
+
+
+                            CameraFeed.this.handler.post(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    byte modifiedImage[] = new byte[IMAGE_WIDTH * IMAGE_HEIGHT * 4];
+                                    for (int i = 0; receivedImage.length > i; ++i)
+                                    {
+                                        modifiedImage[i * 4] = receivedImage[i];
+                                        modifiedImage[i * 4 + 1] = receivedImage[i];
+                                        modifiedImage[i * 4 + 2] = receivedImage[i];
+                                        modifiedImage[i * 4 + 3] = (byte) 255;
+
+                                    }
+
+                                    Bitmap bitmap = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
+                                    bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(modifiedImage));
+                                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, CameraFeed.IMAGE_WIDTH,
+                                            CameraFeed.IMAGE_HEIGHT, CameraFeed.ROTATION_MATRIX, true);
+                                    CameraFeed.this.imageView.setImageBitmap(bitmap);
+                                }
+                            });
+                        }
+                    }
+                    catch (IOException e)
+                    {
+                        Log.e("CameraFeed", e.getMessage());
+                    }
+                }
+            }
+        });
         this.backgroundThread.start();
     }
 }
