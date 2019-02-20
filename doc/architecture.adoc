@@ -143,13 +143,75 @@ kann das _-P_-Flag des _avrdude_-Befehls angepasst werden. Je nachdem, welche Pr
 verwendet wird, muss auch das _-c_-Flag angepasst werden. In der aktuellen Version wird
 davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <<arduino_programmer>>).
 
+
 [[sec:camera_module]]
 === Kameramodul
 Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision. 
 
+.Anschluss der Kamera am ESP32
+[width="75%", align="center"]
+|===
+|Kamera Pin |ESP32 Pin | |Kamera Pin | ESP32 Pin
+
+|SIOC
+|GPIO23
+|
+|SIOD
+|GPIO25
+
+|XCLK
+|GPIO27
+|
+|VSYNC
+|GPIO22
+
+|HREF
+|GPIO26
+|
+|PCLK
+|GPIO21
+
+|D2
+|GPIO35
+|
+|D3
+|GPIO17
+
+|D4
+|GPIO34
+|
+|D5
+|GPIO5
+
+|D6
+|GPIO39
+|
+|D7
+|GPIO18
+
+|D8
+|GPIO36
+|
+|D9
+|GPIO19
+
+|RESET
+|GPIO15
+|
+|PWDN
+| (über 10kOhm Widerstand auf GND)
+
+|3.3V
+|3.3V
+|
+|GND
+|GND
+|===
+
 .Kameramodul OV7725
 [[fig:camera_module, {counter:fig}]]
 image::camera_module.png[width=200, align="center"]
+
 
 [[sec:oled_display]]
 === Bildschirm

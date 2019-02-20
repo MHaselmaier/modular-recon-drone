@@ -697,6 +697,90 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="paragraph">
 <p>Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision.</p>
 </div>
+<table class="tableblock frame-all grid-all" style="width: 75%;">
+<caption class="title">Table 1. Anschluss der Kamera am ESP32</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Kamera Pin</th>
+<th class="tableblock halign-left valign-top">ESP32 Pin</th>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Kamera Pin</th>
+<th class="tableblock halign-left valign-top">ESP32 Pin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SIOC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO23</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SIOD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO25</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XCLK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO27</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VSYNC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO22</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HREF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO26</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PCLK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO35</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO34</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO39</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO36</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RESET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPIO15</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PWDN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(über 10kOhm Widerstand auf GND)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.3V</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.3V</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GND</p></td>
+</tr>
+</tbody>
+</table>
 <div id="fig:camera_module" class="imageblock" style="text-align: center">
 <div class="content">
 <img src="imgs/camera_module.png" alt="camera module" width="200">
