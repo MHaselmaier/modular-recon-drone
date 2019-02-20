@@ -6,3 +6,10 @@ TWI:: Two Wire Interface (bekannt als I^2^C), zweiadriger Master-Slave Bus
 MCU:: Main Control Unit
 PCB:: Printed Ciruit Board
 USI:: Universial Serial Interface
+BLE:: Bluetooth Low Energy
+ADC:: Analog Digital Converter
+DAC:: Digital Analog Converter
+PWM:: Pulse Width Modulation
+AP:: Access Point
+RNG:: Random Number Generator
+SDK:: Software Development Kit
