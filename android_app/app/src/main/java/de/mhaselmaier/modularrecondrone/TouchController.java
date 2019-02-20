@@ -183,35 +183,35 @@ public class TouchController implements View.OnTouchListener
             float delta = (TouchController.this.startingPositions[1] - TouchController.this.currentPositions[1]) / 4;
             if (delta < -40)
             {
-                buffer[0] *= .5;
+                buffer[1] *= .5;
             }
             else if (delta < -30)
             {
-                buffer[0] *= .6;
+                buffer[1] *= .6;
             }
             else if (delta < -20)
             {
-                buffer[0] *= .7;
+                buffer[1] *= .7;
             }
             else if (delta < -10)
             {
-                buffer[0] *= .8;
+                buffer[1] *= .8;
             }
             else if (delta > 40)
             {
-                buffer[1] *= .5;
+                buffer[0] *= .5;
             }
             else if (delta > 30)
             {
-                buffer[1] *= .6;
+                buffer[0] *= .6;
             }
             else if (delta > 20)
             {
-                buffer[1] *= .7;
+                buffer[0] *= .7;
             }
             else if (delta > 10)
             {
-                buffer[1] *= .8;
+                buffer[0] *= .8;
             }
         }
     }
@@ -236,13 +236,13 @@ public class TouchController implements View.OnTouchListener
             float delta = TouchController.this.startingPositions[1] - TouchController.this.currentPositions[1];
             if (delta > 0)
             {
-                buffer[0] = 60;
-                buffer[1] = (byte)(60 | 1 << 7);
+                buffer[1] = 60;
+                buffer[0] = (byte)(60 | 1 << 7);
             }
             else
             {
-                buffer[1] = 60;
-                buffer[0] = (byte)(60 | 1 << 7);
+                buffer[0] = 60;
+                buffer[1] = (byte)(60 | 1 << 7);
             }
         }
     }
