@@ -35,8 +35,11 @@ Der ESP32 ist mit 244 Mhz und zwei CPU Kernen ein relativ potenter 32 Bit Microc
 * Hardwarebeschleunigte Kryptografie (AES, SHA-2, RSA, ECC, RNG)
 
 Software für den ESP32 kann mit Hilfe der Arduino IDE entwickelt werden. Jedoch ist das SDK des Herstellers, auch als ESP-IDF bezeichnet, vorzuziehen, da 
-sie der Arduino IDE gegenüber wesentlich mächtiger ist. Die Installation der ESP-IDF ist unter den gängigen Betriebssystemen mit Hilfe der 
-Anleitung auf der Herstellerseite (siehe <<esp_idf_install>>) unkompliziert möglich. Neben liegt dem SDK noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei. Diese sind, wie auch die Komponenten der SDK selbst (Header Dateien) umfangreich und gut dokumentiert. Beim Aufsetzen eines neuen Projektes empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf Make basierende Buildchain anbietet. 
+sie der Arduino IDE gegenüber wesentlich mächtiger ist. 
+
+==== ESP-IDF
+Die Installation der ESP-IDF ist unter den gängigen Betriebssystemen mit Hilfe der 
+Anleitung auf der Herstellerseite (siehe <<esp_idf_install>>) unkompliziert möglich. Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei. Diese sind, wie auch die Komponenten der SDK selbst (Header Dateien) umfangreich und gut dokumentiert. Beim Aufsetzen eines neuen Projektes empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf Make basierende Buildchain anbietet. 
 
 Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis heraus):
 * make menuconfig -> TUI zur Konfiguration des Projektes (sdkconfig.h)
@@ -44,6 +47,12 @@ Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis he
 * make flash -> ggf. Bau des Projektes und Flashen des ESP
 * make clean -> Bereinigung des Build-Verzeichnisses
 * make monitor -> Starten des pythonbasierten seriellen Monitors
+
+Um die Buildchain des SDK ohne Einschränkungen verwenden zu können, wird eine Python 2 installation benötigt. Diese sollte entsprechend unter Verwendung von _menuconfig_ unter _SDK Tool Configuration_ -> _Python 2 Interpreter_ gesetzt werden.
+
+Danach muss noch der serielle Port, unter dem der ESP im Betriebssystem angebunden wird, konfiguiert werden. Dies geschieht unter _Serial flasher options_ -> _Default serial port_.
+
+==== MCU Software
 
 
 === Motor Controller
