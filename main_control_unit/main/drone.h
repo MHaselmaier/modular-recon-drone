@@ -38,15 +38,6 @@ extern EventGroupHandle_t system_event_group;
 
 void event_group_init();
 
-//---- GPIO -------------
-#define RED 32
-#define GREEN 33
-#define BLUE 25
-
-void led_init();
-void led_enable(int led);
-void led_disable();
-
 //---- Queues -----------
 extern QueueHandle_t udp_to_i2c_com_queue;
 
@@ -95,8 +86,6 @@ void camera_module_start();
 
 #define FORWARD 1
 #define REVERSE 0
-
-#define MAX_SPEED_VALUE 127
 
 #define MOTOR_A 0x01
 #define MOTOR_B 0x02
