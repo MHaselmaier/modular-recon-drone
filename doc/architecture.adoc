@@ -72,7 +72,7 @@ Der eigentliche Code der Drohne befindet sich im Ordner _main_. Der Aufbau der e
 
 .MCU Code Struktur
 [[fig:mcu_structure, {counter:fig}]]
-[ditaa]
+[ditaa, "mcu_structure"]
 ....
 +---------+                      +---------+
 | drone.c |----------------------| drone.h |
