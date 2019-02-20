@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -32,9 +30,9 @@ public class ReconDroneConnection extends Activity
     private Handler handler = new Handler();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle b)
     {
-        super.onCreate(savedInstanceState);
+        super.onCreate(b);
         setContentView(R.layout.recon_drone_connection);
 
         this.status = findViewById(R.id.status);

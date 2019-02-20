@@ -428,17 +428,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_vorwort">Vorwort</a></li>
-<li><a href="#_architektur">Architektur</a></li>
-<li><a href="#_architektur_2">Architektur</a>
+<li><a href="#_architektur">Architektur</a>
 <ul class="sectlevel2">
 <li><a href="#_main_control_unit">Main Control Unit</a></li>
 <li><a href="#_motor_controller">Motor Controller</a></li>
 <li><a href="#_kameramodul">Kameramodul</a></li>
-<li><a href="#_bildschirm">Bildschirm</a></li>
+<li><a href="#sec:oled_screen">Bildschirm</a></li>
 <li><a href="#_stromversorgung">Stromversorgung</a></li>
 <li><a href="#_schaltplan_und_pcb">Schaltplan und PCB</a></li>
 </ul>
 </li>
+<li><a href="#_android_app">Android App</a></li>
 <li><a href="#_ausblick">Ausblick</a></li>
 <li><a href="#_glossar">Glossar</a></li>
 <li><a href="#_quellen">Quellen</a></li>
@@ -455,16 +455,107 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_architektur">Architektur</h2>
 <div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="_architektur_2">Architektur</h2>
-<div class="sectionbody">
 <div class="sect2">
 <h3 id="_main_control_unit">Main Control Unit</h3>
 <div class="paragraph">
-<p>Die MCU ist die Hauptkontrolleinheit.</p>
+<p>Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind:
+* Hosten eines Access Points
+* Hosten eines UDP-Sockets
+* Hosten eines TCP-Servers
+* Hosten des TWI Master</p>
+</div>
+<div class="paragraph">
+<p>Grundlage der MCU bildet ein <em>Espressif ESP32</em> (DevKit v.1, siehe <a href="#fig:esp32_devkitv1">{counter:fig}</a>).</p>
+</div>
+<div id="fig:esp32_devkitv1" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/esp32_devkitv1.png" alt="esp32 devkitv1" width="200">
+</div>
+<div class="title">Abbildung 1. Espressif ESP32 DevKit v1 Development Board</div>
+</div>
+<div class="paragraph">
+<p>Im Detail stellt der ESP32 einen Access Point mit WPA2 PSK Sicherung zur Verfügung. Das Passwort AP wird hierbei mittels
+des Hardware RNG in Form einer achtstelligen positiven Ganzzahl generiert.
+Das Passwort und die SSID des AP werden auf dem Bildschirm (siehe Abbildung <a href="#sec:oled_screen">Bildschirm</a>) dargestellt.</p>
+</div>
+<div class="sect3">
+<h4 id="_entwicklung">Entwicklung</h4>
+<div class="paragraph">
+<p>Der ESP32 ist mit 244 Mhz und zwei CPU Kernen ein relativ potenter 32 Bit Microcontroller. Zudem verfügt der Controller
+über eine Vielzahl an Schnittstellen. Neben den oben erwähnten Funktionalitäten, verfügt der ESP noch über:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Bluetooth 4.2 (inkl. BLE)</p>
+</li>
+<li>
+<p>18 ADC Kanäle mit 12 bit Auflösung</p>
+</li>
+<li>
+<p>2 DAC mit 8 bit Auflösung</p>
+</li>
+<li>
+<p>10 Touch Sensoren (Kapazitiv)</p>
+</li>
+<li>
+<p>4 SPI Controller</p>
+</li>
+<li>
+<p>2 TWI Controller</p>
+</li>
+<li>
+<p>2 I<sup>2</sup>S Controller</p>
+</li>
+<li>
+<p>3 UART Controller</p>
+</li>
+<li>
+<p>SD/SDIO/MMC/eMMC Host Controller</p>
+</li>
+<li>
+<p>CAN Bus 2.0</p>
+</li>
+<li>
+<p>Motor und LED PWM</p>
+</li>
+<li>
+<p>Hall Effekt Sensor</p>
+</li>
+<li>
+<p>Hardwarebeschleunigte Kryptografie (AES, SHA-2, RSA, ECC, RNG)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Software für den ESP32 kann mit Hilfe der Arduino IDE entwickelt werden. Jedoch ist das SDK des Herstellers, auch als ESP-IDF bezeichnet, vorzuziehen, da
+sie der Arduino IDE gegenüber wesentlich mächtiger ist.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_esp_idf">ESP-IDF</h4>
+<div class="paragraph">
+<p>Die Installation der ESP-IDF ist unter den gängigen Betriebssystemen mit Hilfe der
+Anleitung auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_install]</a>) unkompliziert möglich. Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei. Diese sind, wie auch die Komponenten der SDK selbst (Header Dateien) umfangreich und gut dokumentiert. Beim Aufsetzen eines neuen Projektes empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf Make basierende Buildchain anbietet.</p>
+</div>
+<div class="paragraph">
+<p>Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis heraus):
+* make menuconfig &#8594; TUI zur Konfiguration des Projektes (sdkconfig.h)
+* make all &#8594; Bau des Projektes
+* make flash &#8594; ggf. Bau des Projektes und Flashen des ESP
+* make clean &#8594; Bereinigung des Build-Verzeichnisses
+* make monitor &#8594; Starten des pythonbasierten seriellen Monitors</p>
+</div>
+<div class="paragraph">
+<p>Um die Buildchain des SDK ohne Einschränkungen verwenden zu können, wird eine Python 2 installation benötigt. Diese sollte entsprechend unter Verwendung von <em>menuconfig</em> unter <em>SDK Tool Configuration</em> &#8594; <em>Python 2 Interpreter</em> gesetzt werden.</p>
+</div>
+<div class="paragraph">
+<p>Danach muss noch der serielle Port, unter dem der ESP im Betriebssystem angebunden wird, konfiguiert werden. Dies geschieht unter <em>Serial flasher options</em> &#8594; <em>Default serial port</em>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_mcu_software">MCU Software</h4>
+
 </div>
 </div>
 <div class="sect2">
@@ -476,13 +567,13 @@ der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Au
 <a href="#fig:attiny25_pinout">{counter:fig}</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
 Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
 werden. Hierzu wurde eine bereits existierende Implementation von <a href="#twi_implementation">[twi_implementation]</a> verwendet, welche
-die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny25/45/85">[attiny25/45/85]</a>).</p>
+die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny254585">[attiny254585]</a>).</p>
 </div>
 <div id="fig:attiny25_pinout" class="imageblock" style="text-align: center">
 <div class="content">
 <img src="imgs/attiny25_pinout.jpg" alt="attiny25 pinout" width="300">
 </div>
-<div class="title">Abbildung 1. ATTiny25 Pinout</div>
+<div class="title">Abbildung 2. ATTiny25 Pinout</div>
 </div>
 <div class="paragraph">
 <p>Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
@@ -500,7 +591,7 @@ gezeigt.</p>
 <div class="content">
 <img src="imgs/ATTiny25_HBrücke_Schematic.png" alt="ATTiny25 HBrücke Schematic" width="500">
 </div>
-<div class="title">Abbildung 2. Schaltplan der Motorsteuerung</div>
+<div class="title">Abbildung 3. Schaltplan der Motorsteuerung</div>
 </div>
 <div class="paragraph">
 <p>Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das TWI wird
@@ -526,11 +617,11 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="content">
 <img src="imgs/camera_module.png" alt="camera module" width="200">
 </div>
-<div class="title">Abbildung 3. Kameramodul OV7725</div>
+<div class="title">Abbildung 4. Kameramodul OV7725</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bildschirm">Bildschirm</h3>
+<h3 id="sec:oled_screen">Bildschirm</h3>
 <div class="paragraph">
 <p>Verwendung findet ein monochromes OLED-Display mit einer Auflösung von 128x64 Pixel. Dieses basiert auf dem verbreiteten SSD1306 Controller.</p>
 </div>
@@ -538,7 +629,7 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="content">
 <img src="imgs/oled_display.png" alt="oled display" width="200">
 </div>
-<div class="title">Abbildung 4. Oled Diplay 128x64, SSD1306</div>
+<div class="title">Abbildung 5. Oled Diplay 128x64, SSD1306</div>
 </div>
 <div class="paragraph">
 <p>Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout setzt sich wie folgt zusammen:</p>
@@ -571,7 +662,7 @@ erhalten werden.</p>
 <div class="content">
 <img src="imgs/powersupply.png" alt="powersupply" width="400">
 </div>
-<div class="title">Abbildung 5. Stromversorgung</div>
+<div class="title">Abbildung 6. Stromversorgung</div>
 </div>
 <div class="paragraph">
 <p>Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
@@ -591,7 +682,7 @@ Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildu
 <div class="content">
 <img src="imgs/lochrasterplatine.png" alt="lochrasterplatine" width="500">
 </div>
-<div class="title">Abbildung 6. Lochrasterplatine</div>
+<div class="title">Abbildung 7. Lochrasterplatine</div>
 </div>
 <div class="paragraph">
 <p>Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
@@ -602,8 +693,64 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <div class="content">
 <img src="imgs/pcb.png" alt="pcb" width="500">
 </div>
-<div class="title">Abbildung 7. Fertige bestücktes PCB</div>
+<div class="title">Abbildung 8. Fertige bestücktes PCB</div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_android_app">Android App</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
+Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drone
+und eine zum Steuern der Drone. Beide Ansichten sind auf Abbildung <a href="#fig:app">{counter:fig}</a>
+gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drone bereitgestellt
+wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
+Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum
+Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button
+gedrückt, baut die App die Verbindung zur Drone auf. Damit die App mit der Drone
+kommunizieren kann, müssen die mobile Internet deaktiviert sein. Diese Funktionalität
+wird durch die <em>ReconDroneConnection</em>-Klasse realisiert (vgl. Abbildung <a href="#fig:classdiagram">{counter:fig}</a>).
+Hat sich das Smartphone mit der Drone verbunden, wird automatisch zur nächsten Ansicht der
+App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
+</div>
+<div id="fig:app" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/app.png" alt="app" width="500">
+</div>
+<div class="title">Abbildung 9. Ansichten der App</div>
+</div>
+<div class="paragraph">
+<p>Aus dieser zweiten Ansicht kann die Drone gesteuert werden und das Kamerasignal
+eingesehen werden. Die Steuerung wird von der <em>TouchController</em>-Klasse implementiert.
+Die Touchevents des Benutzer werden in der <em>onTouch()</em>-Methode verarbeitet. In ihr
+werden die Startposition und aktuelle Position der Touchbewegungen verarbeitet und
+in den Attributen <em>startingPositions</em> und <em>currentPositions</em> zwischengespeichert.
+Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
+der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto
+schneller bewegt sich die Drohne. Die linke Hälft des Bildschirms dient zur Lenkung
+der Drone. In den Attributen <em>accerleration</em> und <em>steering</em> wird die ID des jeweiligen
+Touchevents gespeichert. Wenn kein Touchevent vorliegt, enthalten die beiden Attribute
+den Wert -1. Alle 50 Millisekunden wird die Methode <em>sendControllerUpdate()</em> aufgerufen,
+welche der Drone die Steuersignale sendet. Es werden zwei Bytes übertragen, die jeweils
+die Geschwindigkeit und Richtung für einen Motor definieren. Die beiden Bytes werden in
+den Methoden <em>setAcceleration()</em>, <em>setSteering()</em>, <em>setDirection()</em> und <em>adjustForInPlaceTurn()</em>
+befühlt.</p>
+</div>
+<div id="fig:classdiagram" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
+</div>
+<div class="title">Abbildung 11. Klassendiagramm</div>
+</div>
+<div class="paragraph">
+<p>Das Kamerasignal der Drone wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
+ihrem Konstruktor das <em>ImageView</em>-Objekt entgegen, in dem sie das Kamerasignal anzeigen
+soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen werde
+und wandelt die Byte-Daten in ein Bitmap um. Da in Android das User-Interface nicht aus
+einem Hintergrundthread angepasst werden kann, wird ein <em>Handler</em> verwendet, der das
+Bitmap im <em>ImageView</em> anzeigt.</p>
 </div>
 </div>
 </div>
@@ -629,6 +776,38 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <dt>PCB</dt>
 <dd>
 <p>Printed Ciruit Board</p>
+</dd>
+<dt>USI</dt>
+<dd>
+<p>Universial Serial Interface</p>
+</dd>
+<dt>BLE</dt>
+<dd>
+<p>Bluetooth Low Energy</p>
+</dd>
+<dt>ADC</dt>
+<dd>
+<p>Analog Digital Converter</p>
+</dd>
+<dt>DAC</dt>
+<dd>
+<p>Digital Analog Converter</p>
+</dd>
+<dt>PWM</dt>
+<dd>
+<p>Pulse Width Modulation</p>
+</dd>
+<dt>AP</dt>
+<dd>
+<p>Access Point</p>
+</dd>
+<dt>RNG</dt>
+<dd>
+<p>Random Number Generator</p>
+</dd>
+<dt>SDK</dt>
+<dd>
+<p>Software Development Kit</p>
 </dd>
 </dl>
 </div>
@@ -660,6 +839,9 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <li>
 <p><a id="attiny254585"></a>[attiny254585] <a href="https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf" class="bare">https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf</a></p>
 </li>
+<li>
+<p><a id="esp_idf_install"></a>[esp_idf_install] ESP-IDF Getting Started: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html" class="bare">https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -667,7 +849,7 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-19 07:44:29 STD
+Last updated 2019-02-20 13:48:52 STD
 </div>
 </div>
 </body>
