@@ -27,10 +27,14 @@
 
 #include "camera.h"
 
+#include "u8g2.h"
+#include "u8g2_esp32_hal.h"
+
 //---- Event Groups -----
 #define CLIENT_CONNECTED BIT0
+#define I2C_INITIALIZED BIT1
 
-EventGroupHandle_t wifi_event_group;
+extern EventGroupHandle_t system_event_group;
 
 void event_group_init();
 
@@ -44,7 +48,7 @@ void led_enable(int led);
 void led_disable();
 
 //---- Queues -----------
-QueueHandle_t udp_to_i2c_com_queue;
+extern QueueHandle_t udp_to_i2c_com_queue;
 
 struct MotorData
 {
@@ -82,9 +86,10 @@ void camera_module_start();
 //---- I2C --------------
 #define I2C_NO_ACK 0x0
 #define I2C_ACK 0x1
+#define I2C_MASTER_NUM I2C_NUM_0
 #define I2C_MASTER_SCL_IO 33               /*!< gpio number for I2C master clock */
-#define I2C_MASTER_SDA_IO 32
-#define I2C_MASTER_FREQ_HZ 100000        /*!< I2C master clock frequency */
+#define I2C_MASTER_SDA_IO 32 
+#define I2C_MASTER_FREQ_HZ 100000           /* frequency of the i2c bus*/
 #define I2C_MASTER_TX_BUF_DISABLE 0                          /*!< I2C master doesn't need buffer */
 #define I2C_MASTER_RX_BUF_DISABLE 0  
 
@@ -98,8 +103,12 @@ void camera_module_start();
 
 void i2c_master_init();
 void i2c_master_bus_start();
+void display_set_text(uint line, const char* desc, const char* text);
+void display_clear();
 
 //---- Accesspoint ------
+#define SSID "Recon Drone"
+
 void accesspoint_init(const char* ssid, const char* password);
 void accesspoint_start();
 void accesspoint_stop();

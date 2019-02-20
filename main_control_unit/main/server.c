@@ -33,14 +33,14 @@ static void server_task()
         int len = recvfrom(server_socket_desc, rx_buffer, sizeof(rx_buffer), 0, (struct sockaddr *) &client_addr, &client_socket_len);
         if(len < 0)
         {
-            ESP_LOGE(TAG, "Could not successfully receive data from udp socket.");
+            ESP_LOGE(TAG, "Could not successfully receive data from udp socket");
             break;
         }
         else
         {
             if(len == 2)
             {
-                ESP_LOGI("server_task()::", "Received data");
+                ESP_LOGI(TAG, "Received data from udp socket");
                 uint motor_a_direction = (rx_buffer[0] & (1 << 7)) >> 7;
                 int motor_a_speed_percent = (rx_buffer[0] & ~(1 << 7));
                 uint motor_b_direction = (rx_buffer[1] & (1 << 7)) >> 7;
