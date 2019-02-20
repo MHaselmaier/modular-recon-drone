@@ -428,7 +428,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_vorwort">Vorwort</a></li>
-<li><a href="#_architektur">Architektur</a>
+<li><a href="#_aufbau_der_drohne">Aufbau der Drohne</a>
 <ul class="sectlevel2">
 <li><a href="#_main_control_unit">Main Control Unit</a></li>
 <li><a href="#_motor_controller">Motor Controller</a></li>
@@ -457,7 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_architektur">Architektur</h2>
+<h2 id="_aufbau_der_drohne">Aufbau der Drohne</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_main_control_unit">Main Control Unit</h3>
@@ -870,12 +870,12 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <h2 id="_entwicklung_einer_steuerung">Entwicklung einer Steuerung</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Aufgrund der schlichten Schnittstelle zur Drone ist es sehr einfach, eine
-beliebige Steuerung zu implementieren. Um die Drone anzusteuern, muss sich
+<p>Aufgrund der schlichten Schnittstelle zur Drohne ist es sehr einfach, eine
+beliebige Steuerung zu implementieren. Um die Drohne anzusteuern, muss sich
 zuerst mit dem bereitgestellt W-Lan-Netzwerk verbunden werden. Innerhalb
-dieses Netzwerkes hat die Drone immer die IP-Addresse <em>192.168.4.1</em>. Um
-das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drone über den
-Port <em>1234</em> aufgebaut werden. Die Drone sendet dann das Bildsignal Byteweise
+dieses Netzwerkes hat die Drohne immer die IP-Addresse <em>192.168.4.1</em>. Um
+das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über den
+Port <em>1234</em> aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
 Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
 Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
@@ -890,27 +890,27 @@ das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:upd-pack
 <div class="paragraph">
 <p>Das <em>Direction</em> bit gibt an, ob die Motoren vorwärts (0) oder rückwärst (1) drehen.
 In den sieben <em>Speed</em> bits wird die prozentuale Geschwindigkeit definiert, also ein
-Wert im Intervall [0, 100]. Um die Drone um Hindernisse zu manövrieren, muss die
+Wert im Intervall [0, 100]. Um die Drohne um Hindernisse zu manövrieren, muss die
 Geschwindigkeit der beiden Motoren unterschiedlich hoch definiert werden.</p>
 </div>
 <div class="paragraph">
-<p>Im Folgenden wird eine Referenzimplementierung der Steuerung der Drone am Beispiel
+<p>Im Folgenden wird eine Referenzimplementierung der Steuerung der Drohne am Beispiel
 einer Android App beschrieben.</p>
 </div>
 <div class="sect2">
 <h3 id="_referenzimplementierung_für_android">Referenzimplementierung für Android</h3>
 <div class="paragraph">
-<p>Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
-Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drone
-und eine zum Steuern der Drone. Beide Ansichten sind auf Abbildung <a href="#fig:app">{counter:fig}</a>
-gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drone bereitgestellt
+<p>Zur Steuerung der Recon Drohne wurde eine simple Android App entwickelt.
+Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drohne
+und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <a href="#fig:app">{counter:fig}</a>
+gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drohne bereitgestellt
 wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
 Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum
 Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button
-gedrückt, baut die App die Verbindung zur Drone auf. Damit die App mit der Drone
+gedrückt, baut die App die Verbindung zur Drohne auf. Damit die App mit der Drohne
 kommunizieren kann, müssen die mobile Internet deaktiviert sein. Diese Funktionalität
 wird durch die <em>ReconDroneConnection</em>-Klasse realisiert (vgl. Abbildung <a href="#fig:classdiagram">{counter:fig}</a>).
-Hat sich das Smartphone mit der Drone verbunden, wird automatisch zur nächsten Ansicht der
+Hat sich das Smartphone mit der Drohne verbunden, wird automatisch zur nächsten Ansicht der
 App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 </div>
 <div id="fig:app" class="imageblock" style="text-align: center">
@@ -920,7 +920,7 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <div class="title">Abbildung 13. Ansichten der App</div>
 </div>
 <div class="paragraph">
-<p>Aus dieser zweiten Ansicht kann die Drone gesteuert werden und das Kamerasignal
+<p>Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal
 eingesehen werden. Die Steuerung wird von der <em>TouchController</em>-Klasse implementiert.
 Die Touchevents des Benutzer werden in der <em>onTouch()</em>-Methode verarbeitet. In ihr
 werden die Startposition und aktuelle Position der Touchbewegungen verarbeitet und
@@ -928,10 +928,10 @@ in den Attributen <em>startingPositions</em> und <em>currentPositions</em> zwisc
 Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
 der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto
 schneller bewegt sich die Drohne. Die linke Hälft des Bildschirms dient zur Lenkung
-der Drone. In den Attributen <em>accerleration</em> und <em>steering</em> wird die ID des jeweiligen
+der Drohne. In den Attributen <em>accerleration</em> und <em>steering</em> wird die ID des jeweiligen
 Touchevents gespeichert. Wenn kein Touchevent vorliegt, enthalten die beiden Attribute
 den Wert -1. Alle 50 Millisekunden wird die Methode <em>sendControllerUpdate()</em> aufgerufen,
-welche der Drone die Steuersignale sendet. Es werden zwei Bytes übertragen, die jeweils
+welche der Drohne die Steuersignale sendet. Es werden zwei Bytes übertragen, die jeweils
 die Geschwindigkeit und Richtung für einen Motor definieren. Die beiden Bytes werden in
 den Methoden <em>setAcceleration()</em>, <em>setSteering()</em>, <em>setDirection()</em> und <em>adjustForInPlaceTurn()</em>
 befühlt.</p>
@@ -943,7 +943,7 @@ befühlt.</p>
 <div class="title">Abbildung 15. Klassendiagramm</div>
 </div>
 <div class="paragraph">
-<p>Das Kamerasignal der Drone wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
+<p>Das Kamerasignal der Drohne wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
 ihrem Konstruktor das <em>ImageView</em>-Objekt entgegen, in dem sie das Kamerasignal anzeigen
 soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen werde
 und wandelt die Byte-Daten in ein Bitmap um. Da in Android das User-Interface nicht aus
@@ -1054,7 +1054,7 @@ Bitmap im <em>ImageView</em> anzeigt.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 17:07:28 STD
+Last updated 2019-02-20 17:51:41 STD
 </div>
 </div>
 </body>

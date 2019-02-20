@@ -7,8 +7,8 @@
 //---- Vorwort
 include::intro.adoc[]
 
-//---- Architektur
-include::architecture.adoc[]
+//---- Aufbau der Drohne
+include::construction.adoc[]
 
 //---- Entwicklung einer Steuerung
 include::controller_implementation.adoc[]
