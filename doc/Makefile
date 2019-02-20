@@ -1,4 +1,4 @@
-ADOC=asciidoctor
+ADOC=asciidoctor -r asciidoctor-diagram
 ADOC_PDF=$(ADOC) -r asciidoctor-pdf -b pdf
 
 all: pdf html
