@@ -52,8 +52,53 @@ Um die Buildchain des SDK ohne Einschränkungen verwenden zu können, wird eine 
 
 Danach muss noch der serielle Port, unter dem der ESP im Betriebssystem angebunden wird, konfiguiert werden. Dies geschieht unter _Serial flasher options_ -> _Default serial port_.
 
-==== MCU Software
+Die ESP-IDF nutzt das Echtzeitbetriebssystem FreeRTOS (siehe <<freertos>>). Dieses stellt Tasks, Message Queues zur Intertaskkommunikation, Tasksynchronisationsmechanismen (Mutex, etc) zur Verfügung.
 
+Als TCP/IP Stack wird LwIP (siehe <<lwip>>) genutzt. Es handelt sich um eine leichtgewichtige Implementierung, deren Fokus auf Embedded Systems gelegt ist. Angelehnt ist die API an die der POSIX sockets.
+
+==== MCU Software
+Die Struktur des Projektes stellt sich wie folgt dar:
+* main_control_unit
+** components
+*** camera 
+*** u8g2
+** main
+
+Für das Ansprechen der Komponenten Kamera (siehe Abschnitt <<sec:camera>>) und Display (siehe Abschnitt <<sec:oled_display>>) wurden 
+jeweils entsprechende externe Bibliotheken verwandt (näheres in den entsprechenden Kapiteln). Diese sind, wie andere externe Bibliotheken im Allgemeinen, im Ordner _components_ abgelegt. 
+Der eigentliche Code der Drohne befindet sich im Ordner _main_. Der Aufbau der eigentlichen Projektdateien ist in Abbildung <<fig:mcu_structure>> definiert.
+
+.MCU Code Struktur
+[[fig:mcu_structure, {counter:fig}]]
+[ditaa]
+....
++---------+                      +---------+
+| drone.c |----------------------| drone.h |
++---------+                      +---------+
+                                   | | | |
+        /--------------------------/ | | \----------------------------\
+        |                   /--------/ \-------\                      |
+        |                   |                  |                      |
++---------------+  +-----------------+  +--------------+  +-------------------------+
+| accesspoint.c |  | camera_module.c |  | i2c_master.c |  | udp_motor_data_server.c |
++---------------+  +-----------------+  +--------------+  +-------------------------+
+....
+
+Zunächst werden die Komponenten initialisiert. Nach der Initialisierung werden die einzelnen Module (accesspoint.c, etc) gestartet. 
+Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um möglichst parallel zu laufen.
+
+===== Access Point
+
+===== Motor Control
+
+===== Camera 
+
+[plantuml]
+....
+@startuml
+Main -> init: calls
+@enduml
+....
 
 === Motor Controller
 Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
@@ -96,6 +141,7 @@ kann das _-P_-Flag des _avrdude_-Befehls angepasst werden. Je nachdem, welche Pr
 verwendet wird, muss auch das _-c_-Flag angepasst werden. In der aktuellen Version wird
 davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <<arduino_programmer>>).
 
+[[sec:camera_module]]
 === Kameramodul
 Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision. 
 
