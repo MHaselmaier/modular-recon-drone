@@ -105,6 +105,8 @@ void i2c_master_init();
 void i2c_master_bus_start();
 void display_set_text(uint line, const char* desc, const char* text);
 void display_clear();
+void display_update();
+void display_draw_hskl();
 
 //---- Accesspoint ------
 #define SSID "Recon Drone"

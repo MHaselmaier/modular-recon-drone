@@ -1,6 +1,50 @@
 == Architektur
 === Main Control Unit
-Die MCU ist die Hauptkontrolleinheit. 
+Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind: 
+* Hosten eines Access Points
+* Hosten eines UDP-Sockets
+* Hosten eines TCP-Servers
+* Hosten des TWI Master
+
+Grundlage der MCU bildet ein _Espressif ESP32_ (DevKit v.1, siehe <<fig:esp32_devkitv1>>).
+
+.Espressif ESP32 DevKit v1 Development Board
+[[fig:esp32_devkitv1, {counter:fig}]]
+image::esp32_devkitv1.png[width=200, align="center"]
+
+Im Detail stellt der ESP32 einen Access Point mit WPA2 PSK Sicherung zur Verfügung. Das Passwort AP wird hierbei mittels 
+des Hardware RNG in Form einer achtstelligen positiven Ganzzahl generiert. 
+Das Passwort und die SSID des AP werden auf dem Bildschirm (siehe Abbildung <<sec:oled_screen>>) dargestellt. 
+
+==== Entwicklung
+Der ESP32 ist mit 244 Mhz und zwei CPU Kernen ein relativ potenter 32 Bit Microcontroller. Zudem verfügt der Controller 
+über eine Vielzahl an Schnittstellen. Neben den oben erwähnten Funktionalitäten, verfügt der ESP noch über: 
+
+* Bluetooth 4.2 (inkl. BLE)
+* 18 ADC Kanäle mit 12 bit Auflösung
+* 2 DAC mit 8 bit Auflösung
+* 10 Touch Sensoren (Kapazitiv)
+* 4 SPI Controller
+* 2 TWI Controller
+* 2 I^2^S Controller
+* 3 UART Controller
+* SD/SDIO/MMC/eMMC Host Controller 
+* CAN Bus 2.0
+* Motor und LED PWM
+* Hall Effekt Sensor
+* Hardwarebeschleunigte Kryptografie (AES, SHA-2, RSA, ECC, RNG)
+
+Software für den ESP32 kann mit Hilfe der Arduino IDE entwickelt werden. Jedoch ist das SDK des Herstellers, auch als ESP-IDF bezeichnet, vorzuziehen, da 
+sie der Arduino IDE gegenüber wesentlich mächtiger ist. Die Installation der ESP-IDF ist unter den gängigen Betriebssystemen mit Hilfe der 
+Anleitung auf der Herstellerseite (siehe <<esp_idf_install>>) unkompliziert möglich. Neben liegt dem SDK noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei. Diese sind, wie auch die Komponenten der SDK selbst (Header Dateien) umfangreich und gut dokumentiert. Beim Aufsetzen eines neuen Projektes empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf Make basierende Buildchain anbietet. 
+
+Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis heraus):
+* make menuconfig -> TUI zur Konfiguration des Projektes (sdkconfig.h)
+* make all -> Bau des Projektes
+* make flash -> ggf. Bau des Projektes und Flashen des ESP
+* make clean -> Bereinigung des Build-Verzeichnisses
+* make monitor -> Starten des pythonbasierten seriellen Monitors
+
 
 === Motor Controller
 Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
@@ -50,7 +94,7 @@ Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision.
 [[fig:camera_module, {counter:fig}]]
 image::camera_module.png[width=200, align="center"]
 
-
+[[sec:oled_screen]]
 === Bildschirm
 Verwendung findet ein monochromes OLED-Display mit einer Auflösung von 128x64 Pixel. Dieses basiert auf dem verbreiteten SSD1306 Controller. 
 

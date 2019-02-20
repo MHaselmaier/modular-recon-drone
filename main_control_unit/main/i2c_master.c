@@ -16,21 +16,34 @@ static void init_display(){
 	u8g2_esp32_i2c_byte_cb,
 	u8g2_esp32_gpio_and_delay_cb);  // init u8g2 structure
 	u8x8_SetI2CAddress(&display_handler.u8x8,0x78);
-    u8g2_InitDisplay(&display_handler); // send init sequence to the display, display is in sleep mode after this,
+    u8g2_InitDisplay(&display_handler); 
+    ESP_LOGI(TAG, "Waking up display");
+    u8g2_SetPowerSave(&display_handler, 0); // wake up display
 }
 
 void display_set_text(uint line, const char* desc, const char* text){
     if(xEventGroupGetBits(system_event_group) & I2C_INITIALIZED){
-        ESP_LOGI(TAG, "Waking up display");
-        u8g2_SetPowerSave(&display_handler, 0); // wake up display
         ESP_LOGI(TAG, "Clearing display buffer");
         u8g2_SetFont(&display_handler, u8g2_font_t0_11_tf);
         u8g2_DrawStr(&display_handler, 2, line * 10, desc);
         if(text)
             u8g2_DrawStr(&display_handler, 50, line * 10, text);
-
-        u8g2_SendBuffer(&display_handler);
     }
+}
+
+void display_draw_hskl(){
+    if(xEventGroupGetBits(system_event_group) & I2C_INITIALIZED){
+        u8g2_SetFont(&display_handler, u8g2_font_profont22_tf);
+        u8g2_DrawStr(&display_handler, 40, 15, "HSKL");
+        u8g2_SetFont(&display_handler, u8g2_font_5x7_tf);
+        u8g2_DrawStr(&display_handler, 5, 22, "University of");
+        u8g2_DrawStr(&display_handler, 10, 30, "Applied Sciences");
+    }
+}
+
+void display_update(){
+    if(xEventGroupGetBits(system_event_group) & I2C_INITIALIZED)
+        u8g2_SendBuffer(&display_handler);
 }
 
 void display_clear(){
