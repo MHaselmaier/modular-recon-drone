@@ -61,8 +61,8 @@ public class CameraFeed
 
                                 Bitmap bitmap = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
                                 bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(modifiedImage));
-                                //bitmap = Bitmap.createBitmap(bitmap, 0, 0, CameraFeed.IMAGE_WIDTH,
-                                //    CameraFeed.IMAGE_HEIGHT, CameraFeed.ROTATION_MATRIX, true);
+                                bitmap = Bitmap.createBitmap(bitmap, 0, 0, CameraFeed.IMAGE_WIDTH,
+                                    CameraFeed.IMAGE_HEIGHT, CameraFeed.ROTATION_MATRIX, true);
                                 CameraFeed.this.imageView.setImageBitmap(bitmap);
                             }
                         });

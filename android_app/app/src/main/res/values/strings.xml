@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Modular Recon Drone</string>
     <string name="image_view_description">Camera Video Feed</string>
+
+    <string name="status_searching">Suche Recon Drone...</string>
+    <string name="status_found">Recon Drone gefunden!</string>
+
+    <string name="password">Passwort eingeben:</string>
+
+    <string name="connect">Verbinden</string>
 </resources>
