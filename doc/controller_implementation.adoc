@@ -1,0 +1,128 @@
+== Entwicklung einer Steuerung
+
+Aufgrund der schlichten Schnittstelle zur Drone ist es sehr einfach, eine
+beliebige Steuerung zu implementieren. Um die Drone anzusteuern, muss sich 
+zuerst mit dem bereitgestellt W-Lan-Netzwerk verbunden werden. Innerhalb
+dieses Netzwerkes hat die Drone immer die IP-Addresse _192.168.4.1_. Um 
+das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drone über den 
+Port _1234_ aufgebaut werden. Die Drone sendet dann das Bildsignal Byteweise
+an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
+Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei 
+Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
+das zweite Byte steuert den rechten Motor (vgl. Abbildung <<fig:upd-packet>>).
+
+[[fig:udp-packet, Abb. {counter:figure-counter}]]
+[ditaa, udp-packet, align="center"]
+.UDP-Paketformat
+....
+ <--1 bit--> <-7 bit-> <--1 bit--> <-7 bit->
++-------------------------------------------+
+| Direction |  Speed  | Dircetion |  Speed  |
++-------------------------------------------+
+ <----left motor-----> <----right motor---->
+....
+
+Das _Direction_ bit gibt an, ob die Motoren vorwärts (0) oder rückwärst (1) drehen.
+In den sieben _Speed_ bits wird die prozentuale Geschwindigkeit definiert, also ein
+Wert im Intervall [0, 100]. Um die Drone um Hindernisse zu manövrieren, muss die 
+Geschwindigkeit der beiden Motoren unterschiedlich hoch definiert werden.
+
+Im Folgenden wird eine Referenzimplementierung der Steuerung der Drone am Beispiel
+einer Android App beschrieben.
+
+
+=== Referenzimplementierung für Android
+
+Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
+Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drone
+und eine zum Steuern der Drone. Beide Ansichten sind auf Abbildung <<fig:app>>
+gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drone bereitgestellt
+wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
+Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum 
+Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button 
+gedrückt, baut die App die Verbindung zur Drone auf. Damit die App mit der Drone
+kommunizieren kann, müssen die mobile Internet deaktiviert sein. Diese Funktionalität
+wird durch die _ReconDroneConnection_-Klasse realisiert (vgl. Abbildung <<fig:classdiagram>>).
+Hat sich das Smartphone mit der Drone verbunden, wird automatisch zur nächsten Ansicht der
+App gewechselt, welche durch die _ReconDrone_-Klasse realisiert wird.
+
+.Ansichten der App
+[[fig:app,{counter:fig}]]
+image::app.png[width=500, align="center"]
+
+Aus dieser zweiten Ansicht kann die Drone gesteuert werden und das Kamerasignal 
+eingesehen werden. Die Steuerung wird von der _TouchController_-Klasse implementiert.
+Die Touchevents des Benutzer werden in der _onTouch()_-Methode verarbeitet. In ihr 
+werden die Startposition und aktuelle Position der Touchbewegungen verarbeitet und 
+in den Attributen _startingPositions_ und _currentPositions_ zwischengespeichert.
+Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
+der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto 
+schneller bewegt sich die Drohne. Die linke Hälft des Bildschirms dient zur Lenkung
+der Drone. In den Attributen _accerleration_ und _steering_ wird die ID des jeweiligen 
+Touchevents gespeichert. Wenn kein Touchevent vorliegt, enthalten die beiden Attribute
+den Wert -1. Alle 50 Millisekunden wird die Methode _sendControllerUpdate()_ aufgerufen,
+welche der Drone die Steuersignale sendet. Es werden zwei Bytes übertragen, die jeweils 
+die Geschwindigkeit und Richtung für einen Motor definieren. Die beiden Bytes werden in 
+den Methoden _setAcceleration()_, _setSteering()_, _setDirection()_ und _adjustForInPlaceTurn()_
+befühlt.
+
+[[fig:classdiagram,{counter:fig}]]
+[plantuml, diagram-classes, png, align="center"]
+.Klassendiagramm
+....
+@startuml
+skinparam classAttributeIconSize 0
+class ReconDroneConnection extends Activity {
+    - status: TextView
+    - passwordLabel: TextView
+    - password: EditText
+    - connect: Button
+    - wifiManager: WifiManager
+    - handler: Handler
+    - removeReconDroneNetwork()
+    - foundReconDrone()
+    - lostReconDrone()
+    - searchForReconDrone()
+}
+class ReconDrone extends Activity {
+    - enableFullScreen()
+}
+class TouchController implements OnTouchListener {
+    - context: Context
+    - acceleration: int
+    - steering: int
+    - startingPositions: float[]
+    - currentPositions: float[]
+    + TouchController(context: Context)
+    + onTouch(view: View, event: MotionEvent): boolean
+    - getSideOfScreen(x: float): SIDE_OF_SCREEN
+    - sendControllerUpdate()
+    - setAcceleration(buffer: byte[])
+    - setSteering(buffer: byte[])
+    - setDirection(buffer: byte[])
+    - adjustForInPlaceTurn(buffer: byte[])
+}
+enum SIDE_OF_SCREEN {
+    LEFT
+    RIGHT
+}
+class CameraFeed {
+    - imageView: ImageView
+    - handler: Handler
+    - backgroundThread: Thread
+    + CameraFeed(imageView: ImageView)
+    + startFeed()
+}
+
+ReconDrone *-- TouchController : controller
+TouchController +-- SIDE_OF_SCREEN
+ReconDrone *-- CameraFeed : feed
+@enduml
+....
+
+Das Kamerasignal der Drone wird in der _CameraFeed_-Klasse verarbeitet. Sie nimmt in
+ihrem Konstruktor das _ImageView_-Objekt entgegen, in dem sie das Kamerasignal anzeigen
+soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen werde
+und wandelt die Byte-Daten in ein Bitmap um. Da in Android das User-Interface nicht aus
+einem Hintergrundthread angepasst werden kann, wird ein _Handler_ verwendet, der das
+Bitmap im _ImageView_ anzeigt.

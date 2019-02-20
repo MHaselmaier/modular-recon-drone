@@ -10,8 +10,8 @@ include::intro.adoc[]
 //---- Architektur
 include::architecture.adoc[]
 
-//---- Android App
-include::androidapp.adoc[]
+//---- Entwicklung einer Steuerung
+include::controller_implementation.adoc[]
 
 //---- Vision
 include::vision.adoc[]

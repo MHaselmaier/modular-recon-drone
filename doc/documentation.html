@@ -438,7 +438,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_schaltplan_und_pcb">Schaltplan und PCB</a></li>
 </ul>
 </li>
-<li><a href="#_android_app">Android App</a></li>
+<li><a href="#_entwicklung_einer_steuerung">Entwicklung einer Steuerung</a>
+<ul class="sectlevel2">
+<li><a href="#_referenzimplementierung_für_android">Referenzimplementierung für Android</a></li>
+</ul>
+</li>
 <li><a href="#_ausblick">Ausblick</a></li>
 <li><a href="#_glossar">Glossar</a></li>
 <li><a href="#_quellen">Quellen</a></li>
@@ -699,8 +703,38 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 </div>
 </div>
 <div class="sect1">
-<h2 id="_android_app">Android App</h2>
+<h2 id="_entwicklung_einer_steuerung">Entwicklung einer Steuerung</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Aufgrund der schlichten Schnittstelle zur Drone ist es sehr einfach, eine
+beliebige Steuerung zu implementieren. Um die Drone anzusteuern, muss sich
+zuerst mit dem bereitgestellt W-Lan-Netzwerk verbunden werden. Innerhalb
+dieses Netzwerkes hat die Drone immer die IP-Addresse <em>192.168.4.1</em>. Um
+das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drone über den
+Port <em>1234</em> aufgebaut werden. Die Drone sendet dann das Bildsignal Byteweise
+an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
+Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
+Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
+das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:upd-packet">[fig:upd-packet]</a>).</p>
+</div>
+<div id="fig:udp-packet" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/udp-packet.png" alt="udp packet" width="490" height="126">
+</div>
+<div class="title">Abbildung 10. UDP-Paketformat</div>
+</div>
+<div class="paragraph">
+<p>Das <em>Direction</em> bit gibt an, ob die Motoren vorwärts (0) oder rückwärst (1) drehen.
+In den sieben <em>Speed</em> bits wird die prozentuale Geschwindigkeit definiert, also ein
+Wert im Intervall [0, 100]. Um die Drone um Hindernisse zu manövrieren, muss die
+Geschwindigkeit der beiden Motoren unterschiedlich hoch definiert werden.</p>
+</div>
+<div class="paragraph">
+<p>Im Folgenden wird eine Referenzimplementierung der Steuerung der Drone am Beispiel
+einer Android App beschrieben.</p>
+</div>
+<div class="sect2">
+<h3 id="_referenzimplementierung_für_android">Referenzimplementierung für Android</h3>
 <div class="paragraph">
 <p>Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
 Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drone
@@ -719,7 +753,7 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <div class="content">
 <img src="imgs/app.png" alt="app" width="500">
 </div>
-<div class="title">Abbildung 9. Ansichten der App</div>
+<div class="title">Abbildung 11. Ansichten der App</div>
 </div>
 <div class="paragraph">
 <p>Aus dieser zweiten Ansicht kann die Drone gesteuert werden und das Kamerasignal
@@ -742,7 +776,7 @@ befühlt.</p>
 <div class="content">
 <img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
 </div>
-<div class="title">Abbildung 11. Klassendiagramm</div>
+<div class="title">Abbildung 13. Klassendiagramm</div>
 </div>
 <div class="paragraph">
 <p>Das Kamerasignal der Drone wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
@@ -751,6 +785,7 @@ soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen
 und wandelt die Byte-Daten in ein Bitmap um. Da in Android das User-Interface nicht aus
 einem Hintergrundthread angepasst werden kann, wird ein <em>Handler</em> verwendet, der das
 Bitmap im <em>ImageView</em> anzeigt.</p>
+</div>
 </div>
 </div>
 </div>
