@@ -2,6 +2,7 @@
 == Glossar
 
 [glossary]
-TWI:: Two Wire Interface (bekannt als i^2^c), zweiadriger Master-Slave Bus
+TWI:: Two Wire Interface (bekannt als I^2^C), zweiadriger Master-Slave Bus
 MCU:: Main Control Unit
 PCB:: Printed Ciruit Board
+USI:: Universial Serial Interface

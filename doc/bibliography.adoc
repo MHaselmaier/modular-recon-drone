@@ -5,3 +5,5 @@
 - [[[esp_cam]]] esp idf Kamera Bibliothek: https://github.com/igrr/esp32-cam-demo.git
 - [[[arduino_programmer]]] Arduino Uno als Programmer: https://create.arduino.cc/projecthub/arjun/programming-attiny85-with-arduino-uno-afb829
 - [[[eagle]]] https://www.autodesk.co.uk/products/eagle/overview
+- [[[twi_implementation]]] https://github.com/rambo/TinyWire
+- [[[attiny254585]]] https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf

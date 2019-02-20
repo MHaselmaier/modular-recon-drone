@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Modular Recon Drone</string>
+    <string name="image_view_description">Camera Video Feed</string>
+</resources>
