@@ -432,8 +432,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_main_control_unit">Main Control Unit</a></li>
 <li><a href="#_motor_controller">Motor Controller</a></li>
-<li><a href="#_kameramodul">Kameramodul</a></li>
-<li><a href="#sec:oled_screen">Bildschirm</a></li>
+<li><a href="#sec:camera_module">Kameramodul</a></li>
+<li><a href="#sec:oled_display">Bildschirm</a></li>
 <li><a href="#_stromversorgung">Stromversorgung</a></li>
 <li><a href="#_schaltplan_und_pcb">Schaltplan und PCB</a></li>
 </ul>
@@ -480,7 +480,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Im Detail stellt der ESP32 einen Access Point mit WPA2 PSK Sicherung zur Verfügung. Das Passwort AP wird hierbei mittels
 des Hardware RNG in Form einer achtstelligen positiven Ganzzahl generiert.
-Das Passwort und die SSID des AP werden auf dem Bildschirm (siehe Abbildung <a href="#sec:oled_screen">Bildschirm</a>) dargestellt.</p>
+Das Passwort und die SSID des AP werden auf dem Bildschirm (siehe Abbildung <a href="#sec:oled_screen">[sec:oled_screen]</a>) dargestellt.</p>
 </div>
 <div class="sect3">
 <h4 id="_entwicklung">Entwicklung</h4>
@@ -543,12 +543,26 @@ sie der Arduino IDE gegenüber wesentlich mächtiger ist.</p>
 Anleitung auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_install]</a>) unkompliziert möglich. Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei. Diese sind, wie auch die Komponenten der SDK selbst (Header Dateien) umfangreich und gut dokumentiert. Beim Aufsetzen eines neuen Projektes empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf Make basierende Buildchain anbietet.</p>
 </div>
 <div class="paragraph">
-<p>Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis heraus):
-* make menuconfig &#8594; TUI zur Konfiguration des Projektes (sdkconfig.h)
-* make all &#8594; Bau des Projektes
-* make flash &#8594; ggf. Bau des Projektes und Flashen des ESP
-* make clean &#8594; Bereinigung des Build-Verzeichnisses
-* make monitor &#8594; Starten des pythonbasierten seriellen Monitors</p>
+<p>Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis heraus):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>make menuconfig &#8594; TUI zur Konfiguration des Projektes (sdkconfig.h)</p>
+</li>
+<li>
+<p>make all &#8594; Bau des Projektes</p>
+</li>
+<li>
+<p>make flash &#8594; ggf. Bau des Projektes und Flashen des ESP</p>
+</li>
+<li>
+<p>make clean &#8594; Bereinigung des Build-Verzeichnisses</p>
+</li>
+<li>
+<p>make monitor &#8594; Starten des pythonbasierten seriellen Monitors</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Um die Buildchain des SDK ohne Einschränkungen verwenden zu können, wird eine Python 2 installation benötigt. Diese sollte entsprechend unter Verwendung von <em>menuconfig</em> unter <em>SDK Tool Configuration</em> &#8594; <em>Python 2 Interpreter</em> gesetzt werden.</p>
@@ -556,10 +570,76 @@ Anleitung auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_ins
 <div class="paragraph">
 <p>Danach muss noch der serielle Port, unter dem der ESP im Betriebssystem angebunden wird, konfiguiert werden. Dies geschieht unter <em>Serial flasher options</em> &#8594; <em>Default serial port</em>.</p>
 </div>
+<div class="paragraph">
+<p>Die ESP-IDF nutzt das Echtzeitbetriebssystem FreeRTOS (siehe <a href="#freertos">[freertos]</a>). Dieses stellt Tasks, Message Queues zur Intertaskkommunikation, Tasksynchronisationsmechanismen (Mutex, etc) zur Verfügung.</p>
+</div>
+<div class="paragraph">
+<p>Als TCP/IP Stack wird LwIP (siehe <a href="#lwip">[lwip]</a>) genutzt. Es handelt sich um eine leichtgewichtige Implementierung, deren Fokus auf Embedded Systems gelegt ist. Angelehnt ist die API an die der POSIX sockets.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_mcu_software">MCU Software</h4>
+<div class="paragraph">
+<p>Die Struktur des Projektes stellt sich wie folgt dar:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>main_control_unit</p>
+<div class="ulist">
+<ul>
+<li>
+<p>components</p>
+<div class="ulist">
+<ul>
+<li>
+<p>camera</p>
+</li>
+<li>
+<p>u8g2</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>main</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Für das Ansprechen der Komponenten Kamera (siehe Abschnitt <a href="#sec:camera_module">Kameramodul</a>) und Display (siehe Abschnitt <a href="#sec:oled_display">Bildschirm</a>) wurden
+jeweils entsprechende externe Bibliotheken verwandt (näheres in den entsprechenden Kapiteln). Diese sind, wie andere externe Bibliotheken im Allgemeinen, im Ordner <em>components</em> abgelegt.
+Der eigentliche Code der Drohne befindet sich im Ordner <em>main</em>. Der Aufbau der eigentlichen Projektdateien ist in Abbildung <a href="#fig:mcu_structure">{counter:fig}</a> definiert.</p>
+</div>
+<div id="fig:mcu_structure" class="imageblock">
+<div class="content">
+<img src="imgs/mcu_structure.png" alt="mcu structure" width="890" height="196">
+</div>
+<div class="title">Abbildung 3. MCU Code Struktur</div>
+</div>
+<div class="paragraph">
+<p>Zunächst werden die Komponenten initialisiert. Nach der Initialisierung werden die einzelnen Module (accesspoint.c, etc) gestartet.
+Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um möglichst parallel zu laufen.</p>
+</div>
+<div class="sect4">
+<h5 id="_access_point">Access Point</h5>
 
+</div>
+<div class="sect4">
+<h5 id="_motor_control">Motor Control</h5>
+
+</div>
+<div class="sect4">
+<h5 id="_camera">Camera</h5>
+<div class="imageblock">
+<div class="content">
+<img src="imgs/diag-e08f3cff69ab2c15351627bf822f6042.png" alt="diag e08f3cff69ab2c15351627bf822f6042" width="112" height="126">
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -577,7 +657,7 @@ die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (sie
 <div class="content">
 <img src="imgs/attiny25_pinout.jpg" alt="attiny25 pinout" width="300">
 </div>
-<div class="title">Abbildung 2. ATTiny25 Pinout</div>
+<div class="title">Abbildung 4. ATTiny25 Pinout</div>
 </div>
 <div class="paragraph">
 <p>Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
@@ -595,7 +675,7 @@ gezeigt.</p>
 <div class="content">
 <img src="imgs/ATTiny25_HBrücke_Schematic.png" alt="ATTiny25 HBrücke Schematic" width="500">
 </div>
-<div class="title">Abbildung 3. Schaltplan der Motorsteuerung</div>
+<div class="title">Abbildung 5. Schaltplan der Motorsteuerung</div>
 </div>
 <div class="paragraph">
 <p>Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das TWI wird
@@ -613,7 +693,7 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 </div>
 </div>
 <div class="sect2">
-<h3 id="_kameramodul">Kameramodul</h3>
+<h3 id="sec:camera_module">Kameramodul</h3>
 <div class="paragraph">
 <p>Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision.</p>
 </div>
@@ -621,11 +701,11 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="content">
 <img src="imgs/camera_module.png" alt="camera module" width="200">
 </div>
-<div class="title">Abbildung 4. Kameramodul OV7725</div>
+<div class="title">Abbildung 6. Kameramodul OV7725</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="sec:oled_screen">Bildschirm</h3>
+<h3 id="sec:oled_display">Bildschirm</h3>
 <div class="paragraph">
 <p>Verwendung findet ein monochromes OLED-Display mit einer Auflösung von 128x64 Pixel. Dieses basiert auf dem verbreiteten SSD1306 Controller.</p>
 </div>
@@ -633,7 +713,7 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="content">
 <img src="imgs/oled_display.png" alt="oled display" width="200">
 </div>
-<div class="title">Abbildung 5. Oled Diplay 128x64, SSD1306</div>
+<div class="title">Abbildung 7. Oled Diplay 128x64, SSD1306</div>
 </div>
 <div class="paragraph">
 <p>Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout setzt sich wie folgt zusammen:</p>
@@ -666,7 +746,7 @@ erhalten werden.</p>
 <div class="content">
 <img src="imgs/powersupply.png" alt="powersupply" width="400">
 </div>
-<div class="title">Abbildung 6. Stromversorgung</div>
+<div class="title">Abbildung 8. Stromversorgung</div>
 </div>
 <div class="paragraph">
 <p>Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
@@ -686,7 +766,7 @@ Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildu
 <div class="content">
 <img src="imgs/lochrasterplatine.png" alt="lochrasterplatine" width="500">
 </div>
-<div class="title">Abbildung 7. Lochrasterplatine</div>
+<div class="title">Abbildung 9. Lochrasterplatine</div>
 </div>
 <div class="paragraph">
 <p>Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
@@ -697,7 +777,7 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <div class="content">
 <img src="imgs/pcb.png" alt="pcb" width="500">
 </div>
-<div class="title">Abbildung 8. Fertige bestücktes PCB</div>
+<div class="title">Abbildung 10. Fertige bestücktes PCB</div>
 </div>
 </div>
 </div>
@@ -721,7 +801,7 @@ das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:upd-pack
 <div class="content">
 <img src="imgs/udp-packet.png" alt="udp packet" width="490" height="126">
 </div>
-<div class="title">Abbildung 10. UDP-Paketformat</div>
+<div class="title">Abbildung 12. UDP-Paketformat</div>
 </div>
 <div class="paragraph">
 <p>Das <em>Direction</em> bit gibt an, ob die Motoren vorwärts (0) oder rückwärst (1) drehen.
@@ -753,7 +833,7 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <div class="content">
 <img src="imgs/app.png" alt="app" width="500">
 </div>
-<div class="title">Abbildung 11. Ansichten der App</div>
+<div class="title">Abbildung 13. Ansichten der App</div>
 </div>
 <div class="paragraph">
 <p>Aus dieser zweiten Ansicht kann die Drone gesteuert werden und das Kamerasignal
@@ -776,7 +856,7 @@ befühlt.</p>
 <div class="content">
 <img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
 </div>
-<div class="title">Abbildung 13. Klassendiagramm</div>
+<div class="title">Abbildung 15. Klassendiagramm</div>
 </div>
 <div class="paragraph">
 <p>Das Kamerasignal der Drone wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
@@ -877,6 +957,12 @@ Bitmap im <em>ImageView</em> anzeigt.</p>
 <li>
 <p><a id="esp_idf_install"></a>[esp_idf_install] ESP-IDF Getting Started: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html" class="bare">https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html</a></p>
 </li>
+<li>
+<p><a id="freertos"></a>[freertos] FreeRTOS, Dokumentation: <a href="https://www.freertos.org/Documentation/RTOS_book.html" class="bare">https://www.freertos.org/Documentation/RTOS_book.html</a></p>
+</li>
+<li>
+<p><a id="lwip"></a>[lwip] LwIP TCP/IP Stack: <a href="https://savannah.nongnu.org/projects/lwip/" class="bare">https://savannah.nongnu.org/projects/lwip/</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -884,7 +970,7 @@ Bitmap im <em>ImageView</em> anzeigt.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 13:48:52 STD
+Last updated 2019-02-20 17:07:28 STD
 </div>
 </div>
 </body>
