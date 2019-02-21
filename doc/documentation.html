@@ -431,7 +431,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_aufbau_der_drohne">Aufbau der Drohne</a>
 <ul class="sectlevel2">
 <li><a href="#_main_control_unit">Main Control Unit</a></li>
-<li><a href="#_motor_controller">Motor Controller</a></li>
+<li><a href="#sec:attiny">Motor Controller</a></li>
 <li><a href="#sec:camera_module">Kameramodul</a></li>
 <li><a href="#sec:oled_display">Bildschirm</a></li>
 <li><a href="#_stromversorgung">Stromversorgung</a></li>
@@ -443,7 +443,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_referenzimplementierung_für_android">Referenzimplementierung für Android</a></li>
 </ul>
 </li>
-<li><a href="#_ausblick">Ausblick</a></li>
+<li><a href="#_ausblick">Ausblick</a>
+<ul class="sectlevel2">
+<li><a href="#_gehäuse">Gehäuse</a></li>
+<li><a href="#_verpolschutz">Verpolschutz</a></li>
+<li><a href="#_raspberry_pi_zero_w">Raspberry PI zero W</a></li>
+</ul>
+</li>
 <li><a href="#_glossar">Glossar</a></li>
 <li><a href="#_quellen">Quellen</a></li>
 </ul>
@@ -574,7 +580,7 @@ Anleitung auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_ins
 <p>Die ESP-IDF nutzt das Echtzeitbetriebssystem FreeRTOS (siehe <a href="#freertos">[freertos]</a>). Dieses stellt Tasks, Message Queues zur Intertaskkommunikation, Tasksynchronisationsmechanismen (Mutex, etc) zur Verfügung.</p>
 </div>
 <div class="paragraph">
-<p>Als TCP/IP Stack wird LwIP (siehe <a href="#lwip">[lwip]</a>) genutzt. Es handelt sich um eine leichtgewichtige Implementierung, deren Fokus auf Embedded Systems gelegt ist. Angelehnt ist die API an die der POSIX sockets.</p>
+<p>Als TCP/IP Stack wird LwIP (siehe <a href="#lwip">[lwip]</a>) genutzt. Es handelt sich um eine leichtgewichtige Implementierung, deren Fokus auf Embedded Systems liegt. Angelehnt ist die API an die der POSIX Sockets.</p>
 </div>
 </div>
 <div class="sect3">
@@ -625,25 +631,115 @@ Der eigentliche Code der Drohne befindet sich im Ordner <em>main</em>. Der Aufba
 Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um möglichst parallel zu laufen.</p>
 </div>
 <div class="sect4">
-<h5 id="_access_point">Access Point</h5>
-
+<h5 id="_main">Main</h5>
+<div class="paragraph">
+<p>Neben der Initialisierung der einzelnen Software-Module, ist auch der Systemeventhandler und die Bildschirmaktualisierung untergebracht.
+Der Eventhandler fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup.
+Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="imgs/event_handling_diagram.png" alt="event handling diagram" width="920" height="301">
+</div>
+<div class="title">Abbildung 5. Ablauf, Start des AP, Client verbindet, Client trennt sich</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="imgs/display_update_diagram.png" alt="display update diagram" width="637" height="197">
+</div>
+<div class="title">Abbildung 7. Display Textupdate</div>
+</div>
 </div>
 <div class="sect4">
-<h5 id="_motor_control">Motor Control</h5>
-
+<h5 id="_access_point">Access Point</h5>
+<div class="paragraph">
+<p>Das AP Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert.
+Die Konfiguration des Accesspoints lautet wie folgt:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Tabelle 1. AP Konfiguration</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SSID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Recon Drone</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kanal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authmode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WPA_WPA2_PSK</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Versteckt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">nein</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Max. Verbindungen</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Beacon Interval</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_twi_master">TWI Master</h5>
+<div class="paragraph">
+<p>Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTiny (siehe Abschnitt <a href="#sec:attiny">Motor Controller</a>).</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Tabelle 2. TWI Bus Konfiguration</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Master</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SDA Leitung</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pin 32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SCL Leitung</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pin 33</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Taktfrequenz</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100 kHz</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TX Puffer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nein</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RX Puffer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nein</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Zusätzlich wird das Display initialisiert und aus dem <em>Standby</em> aufgeweckt.</p>
+</div>
 </div>
 <div class="sect4">
 <h5 id="_camera">Camera</h5>
-<div class="imageblock">
-<div class="content">
-<img src="imgs/diag-e08f3cff69ab2c15351627bf822f6042.png" alt="diag e08f3cff69ab2c15351627bf822f6042" width="112" height="126">
-</div>
-</div>
+
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_motor_controller">Motor Controller</h3>
+<h3 id="sec:attiny">Motor Controller</h3>
 <div class="paragraph">
 <p>Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
 Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit von
@@ -657,7 +753,7 @@ die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (sie
 <div class="content">
 <img src="imgs/attiny25_pinout.jpg" alt="attiny25 pinout" width="300">
 </div>
-<div class="title">Abbildung 4. ATTiny25 Pinout</div>
+<div class="title">Abbildung 8. ATTiny25 Pinout</div>
 </div>
 <div class="paragraph">
 <p>Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
@@ -675,7 +771,7 @@ gezeigt.</p>
 <div class="content">
 <img src="imgs/ATTiny25_HBrücke_Schematic.png" alt="ATTiny25 HBrücke Schematic" width="500">
 </div>
-<div class="title">Abbildung 5. Schaltplan der Motorsteuerung</div>
+<div class="title">Abbildung 9. Schaltplan der Motorsteuerung</div>
 </div>
 <div class="paragraph">
 <p>Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das TWI wird
@@ -698,7 +794,7 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <p>Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 75%;">
-<caption class="title">Table 1. Anschluss der Kamera am ESP32</caption>
+<caption class="title">Tabelle 3. Anschluss der Kamera am ESP32</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 20%;">
@@ -785,7 +881,7 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="content">
 <img src="imgs/camera_module.png" alt="camera module" width="200">
 </div>
-<div class="title">Abbildung 6. Kameramodul OV7725</div>
+<div class="title">Abbildung 10. Kameramodul OV7725</div>
 </div>
 </div>
 <div class="sect2">
@@ -797,7 +893,7 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="content">
 <img src="imgs/oled_display.png" alt="oled display" width="200">
 </div>
-<div class="title">Abbildung 7. Oled Diplay 128x64, SSD1306</div>
+<div class="title">Abbildung 11. Oled Diplay 128x64, SSD1306</div>
 </div>
 <div class="paragraph">
 <p>Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout setzt sich wie folgt zusammen:</p>
@@ -818,6 +914,12 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Zur Ansteuerung des Displays wird auf die <strong>u8g2</strong> Bibliothek für monochrome LCD- und OLED Bildschirme zurück gegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Nutzung auf Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren.
+Für den ESP32 existiert diese Implementierung bereits unter dem Namen <em>u8g2_esp</em> (siehe <a href="#u8g2_esp">[u8g2_esp]</a>). Jedoch wurde die Implementierung so
+vorgesehen, dass sie gleichzeitig die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung
+TWI-Controller 2 vor. Die Drohne nutzt jedoch TWI-Controller 1.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_stromversorgung">Stromversorgung</h3>
@@ -830,7 +932,7 @@ erhalten werden.</p>
 <div class="content">
 <img src="imgs/powersupply.png" alt="powersupply" width="400">
 </div>
-<div class="title">Abbildung 8. Stromversorgung</div>
+<div class="title">Abbildung 12. Stromversorgung</div>
 </div>
 <div class="paragraph">
 <p>Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
@@ -850,7 +952,7 @@ Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildu
 <div class="content">
 <img src="imgs/lochrasterplatine.png" alt="lochrasterplatine" width="500">
 </div>
-<div class="title">Abbildung 9. Lochrasterplatine</div>
+<div class="title">Abbildung 13. Lochrasterplatine</div>
 </div>
 <div class="paragraph">
 <p>Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
@@ -861,7 +963,7 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <div class="content">
 <img src="imgs/pcb.png" alt="pcb" width="500">
 </div>
-<div class="title">Abbildung 10. Fertige bestücktes PCB</div>
+<div class="title">Abbildung 14. Fertige bestücktes PCB</div>
 </div>
 </div>
 </div>
@@ -885,7 +987,7 @@ das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:upd-pack
 <div class="content">
 <img src="imgs/udp-packet.png" alt="udp packet" width="490" height="126">
 </div>
-<div class="title">Abbildung 12. UDP-Paketformat</div>
+<div class="title">Abbildung 16. UDP-Paketformat</div>
 </div>
 <div class="paragraph">
 <p>Das <em>Direction</em> bit gibt an, ob die Motoren vorwärts (0) oder rückwärst (1) drehen.
@@ -917,7 +1019,7 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <div class="content">
 <img src="imgs/app.png" alt="app" width="500">
 </div>
-<div class="title">Abbildung 13. Ansichten der App</div>
+<div class="title">Abbildung 17. Ansichten der App</div>
 </div>
 <div class="paragraph">
 <p>Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal
@@ -940,7 +1042,7 @@ befühlt.</p>
 <div class="content">
 <img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
 </div>
-<div class="title">Abbildung 15. Klassendiagramm</div>
+<div class="title">Abbildung 19. Klassendiagramm</div>
 </div>
 <div class="paragraph">
 <p>Das Kamerasignal der Drohne wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
@@ -950,13 +1052,53 @@ und wandelt die Byte-Daten in ein Bitmap um. Da in Android das User-Interface ni
 einem Hintergrundthread angepasst werden kann, wird ein <em>Handler</em> verwendet, der das
 Bitmap im <em>ImageView</em> anzeigt.</p>
 </div>
+<div class="paragraph">
+<p>Um die Android App zu installieren, muss die APK-Datei auf das Smartphone übertragen werden.
+Sie befindet sich im Ordner <em>andourd_app/app/build/outputs/apk/debug</em>. Um sie zu installieren
+muss in den Einstellungen des Smartphones die Installation von Apps aus unsicheren Quellen
+erlaubt werden. Auf dem Smartphone muss mindestens Android 5.0 installiert sein. Die App wurde
+unter Android 9.0 getestet.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_ausblick">Ausblick</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>Auf Basis des derzeitigen Entwicklungsstandes der Drohne, lassen sich weitere Zusatzfunktionen und Verbesserungen implementieren. Einige
+Ideen sollen im Folgenden präsentiert werden.</p>
+</div>
+<div class="sect2">
+<h3 id="_gehäuse">Gehäuse</h3>
+<div class="paragraph">
+<p>Derzeit ist das Chassis der Drohne noch im Prototypenzustand, gefertigt aus Stahllochblechprofilen. Diese Bauart ist zum einen relativ schwer und bietet keinen Rundumschutz.
+Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während des Projektes wurde bereits eine erste Version des Gehäuses mittels CAD Software (siehe <a href="#openscad">[openscad]</a>)  modeliert. Dieses kann evaluiert und gedruckt werden oder durch ein anderes völlig neues Design ersetzt werden.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_verpolschutz">Verpolschutz</h3>
+<div class="paragraph">
+<p>Im aktuellen Stand wird der LiPo Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden um eine richtige Polung beim Anschließen zu garantieren.
+Des weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#bridge_rectifier">{counter:fig}</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
+</div>
+<div id="bridge_rectifier" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/bridge_rectifier.png" alt="bridge rectifier" width="200">
+</div>
+<div class="title">Abbildung 20. Diodenbrückengleichrichter</div>
+</div>
+<div class="paragraph">
+<p>Die Funktionsweise der Brücke ist relativ simple. Unabhängig davon, wie der Strom angelegt wird, schließen die Konfiguration der Dioden stets so, dass am Ausgang der Brücke Plus und Minus immer gleich anliegen.
+Eine Diode hat entsprechend die Eigenschaft, Strom in eine Richtung hin passieren zu lassen, während sie in entgegengesetzter Richtung den Stromfluss sperrt.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_raspberry_pi_zero_w">Raspberry PI zero W</h3>
+<div class="paragraph">
+<p>Alternativ kann als MCU der Raspberry PI zero W evaluiert werden. Vorteil dieses Einplatinencomputers im Gegensatz zum ESP32 ist der wesentlich größere RAM, der das Puffern größerer Kamerabilddaten ermöglicht (siehe Abschnitt <a href="#sec::camera_module">[sec::camera_module]</a>).</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1008,6 +1150,10 @@ Bitmap im <em>ImageView</em> anzeigt.</p>
 <dd>
 <p>Software Development Kit</p>
 </dd>
+<dt>THT</dt>
+<dd>
+<p>Through Hole Technology, Durchsteckmontage</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -1047,6 +1193,9 @@ Bitmap im <em>ImageView</em> anzeigt.</p>
 <li>
 <p><a id="lwip"></a>[lwip] LwIP TCP/IP Stack: <a href="https://savannah.nongnu.org/projects/lwip/" class="bare">https://savannah.nongnu.org/projects/lwip/</a></p>
 </li>
+<li>
+<p><a id="openscad"></a>[openscad] OpenSCAD: <a href="http://www.openscad.org/" class="bare">http://www.openscad.org/</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -1054,7 +1203,7 @@ Bitmap im <em>ImageView</em> anzeigt.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 17:51:41 STD
+Last updated 2019-02-21 14:23:35 STD
 </div>
 </div>
 </body>

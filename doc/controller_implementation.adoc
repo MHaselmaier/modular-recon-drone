@@ -126,3 +126,10 @@ soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen
 und wandelt die Byte-Daten in ein Bitmap um. Da in Android das User-Interface nicht aus
 einem Hintergrundthread angepasst werden kann, wird ein _Handler_ verwendet, der das
 Bitmap im _ImageView_ anzeigt.
+
+
+Um die Android App zu installieren, muss die APK-Datei auf das Smartphone übertragen werden.
+Sie befindet sich im Ordner _android_app/app/build/outputs/apk/debug_. Um sie zu installieren
+muss in den Einstellungen des Smartphones die Installation von Apps aus unsicheren Quellen
+erlaubt werden. Auf dem Smartphone muss mindestens Android 5.0 installiert sein. Die App wurde
+unter Android 9.0 getestet.
