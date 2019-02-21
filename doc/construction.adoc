@@ -275,17 +275,17 @@ Verwendung findet ein monochromes OLED-Display mit einer Auflösung von 128x64 P
 [[fig:oled_display, {counter:fig}]]
 image::oled_display.png[width=200, align="center"]
 
-Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout setzt sich wie folgt zusammen:
+Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend setzt sich der Pinout wie folgt zusammen:
 
 * GND: Ground, Masse
 * VCC: Spannung, 3,3V - 5V
 * SDL: TWI, Datenleitung
 * SCL: TWI, Taktleitung
 
-Zur Ansteuerung des Displays wird auf die *u8g2* Bibliothek für monochrome LCD- und OLED Bildschirme zurück gegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Nutzung auf Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren. 
+Zur Ansteuerung des Displays wird auf die *u8g2* Bibliothek für monochrome LCD- und OLED Bildschirme zurückgegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Verwendung unter Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren. 
 Für den ESP32 existiert diese Implementierung bereits unter dem Namen _u8g2_esp_ (siehe <<u8g2_esp>>). Jedoch wurde die Implementierung so 
-vorgesehen, dass sie gleichzeitig die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung 
-TWI-Controller 2 vor. Die Drohne nutzt jedoch TWI-Controller 1. 
+vorgesehen, dass sie neben dem Ansteuern des Bildschirms auch die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung 
+TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1. 
 
 === Stromversorgung
 Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und

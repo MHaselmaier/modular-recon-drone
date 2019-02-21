@@ -448,7 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_gehäuse">Gehäuse</a></li>
 <li><a href="#_verpolschutz">Verpolschutz</a></li>
 <li><a href="#_raspberry_pi_zero_w">Raspberry PI zero W</a></li>
-<li><a href="#_alternative_stromversorgung">ALternative Stromversorgung</a></li>
+<li><a href="#_alternative_stromversorgung">Alternative Stromversorgung</a></li>
 </ul>
 </li>
 <li><a href="#_glossar">Glossar</a></li>
@@ -897,7 +897,7 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="title">Abbildung 11. Oled Diplay 128x64, SSD1306</div>
 </div>
 <div class="paragraph">
-<p>Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout setzt sich wie folgt zusammen:</p>
+<p>Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend setzt sich der Pinout wie folgt zusammen:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -916,10 +916,10 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 </ul>
 </div>
 <div class="paragraph">
-<p>Zur Ansteuerung des Displays wird auf die <strong>u8g2</strong> Bibliothek für monochrome LCD- und OLED Bildschirme zurück gegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Nutzung auf Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren.
+<p>Zur Ansteuerung des Displays wird auf die <strong>u8g2</strong> Bibliothek für monochrome LCD- und OLED Bildschirme zurückgegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Verwendung unter Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren.
 Für den ESP32 existiert diese Implementierung bereits unter dem Namen <em>u8g2_esp</em> (siehe <a href="#u8g2_esp">[u8g2_esp]</a>). Jedoch wurde die Implementierung so
-vorgesehen, dass sie gleichzeitig die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung
-TWI-Controller 2 vor. Die Drohne nutzt jedoch TWI-Controller 1.</p>
+vorgesehen, dass sie neben dem Ansteuern des Bildschirms auch die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung
+TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1101,7 +1101,7 @@ Eine Diode hat entsprechend die Eigenschaft, Strom in eine Richtung hin passiere
 </div>
 </div>
 <div class="sect2">
-<h3 id="_alternative_stromversorgung">ALternative Stromversorgung</h3>
+<h3 id="_alternative_stromversorgung">Alternative Stromversorgung</h3>
 <div class="paragraph">
 <p>Aktuell wird ein linearer Spannungsregler verwendet, um die hohe Batteriespannung auf die 5V
 zu reduzieren, die von der MCU und den ATTinys benötigt werden. Hierbei wird sehr viel Energie
