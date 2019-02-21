@@ -35,14 +35,6 @@ static esp_err_t system_event_handler(void *ctx, system_event_t *event)
             ESP_LOGI(TAG, "System event: Client disconnected from Access Point");
             xEventGroupClearBits(system_event_group, CLIENT_CONNECTED);
             break;
-        case SYSTEM_EVENT_STA_START:
-            ESP_LOGI(TAG, "Started STA");
-            break;
-        case SYSTEM_EVENT_STA_DISCONNECTED:
-            ESP_LOGI(TAG, "Disconnected. Reconnecting");
-            break;
-        case SYSTEM_EVENT_STA_GOT_IP:
-            break;
         default:
             ESP_LOGI("WIFI_EVENT", "Unhandled event... Don't worry, be happy");
             break;

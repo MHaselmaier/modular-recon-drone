@@ -1,1 +1,21 @@
 == Ausblick
+Auf Basis des derzeitigen Entwicklungsstandes der Drohne, lassen sich weitere Zusatzfunktionen und Verbesserungen implementieren. Einige 
+Ideen sollen im Folgenden präsentiert werden.
+
+=== Gehäuse
+Derzeit ist das Chassis der Drohne noch im Prototypenzustand, gefertigt aus Stahllochblechprofilen. Diese Bauart ist zum einen relativ schwer und bietet keinen Rundumschutz.
+Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während des Projektes wurde bereits eine erste Version des Gehäuses mittels CAD Software (siehe <<openscad>>)  modeliert. Dieses kann evaluiert und gedruckt werden oder durch ein anderes völlig neues Design ersetzt werden. 
+
+=== Verpolschutz
+Im aktuellen Stand wird der LiPo Akku mittels _Male Headern_ am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ _JST RCY_. Zum einen könnte ein entsprechender _Female_ Verbinder für THT Platinen verbaut werden um eine richtige Polung beim Anschließen zu garantieren. 
+Des weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <<bridge_rectifier>>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden. 
+
+.Diodenbrückengleichrichter
+[[bridge_rectifier, {counter:fig}]]
+image::bridge_rectifier.png[width=200, align="center"]
+
+Die Funktionsweise der Brücke ist relativ simple. Unabhängig davon, wie der Strom angelegt wird, schließen die Konfiguration der Dioden stets so, dass am Ausgang der Brücke Plus und Minus immer gleich anliegen. 
+Eine Diode hat entsprechend die Eigenschaft, Strom in eine Richtung hin passieren zu lassen, während sie in entgegengesetzter Richtung den Stromfluss sperrt.
+
+=== Raspberry PI zero W
+Alternativ kann als MCU der Raspberry PI zero W evaluiert werden. Vorteil dieses Einplatinencomputers im Gegensatz zum ESP32 ist der wesentlich größere RAM, der das Puffern größerer Kamerabilddaten ermöglicht (siehe Abschnitt <<sec::camera_module>>).

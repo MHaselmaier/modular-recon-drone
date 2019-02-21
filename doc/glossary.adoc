@@ -13,3 +13,4 @@ PWM:: Pulse Width Modulation
 AP:: Access Point
 RNG:: Random Number Generator
 SDK:: Software Development Kit
+THT:: Through Hole Technology, Durchsteckmontage
