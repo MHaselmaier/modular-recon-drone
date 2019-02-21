@@ -2,6 +2,7 @@
 :author: Matthias Haselmaier, B.Sc. und Andreas M. Brunnet, B.Sc.
 :imagesdir: imgs
 :figure-caption: Abbildung
+:table-caption: Tabelle
 :toc:
 
 //---- Vorwort

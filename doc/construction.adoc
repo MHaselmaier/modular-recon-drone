@@ -55,7 +55,7 @@ Danach muss noch der serielle Port, unter dem der ESP im Betriebssystem angebund
 
 Die ESP-IDF nutzt das Echtzeitbetriebssystem FreeRTOS (siehe <<freertos>>). Dieses stellt Tasks, Message Queues zur Intertaskkommunikation, Tasksynchronisationsmechanismen (Mutex, etc) zur Verfügung.
 
-Als TCP/IP Stack wird LwIP (siehe <<lwip>>) genutzt. Es handelt sich um eine leichtgewichtige Implementierung, deren Fokus auf Embedded Systems gelegt ist. Angelehnt ist die API an die der POSIX sockets.
+Als TCP/IP Stack wird LwIP (siehe <<lwip>>) genutzt. Es handelt sich um eine leichtgewichtige Implementierung, deren Fokus auf Embedded Systems liegt. Angelehnt ist die API an die der POSIX Sockets.
 
 ==== MCU Software
 Die Struktur des Projektes stellt sich wie folgt dar:
@@ -89,19 +89,73 @@ Der eigentliche Code der Drohne befindet sich im Ordner _main_. Der Aufbau der e
 Zunächst werden die Komponenten initialisiert. Nach der Initialisierung werden die einzelnen Module (accesspoint.c, etc) gestartet. 
 Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um möglichst parallel zu laufen.
 
-===== Access Point
+===== Main
+Neben der Initialisierung der einzelnen Software-Module, ist auch der Systemeventhandler und die Bildschirmaktualisierung untergebracht. 
+Der Eventhandler fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup. 
+Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht. 
 
-===== Motor Control
-
-===== Camera 
-
-[plantuml]
+.Ablauf, Start des AP, Client verbindet, Client trennt sich
+[plantuml, target="event_handling_diagram"]
 ....
 @startuml
-Main -> init: calls
+"Access Point" -> "System Event Handler": SYSTEM EVENT AP START
+"System Event Handler" -> "UDP Motor Data Server": server start
+"System Event Handler" -> "Camera Module": camera module start
+"Access Point" -> "System Event Handler": SYSTEM_EVENT AP STACONNECTED
+"System Event Handler" -> "System Event Group": Set Bit CLIENT CONNECTED
+"Access Point" -> "System Event Handler": SYSTEM_EVENT AP STADISCONNECTED
+"System Event Handler" -> "System Event Group": Clear Bit CLIENT CONNECTED
 @enduml
 ....
 
+.Display Textupdate
+[plantuml, target="display_update_diagram"]
+....
+@startuml
+start
+
+if (xEventGroupGetBits(system_event_group) & CLIENT_CONNECTED) then (true)
+        :show connected and current rssi;
+else (false)
+        :show ssid and password;
+endif
+
+stop
+@enduml
+....
+
+===== Access Point
+Das AP Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert. 
+Die Konfiguration des Accesspoints lautet wie folgt: 
+
+.AP Konfiguration
+|===
+| SSID | Recon Drone
+| Kanal | 0
+| Authmode | WPA_WPA2_PSK
+| Versteckt | nein
+| Max. Verbindungen | 1
+| Beacon Interval | 100
+|===
+
+===== TWI Master
+Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTiny (siehe Abschnitt <<sec:attiny>>). 
+
+.TWI Bus Konfiguration
+|===
+| Mode | Master
+| SDA Leitung | Pin 32
+| SCL Leitung | Pin 33
+| Taktfrequenz | 100 kHz
+| TX Puffer | Nein
+| RX Puffer | Nein
+|===
+
+Zusätzlich wird das Display initialisiert und aus dem _Standby_ aufgeweckt.
+
+===== Camera 
+
+[[sec:attiny]]
 === Motor Controller
 Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
 Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit von
@@ -228,6 +282,10 @@ Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout set
 * SDL: TWI, Datenleitung
 * SCL: TWI, Taktleitung
 
+Zur Ansteuerung des Displays wird auf die *u8g2* Bibliothek für monochrome LCD- und OLED Bildschirme zurück gegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Nutzung auf Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren. 
+Für den ESP32 existiert diese Implementierung bereits unter dem Namen _u8g2_esp_ (siehe <<u8g2_esp>>). Jedoch wurde die Implementierung so 
+vorgesehen, dass sie gleichzeitig die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung 
+TWI-Controller 2 vor. Die Drohne nutzt jedoch TWI-Controller 1. 
 
 === Stromversorgung
 Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und

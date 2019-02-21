@@ -10,3 +10,4 @@
 - [[[esp_idf_install]]] ESP-IDF Getting Started: https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html
 - [[[freertos]]] FreeRTOS, Dokumentation: https://www.freertos.org/Documentation/RTOS_book.html
 - [[[lwip]]] LwIP TCP/IP Stack: https://savannah.nongnu.org/projects/lwip/
+- [[[openscad]]] OpenSCAD: http://www.openscad.org/
