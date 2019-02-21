@@ -448,6 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_gehäuse">Gehäuse</a></li>
 <li><a href="#_verpolschutz">Verpolschutz</a></li>
 <li><a href="#_raspberry_pi_zero_w">Raspberry PI zero W</a></li>
+<li><a href="#_alternative_stromversorgung">ALternative Stromversorgung</a></li>
 </ul>
 </li>
 <li><a href="#_glossar">Glossar</a></li>
@@ -1054,7 +1055,7 @@ Bitmap im <em>ImageView</em> anzeigt.</p>
 </div>
 <div class="paragraph">
 <p>Um die Android App zu installieren, muss die APK-Datei auf das Smartphone übertragen werden.
-Sie befindet sich im Ordner <em>andourd_app/app/build/outputs/apk/debug</em>. Um sie zu installieren
+Sie befindet sich im Ordner <em>android_app/app/build/outputs/apk/debug</em>. Um sie zu installieren
 muss in den Einstellungen des Smartphones die Installation von Apps aus unsicheren Quellen
 erlaubt werden. Auf dem Smartphone muss mindestens Android 5.0 installiert sein. Die App wurde
 unter Android 9.0 getestet.</p>
@@ -1066,21 +1067,21 @@ unter Android 9.0 getestet.</p>
 <h2 id="_ausblick">Ausblick</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Auf Basis des derzeitigen Entwicklungsstandes der Drohne, lassen sich weitere Zusatzfunktionen und Verbesserungen implementieren. Einige
+<p>Auf Basis des derzeitigen Entwicklungsstandes der Drohne lassen sich weitere Zusatzfunktionen und Verbesserungen implementieren. Einige
 Ideen sollen im Folgenden präsentiert werden.</p>
 </div>
 <div class="sect2">
 <h3 id="_gehäuse">Gehäuse</h3>
 <div class="paragraph">
-<p>Derzeit ist das Chassis der Drohne noch im Prototypenzustand, gefertigt aus Stahllochblechprofilen. Diese Bauart ist zum einen relativ schwer und bietet keinen Rundumschutz.
-Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während des Projektes wurde bereits eine erste Version des Gehäuses mittels CAD Software (siehe <a href="#openscad">[openscad]</a>)  modeliert. Dieses kann evaluiert und gedruckt werden oder durch ein anderes völlig neues Design ersetzt werden.</p>
+<p>Derzeit ist das Chassis der Drohne noch im Prototypenzustand, gefertigt aus Stahllochblechprofilen. Diese Bauart ist zum Einen relativ schwer und bietet keinen Rundumschutz.
+Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während des Projektes wurde bereits eine erste Version des Gehäuses mittels CAD Software (siehe <a href="#openscad">[openscad]</a>)  modeliert. Dieses kann evaluiert und gedruckt werden oder durch ein anderes, völlig neues Design ersetzt werden.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_verpolschutz">Verpolschutz</h3>
 <div class="paragraph">
-<p>Im aktuellen Stand wird der LiPo Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden um eine richtige Polung beim Anschließen zu garantieren.
-Des weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#bridge_rectifier">{counter:fig}</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
+<p>Im aktuellen Stand wird der LiPo Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum Einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren.
+Des Weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#bridge_rectifier">{counter:fig}</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
 </div>
 <div id="bridge_rectifier" class="imageblock" style="text-align: center">
 <div class="content">
@@ -1097,6 +1098,20 @@ Eine Diode hat entsprechend die Eigenschaft, Strom in eine Richtung hin passiere
 <h3 id="_raspberry_pi_zero_w">Raspberry PI zero W</h3>
 <div class="paragraph">
 <p>Alternativ kann als MCU der Raspberry PI zero W evaluiert werden. Vorteil dieses Einplatinencomputers im Gegensatz zum ESP32 ist der wesentlich größere RAM, der das Puffern größerer Kamerabilddaten ermöglicht (siehe Abschnitt <a href="#sec::camera_module">[sec::camera_module]</a>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_alternative_stromversorgung">ALternative Stromversorgung</h3>
+<div class="paragraph">
+<p>Aktuell wird ein linearer Spannungsregler verwendet, um die hohe Batteriespannung auf die 5V
+zu reduzieren, die von der MCU und den ATTinys benötigt werden. Hierbei wird sehr viel Energie
+in Form von Wärme verschwendet. Dies beeinflusst die Batterielaufzeit der Drone negativ. Weiterhin
+besteht die möglichkeit, dass der Spannungsregler überhitzt, in welchem Fall er sich abschalten
+würde. Erst wenn er weit genug abgekühlt ist, gibt er wieder 5V aus. Dies würde zum Abschalten der
+Drone führen. Alternativ könnte ein <em>Step-Down-Converter</em> oder auch <em>Buck-Converter</em> verwendet werden.
+Im Vergleich zu einem linearen Spannungsregler wird so viel weniger Energie verschwendet und somit die
+Batterielaufzeit der Drone erhöht. Allerdings wird die Schaltung etwas komplexer und die benötigten
+Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 </div>
 </div>
 </div>

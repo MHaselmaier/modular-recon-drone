@@ -1,14 +1,14 @@
 == Ausblick
-Auf Basis des derzeitigen Entwicklungsstandes der Drohne, lassen sich weitere Zusatzfunktionen und Verbesserungen implementieren. Einige 
+Auf Basis des derzeitigen Entwicklungsstandes der Drohne lassen sich weitere Zusatzfunktionen und Verbesserungen implementieren. Einige 
 Ideen sollen im Folgenden präsentiert werden.
 
 === Gehäuse
-Derzeit ist das Chassis der Drohne noch im Prototypenzustand, gefertigt aus Stahllochblechprofilen. Diese Bauart ist zum einen relativ schwer und bietet keinen Rundumschutz.
-Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während des Projektes wurde bereits eine erste Version des Gehäuses mittels CAD Software (siehe <<openscad>>)  modeliert. Dieses kann evaluiert und gedruckt werden oder durch ein anderes völlig neues Design ersetzt werden. 
+Derzeit ist das Chassis der Drohne noch im Prototypenzustand, gefertigt aus Stahllochblechprofilen. Diese Bauart ist zum Einen relativ schwer und bietet keinen Rundumschutz.
+Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während des Projektes wurde bereits eine erste Version des Gehäuses mittels CAD Software (siehe <<openscad>>)  modeliert. Dieses kann evaluiert und gedruckt werden oder durch ein anderes, völlig neues Design ersetzt werden. 
 
 === Verpolschutz
-Im aktuellen Stand wird der LiPo Akku mittels _Male Headern_ am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ _JST RCY_. Zum einen könnte ein entsprechender _Female_ Verbinder für THT Platinen verbaut werden um eine richtige Polung beim Anschließen zu garantieren. 
-Des weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <<bridge_rectifier>>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden. 
+Im aktuellen Stand wird der LiPo Akku mittels _Male Headern_ am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ _JST RCY_. Zum Einen könnte ein entsprechender _Female_ Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren. 
+Des Weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <<bridge_rectifier>>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden. 
 
 .Diodenbrückengleichrichter
 [[bridge_rectifier, {counter:fig}]]
@@ -19,3 +19,14 @@ Eine Diode hat entsprechend die Eigenschaft, Strom in eine Richtung hin passiere
 
 === Raspberry PI zero W
 Alternativ kann als MCU der Raspberry PI zero W evaluiert werden. Vorteil dieses Einplatinencomputers im Gegensatz zum ESP32 ist der wesentlich größere RAM, der das Puffern größerer Kamerabilddaten ermöglicht (siehe Abschnitt <<sec::camera_module>>).
+
+=== Alternative Stromversorgung
+Aktuell wird ein linearer Spannungsregler verwendet, um die hohe Batteriespannung auf die 5V
+zu reduzieren, die von der MCU und den ATTinys benötigt werden. Hierbei wird sehr viel Energie
+in Form von Wärme verschwendet. Dies beeinflusst die Batterielaufzeit der Drone negativ. Weiterhin
+besteht die möglichkeit, dass der Spannungsregler überhitzt, in welchem Fall er sich abschalten
+würde. Erst wenn er weit genug abgekühlt ist, gibt er wieder 5V aus. Dies würde zum Abschalten der
+Drone führen. Alternativ könnte ein _Step-Down-Converter_ oder auch _Buck-Converter_ verwendet werden.
+Im Vergleich zu einem linearen Spannungsregler wird so viel weniger Energie verschwendet und somit die
+Batterielaufzeit der Drone erhöht. Allerdings wird die Schaltung etwas komplexer und die benötigten 
+Komponenten kosten etwas mehr als ein linearer Spannungsregler.
