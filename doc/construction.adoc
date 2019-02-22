@@ -147,7 +147,7 @@ Die Konfiguration des Accesspoints ist in Tabelle <<table:ap_config>> aufgeführ
 |===
 
 ===== I^2^C Master Module
-Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTiny (siehe Abschnitt <<sec:attiny>>). 
+Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTiny (siehe Abschnitt <<sec:attiny>>). Die Motorsteuerdaten werden über eine Messagequeue, die vom UDP Socket (siehe Abschnitt <<sec:udp_motor_data>>) befüllt wird, geliefert.
 
 .TWI Bus Konfiguration
 |===
@@ -196,8 +196,9 @@ repeat while (While ESP running)
 Graustufen und die geringe Auflösung (in Graustufen jedoch auch 320 x 240 möglich) sind darauf zurückzuführen, dass der ESP32 nicht über 
 ausreichend internen SRAM verfügt, um die Bilddaten vor dem Senden über TCP zwischenzupuffern (siehe Abschnitt <<sec:vision_external_ram>>). 
 
+[[sec:udp_motor_data]]
 ===== UDP Motor Data Server Module
-Initialisiert und startet einen UDP Socket, der Daten 
+Initialisiert und startet einen UDP Socket, der die Motordaten des Clients empfängt und an eine Messagequeue übergibt.
 
 [[sec:attiny]]
 === Motor Controller
