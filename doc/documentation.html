@@ -463,6 +463,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_raspberry_pi_zero_w">Raspberry PI zero W</a></li>
 <li><a href="#_alternative_stromversorgung">Alternative Stromversorgung</a></li>
 <li><a href="#sec:vision_external_ram">Externer SPI RAM</a></li>
+<li><a href="#_drehzahlkorrektur_der_motordrehzahl">Drehzahlkorrektur der Motordrehzahl</a></li>
 </ul>
 </li>
 <li><a href="#_glossar">Glossar</a></li>
@@ -479,11 +480,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Im Rahmen der Master-Projektarbeit im Wintersemester 2018/19 wurde eine Modular-Recon-Drone
 (modulare Aufklärungsdrohne) entwickelt. Auf Abbildung <a href="#fig:drohne">1</a> ist der finale Aufbau
 abgebildet. Bei der Architektur der Hard- und Software wurde auf einen modularen Aufbau geachtet,
-um die einzelnen Komponenten leicht gegen Alternativen asutauschen zu können. So wurde zum Beispiel
+um die einzelnen Komponenten leicht gegen Alternativen austauschen zu können. So wurde zum Beispiel
 das Ansteuern der Motoren in ein eigenes Modul ausgelagert, das über ein TWI-Interface angesprochen
-werden kann. Die Drohne bietet eine simple Schnittstelle, über die sie gesteuert werden kann.
+werden kann. Die Drohne bietet eine simple Schnittstelle über die sie gesteuert werden kann.
 Auch hier kann das Steuersystem leicht ausgetauscht oder angepasst werden. Im Rahmen dieses Projekts
-wurden zwei Steuersystem entwickelt, welche als Basis für die Entwicklung weitere Eingabemethoden
+wurden zwei Steuersystem entwickelt, welche als Basis für die Entwicklung weiterer Eingabemethoden
 genutzt werden können. Um die Drohne auch aus der Ferne zu steuern, verfügt sie über ein Kameramodul.</p>
 </div>
 <div id="fig:drohne" class="imageblock text-center">
@@ -493,7 +494,7 @@ genutzt werden können. Um die Drohne auch aus der Ferne zu steuern, verfügt si
 <div class="title">Abbildung 1. Modular-Recon-Drone</div>
 </div>
 <div class="paragraph">
-<p>Im Folgenden werden die einzelnen Komponneten der Drohne und ihr Aufbau dokumentiert.
+<p>Im Folgenden werden die einzelnen Komponenten der Drohne und ihr Aufbau dokumentiert.
 Anschließend werden die Steuersysteme vorgestellt.</p>
 </div>
 </div>
@@ -501,6 +502,12 @@ Anschließend werden die Steuersysteme vorgestellt.</p>
 <div class="sect1">
 <h2 id="_aufbau_der_drohne">Aufbau der Drohne</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>In diesem Abschnitt werden die einzelnen Komponente der Drohne beschrieben.
+Zuerst wird auf die Hauptkontrolleinheit eingegangen. Anschließend wird die
+Motorsteuerung beschrieben, gefolgt vom Kameramodul und dem Bildschirm.
+Abschließend wird auf die Stromversorgung und das erstellte PCB eingegangen.</p>
+</div>
 <div class="sect2">
 <h3 id="_main_control_unit">Main Control Unit</h3>
 <div class="paragraph">
@@ -523,7 +530,7 @@ Anschließend werden die Steuersysteme vorgestellt.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>Grundlage der MCU bildet ein <em>Espressif ESP32</em> (DevKit v.1, siehe <a href="#fig:esp32_devkitv1">2</a>).</p>
+<p>Grundlage der MCU bildet ein <em>Espressif ESP32</em> (DevKit v.1, siehe Abbildung <a href="#fig:esp32_devkitv1">2</a>).</p>
 </div>
 <div id="fig:esp32_devkitv1" class="imageblock text-center">
 <div class="content">
@@ -532,9 +539,9 @@ Anschließend werden die Steuersysteme vorgestellt.</p>
 <div class="title">Abbildung 2. Espressif ESP32 DevKit v1 Development Board</div>
 </div>
 <div class="paragraph">
-<p>Im Detail stellt der ESP32 einen Access Point mit WPA2 PSK Sicherung zur Verfügung. Das Passwort AP wird hierbei mittels
-des Hardware RNG in Form einer achtstelligen positiven Ganzzahl generiert.
-Das Passwort und die SSID des AP werden auf dem Bildschirm (siehe Abbildung <a href="#sec:oled_screen">[sec:oled_screen]</a>) dargestellt.</p>
+<p>Im Detail stellt der ESP32 einen Access Point mit WPA2 PSK Sicherung zur Verfügung. Das Passwort des Access Points wird hierbei mittels
+Hardware RNG in Form einer achtstelligen, positiven Ganzzahl generiert.
+Das Passwort und die SSID des Access Points werden auf dem Bildschirm dargestellt (siehe Abschnitt <a href="#sec:oled_screen">[sec:oled_screen]</a>).</p>
 </div>
 <div class="sect3">
 <h4 id="_entwicklung">Entwicklung</h4>
@@ -593,8 +600,10 @@ sie der Arduino IDE gegenüber wesentlich mächtiger ist.</p>
 <div class="sect3">
 <h4 id="_esp_idf">ESP-IDF</h4>
 <div class="paragraph">
-<p>Die Installation der ESP-IDF ist unter den gängigen Betriebssystemen mit Hilfe der
-Anleitung auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_install]</a>) unkompliziert möglich. Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei. Diese sind, wie auch die Komponenten der SDK selbst (Header Dateien) umfangreich und gut dokumentiert. Beim Aufsetzen eines neuen Projektes empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf Make basierende Buildchain anbietet.</p>
+<p>Die Installation der ESP-IDF ist für gängige Betriebssystemen auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_install]</a>) dokumentiert.
+Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei.
+Diese sind, wie auch die Komponenten der SDK selbst, umfangreich und gut dokumentiert (siehe Header-Dateien).
+Beim Aufsetzen eines neuen Projekts empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf <em>Make</em> basierende Buildchain anbietet.</p>
 </div>
 <div class="paragraph">
 <p>Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis heraus):</p>
@@ -619,13 +628,13 @@ Anleitung auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_ins
 </ul>
 </div>
 <div class="paragraph">
-<p>Um die Buildchain des SDK ohne Einschränkungen verwenden zu können, wird eine Python 2 installation benötigt. Diese sollte entsprechend unter Verwendung von <em>menuconfig</em> unter <em>SDK Tool Configuration</em> &#8594; <em>Python 2 Interpreter</em> gesetzt werden.</p>
+<p>Um die Buildchain des SDK ohne Einschränkungen verwenden zu können, wird eine Python 2 Installation benötigt. Diese sollte entsprechend unter Verwendung von <em>menuconfig</em> unter <em>SDK Tool Configuration</em> &#8594; <em>Python 2 Interpreter</em> gesetzt werden.</p>
 </div>
 <div class="paragraph">
 <p>Danach muss noch der serielle Port, unter dem der ESP im Betriebssystem angebunden wird, konfiguiert werden. Dies geschieht unter <em>Serial flasher options</em> &#8594; <em>Default serial port</em>.</p>
 </div>
 <div class="paragraph">
-<p>Die ESP-IDF nutzt das Echtzeitbetriebssystem FreeRTOS (siehe <a href="#freertos">[freertos]</a>). Dieses stellt Tasks, Message Queues zur Intertaskkommunikation, Tasksynchronisationsmechanismen (Mutex, etc) zur Verfügung.</p>
+<p>Die ESP-IDF nutzt das Echtzeitbetriebssystem FreeRTOS (siehe <a href="#freertos">[freertos]</a>). Dieses stellt Tasks, Message Queues zur Intertaskkommunikation und Tasksynchronisationsmechanismen (Mutex, etc) zur Verfügung.</p>
 </div>
 <div class="paragraph">
 <p>Als TCP/IP Stack wird LwIP (siehe <a href="#lwip">[lwip]</a>) genutzt. Es handelt sich um eine leichtgewichtige Implementierung, deren Fokus auf Embedded Systems liegt. Angelehnt ist die API an die der POSIX Sockets.</p>
@@ -665,8 +674,8 @@ Anleitung auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_ins
 </div>
 <div class="paragraph">
 <p>Für das Ansprechen der Komponenten Kamera (siehe Abschnitt <a href="#sec:camera_module">Kameramodul</a>) und Display (siehe Abschnitt <a href="#sec:oled_display">Bildschirm</a>) wurden
-jeweils entsprechende externe Bibliotheken verwandt (näheres in den entsprechenden Kapiteln). Diese sind, wie andere externe Bibliotheken im Allgemeinen, im Ordner <em>components</em> abgelegt.
-Der eigentliche Code der Drohne befindet sich im Ordner <em>main</em>. Der Aufbau der eigentlichen Projektdateien ist in Abbildung <a href="#fig:mcu_structure">3</a> definiert.</p>
+jeweils entsprechende externe Bibliotheken verwendet (näheres in den entsprechenden Abschnitten). Diese sind, wie andere externe Bibliotheken im Allgemeinen, im Ordner <em>components</em> abgelegt.
+Der eigentliche Code der Drohne befindet sich im Ordner <em>main</em>. Der Aufbau der eigentlichen Projektdateien ist in Abbildung <a href="#fig:mcu_structure">3</a> gezeigt.</p>
 </div>
 <div id="fig:mcu_structure" class="imageblock">
 <div class="content">
@@ -676,16 +685,16 @@ Der eigentliche Code der Drohne befindet sich im Ordner <em>main</em>. Der Aufba
 </div>
 <div class="paragraph">
 <p>Zunächst werden die Komponenten initialisiert. Nach der Initialisierung werden die einzelnen Module (accesspoint.c, etc) gestartet.
-Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um möglichst parallel zu laufen.</p>
+Hierbei werden jeweils für die einzelnen Module Tasks generiert, um möglichst parallel zu laufen.</p>
 </div>
 <div class="sect4">
 <h5 id="_main">Main</h5>
 <div class="paragraph">
-<p>Neben der Initialisierung der einzelnen Software-Module, ist auch der <em>Systemeventhandler</em> und die Bildschirmaktualisierung untergebracht.
-Der <em>Eventhandler</em> fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup.</p>
+<p>Neben der Initialisierung der einzelnen Software-Module, ist hier auch der <em>Systemeventhandler</em> und die Bildschirmaktualisierung untergebracht.
+Der <em>Eventhandler</em> fängt die einzelnen Zustände des Access Points ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup.</p>
 </div>
 <div class="paragraph">
-<p>Exemplarisch ist die Ablaufreihenfolge der Accesspoint Events in Abbildung <a href="#fig:event_handling_diagram">4</a>.</p>
+<p>Exemplarisch ist die Ablaufreihenfolge der Access Point Events in Abbildung <a href="#fig:event_handling_diagram">4</a> gezeigt.</p>
 </div>
 <div id="fig:event_handling_diagram" class="imageblock">
 <div class="content">
@@ -694,7 +703,7 @@ Der <em>Eventhandler</em> fängt die einzelnen Zustände des Accesspoints ab (Cl
 <div class="title">Abbildung 4. Ablauf, Start des AP, Client verbindet, Client trennt sich</div>
 </div>
 <div class="paragraph">
-<p>Mit Hilfe der <em>Eventgroup</em> kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht (siehe Abbildung <a href="#fig:display_textupdate">5</a>).</p>
+<p>Mit Hilfe der <em>Eventgroup</em> kann nun ein entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht (siehe Abbildung <a href="#fig:display_textupdate">5</a>).</p>
 </div>
 <div id="fig:display_textupdate" class="imageblock">
 <div class="content">
@@ -704,10 +713,10 @@ Der <em>Eventhandler</em> fängt die einzelnen Zustände des Accesspoints ab (Cl
 </div>
 </div>
 <div class="sect4">
-<h5 id="_access_point_module">Access Point Module</h5>
+<h5 id="_access_point_modul">Access Point Modul</h5>
 <div class="paragraph">
-<p>Das AP Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert.
-Die Konfiguration des Accesspoints ist in Tabelle <a href="#table:ap_config">AP Konfiguration</a> aufgeführt.</p>
+<p>Das Access Point Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert.
+Die Konfiguration des Access Points ist in Tabelle <a href="#table:ap_config">AP Konfiguration</a> aufgeführt.</p>
 </div>
 <table id="table:ap_config" class="tableblock frame-all grid-all stretch">
 <caption class="title">Tabelle 1. AP Konfiguration</caption>
@@ -748,9 +757,10 @@ Die Konfiguration des Accesspoints ist in Tabelle <a href="#table:ap_config">AP 
 </table>
 </div>
 <div class="sect4">
-<h5 id="_i2c_master_module">I<sup>2</sup>C Master Module</h5>
+<h5 id="_i2c_master_modul">I<sup>2</sup>C Master Modul</h5>
 <div class="paragraph">
-<p>Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTiny (siehe Abschnitt <a href="#sec:attiny">Motor Controller</a>).</p>
+<p>Zum Einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTinys (siehe Abschnitt <a href="#sec:attiny">Motor Controller</a>).
+Die Motorsteuerdaten werden über eine Messagequeue, die vom UDP Socket (siehe Abschnitt <a href="#sec:udp_motor_data">UDP Motor Data Server Module</a>) befüllt wird, geliefert.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Tabelle 2. TWI Bus Konfiguration</caption>
@@ -786,18 +796,18 @@ Die Konfiguration des Accesspoints ist in Tabelle <a href="#table:ap_config">AP 
 </tbody>
 </table>
 <div class="paragraph">
-<p>Zusätzlich wird das Display initialisiert und aus dem <em>Standby</em> aufgeweckt.</p>
+<p>Zum Anderen wird das Display initialisiert und aus dem <em>Standby</em> aufgeweckt.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_camera_module">Camera Module</h5>
+<h5 id="_camera_modul">Camera Modul</h5>
 <div class="paragraph">
 <p>Neben der Initialisierung der Kamera mit Hilfe der externen Bibliothek (siehe Abschnitt <a href="#sec:camera_module">Kameramodul</a>), wird im Modul
 noch ein Task gestartet, der mittels TCP-Server auf einkommende Verbindungen von Seiten der Steuereinheit wartet.
 Nach Verbindungsaufbau sendet der TCP-Server konstant die aus der Kamera ausgelesenen Bilddaten an den Client.
-Sobald über die <em>Eventgroup</em> signalisiert wurde, das der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum einen über die <em>Eventgroup</em> und zum anderen über das Timeout der Schreiboperation des Sockets.</p>
+Sobald über die <em>Eventgroup</em> signalisiert wurde, das der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum Einen über die <em>Eventgroup</em> und zum Anderen über das Timeout der Schreiboperation des Sockets.</p>
 </div>
-<div id="fig:camera_tcp_server" class="imageblock">
+<div id="fig:camera_tcp_server" class="imageblock text-center">
 <div class="content">
 <img src="imgs/camera_tcp_server.png" alt="camera tcp server" width="211" height="462">
 </div>
@@ -831,17 +841,17 @@ Sobald über die <em>Eventgroup</em> signalisiert wurde, das der Client die Verb
 <div class="title">Note</div>
 </td>
 <td class="content">
-Graustufen und die geringe Auflösung (in Graustufen jedoch auch 320 x 240 möglich) sind darauf zurückzuführen, dass der ESP32 nicht über
-ausreichend internen SRAM verfügt, um die Bilddaten vor dem Senden über TCP zwischenzupuffern (siehe Abschnitt <a href="#sec:vision_external_ram">Externer SPI RAM</a>).
+Die Wahl des Grayscale-Formats und die geringe Auflösung (bei Graustufen jedoch auch 320 x 240 möglich) sind darauf zurückzuführen, dass der ESP32 nicht über
+ausreichend internen RAM verfügt, um die Bilddaten vor dem Senden über TCP zwischenzupuffern (siehe Abschnitt <a href="#sec:vision_external_ram">Externer SPI RAM</a>).
 </td>
 </tr>
 </table>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_udp_motor_data_server_module">UDP Motor Data Server Module</h5>
+<h5 id="sec:udp_motor_data">UDP Motor Data Server Module</h5>
 <div class="paragraph">
-<p>Initialisiert und startet einen UDP Socket, der Daten</p>
+<p>Initialisiert und startet einen UDP Socket, der die Motordaten des Clients empfängt und an eine Messagequeue übergibt.</p>
 </div>
 </div>
 </div>
@@ -850,9 +860,10 @@ ausreichend internen SRAM verfügt, um die Bilddaten vor dem Senden über TCP zw
 <h3 id="sec:attiny">Motor Controller</h3>
 <div class="paragraph">
 <p>Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
-Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit von
-der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
+Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit vom
+ESP32 mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
 <a href="#fig:attiny25_pinout">8</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
+Der genau Schaltplan, wie die ATTinys mit dem ESP32 verbunden sind, ist im Anhang aufgeführt (siehe Abbildung <a href="#fig:full_schematic">20</a>).
 Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
 werden. Hierzu wurde eine bereits existierende Implementation von <a href="#twi_implementation">[twi_implementation]</a> verwendet, welche
 die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny254585">[attiny254585]</a>).</p>
@@ -870,18 +881,18 @@ gesetzt und der Pin <em>DIR1</em> auf <em>LOW</em> gesetzt. Wird eine <em>1</em>
 auf <em>LOW</em> und Pin <em>DIR1</em> auf <em>HIGH</em> gesetzt. Diese beiden Pins sind nie zeitgleich <em>HIGH</em>. Durch die
 unteren sieben Bit des empfangenen Bytes wird die Geschwindigkeit in Prozent angegeben. Intern
 betreiben die Mikrocontroller hiermit eine Pulsweitenmodulation, welche 127 Schritte unterstützt.
-Dieses Signal wird über den Pin <em>PWM</em> ausgegeben. Zwischen den ATTinys und dein Motoren wurde eine
+Dieses Signal wird über den Pin <em>PWM</em> ausgegeben. Zwischen den ATTinys und den Motoren wurde eine
 H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die beiden Mikrocontroller
-über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:full_schematic">18</a>
+über die H-Brücke mit den beiden Motoren verbunden sind, ist auf Abbildung <a href="#fig:full_schematic">20</a>
 im Anhang gezeigt. Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das
 TWI wird über das Define-Flag <em>address</em> gesetzt werden. Um das Kompilieren des Programms für die
 beiden Mikrocontroller zu erleichtern, wurde ein Makefile erstellt. Durch den <em>make</em>
-Befehl werden die Programm der beiden Mikrocontroller gebaut. Durch <em>make flash_L</em> und
+Befehl werden die Programme der beiden Mikrocontroller gebaut. Durch <em>make flash_L</em> und
 <em>make flash_R</em> wird entsprechend das Programm für die linke und rechte Motorsteuerung
 auf die Mikrocontroller geschrieben. Damit das Kompilieren und Programmieren der ATTinys
 funktioniert, müssen die AVR-Entwicklungstools <em>avr-gcc</em>, <em>avr-objcopy</em> und <em>avrdude</em>
 installiert sein. Bevor die Programme auf die Mikrocontroller geschrieben werden können,
-muss sichergestellt werden, dass der Port des Programmers richtig gesetzt ist. Hierzu
+muss sichergestellt werden, dass der serielle Port des Programmers richtig gesetzt ist. Hierzu
 kann das <em>-P</em>-Flag des <em>avrdude</em>-Befehls angepasst werden. Je nachdem, welche Programmer
 verwendet wird, muss auch das <em>-c</em>-Flag angepasst werden. In der aktuellen Version wird
 davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#arduino_programmer">[arduino_programmer]</a>).</p>
@@ -1036,11 +1047,11 @@ TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.</p>
 <h3 id="_stromversorgung">Stromversorgung</h3>
 <div class="paragraph">
 <p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
-bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">18</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
+bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">20</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
 der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
 zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
 Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
-das Kameramodul nötigen 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
+das Kameramodul benötigten 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
 entschieden, wodurch 11.1V als Batteriespannung anliegen.</p>
 </div>
 </div>
@@ -1076,14 +1087,14 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <div class="paragraph">
 <p>Aufgrund der schlichten Schnittstelle zur Drohne ist es sehr einfach, eine
 beliebige Steuerung zu implementieren. Um die Drohne anzusteuern, muss sich
-zuerst mit dem bereitgestellt W-Lan-Netzwerk verbunden werden. Innerhalb
+zuerst mit dem bereitgestellten W-Lan-Netzwerk verbunden werden. Innerhalb
 dieses Netzwerkes hat die Drohne immer die IP-Addresse <em>192.168.4.1</em>. Um
 das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über den
 Port <em>1234</em> aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
 Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
-Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
-das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:udp-packet">Abb. 1</a>).</p>
+Bytes per UDP über Port 4242 übertragen werden. Das erste Byte steuert den linken Motor
+und das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:udp-packet">1</a>).</p>
 </div>
 <div id="fig:udp-packet" class="imageblock text-center">
 <div class="content">
@@ -1104,15 +1115,15 @@ einer Android App beschrieben.</p>
 <div class="sect2">
 <h3 id="_referenzimplementierung_für_android">Referenzimplementierung für Android</h3>
 <div class="paragraph">
-<p>Zur Steuerung der Recon Drohne wurde eine simple Android App entwickelt.
+<p>Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
 Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drohne
 und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <a href="#fig:app">13</a>
-gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drohne bereitgestellt
-wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
+gezeigt. Die App sucht nach dem W-Lan-Netzwerk, dass von der Drohne bereitgestellt
+wird. Damit W-Lan-Netzwerke gesucht werden können, muss der Standort-Service des
 Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum
 Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button
 gedrückt, baut die App die Verbindung zur Drohne auf. Damit die App mit der Drohne
-kommunizieren kann, müssen die mobile Internet deaktiviert sein. Diese Funktionalität
+kommunizieren kann, muss das mobile Internet deaktiviert sein. Diese Funktionalität
 wird durch die <em>ReconDroneConnection</em>-Klasse realisiert (vgl. Abbildung <a href="#fig:classdiagram">14</a>).
 Hat sich das Smartphone mit der Drohne verbunden, wird automatisch zur nächsten Ansicht der
 App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
@@ -1127,7 +1138,7 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <p>Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal
 eingesehen werden. Die Steuerung wird von der <em>TouchController</em>-Klasse implementiert.
 Die Touchevents des Benutzer werden in der <em>onTouch()</em>-Methode verarbeitet. In ihr
-werden die Startposition und aktuelle Position der Touchbewegungen verarbeitet und
+werden die Startposition und die aktuelle Position der Touchbewegungen verarbeitet und
 in den Attributen <em>startingPositions</em> und <em>currentPositions</em> zwischengespeichert.
 Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
 der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto
@@ -1142,7 +1153,7 @@ befühlt.</p>
 </div>
 <div id="fig:classdiagram" class="imageblock text-center">
 <div class="content">
-<img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
+<img src="imgs/diagram-classes.png" alt="diagram classes" width="642" height="728">
 </div>
 <div class="title">Abbildung 14. Klassendiagramm</div>
 </div>
@@ -1228,7 +1239,35 @@ Ein farbiges Bild ist nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, ei
 230.4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
 Es ist jedoch möglich, den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
 angeschlossen wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung
-des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921.6KB benötigt.</p>
+des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_drehzahlkorrektur_der_motordrehzahl">Drehzahlkorrektur der Motordrehzahl</h3>
+<div class="paragraph">
+<p>Da die Motoren bedingt durch geringfügige Fertigungsunterschiede (unterschiede in der Erregerwicklung, etc) laufen die Motoren bei gleichem PWM Signal nicht identisch schnell. Entsprechend hat die Drohne die Tendenz bei Geradeausfahrten in eine bestimmte Richtung zu fahren.
+Um diesem Verhalten entgegenzuwirken, muss der ESP32 anhand der tatsächlichen Drehzahl der Motoren Korrekturwerte an die Motorcontroller übergeben. Um die Drehzahl bei einem Gleichstrommotor zu ermitteln, können beispielsweise folgende Verfahren angewandt werden:</p>
+</div>
+<div class="paragraph">
+<p><strong>Back EMF - Back Electromotive Force</strong>: Da ein PWM Signal den Motor nicht durchgehend mit Spannung versorgt, sondern nur in Intervalen, befindet sich der Motor auch immer in Phasen, in denen er keine Spannungsversorgung erhält. Bedingt durch die Trägheit dreht der Motor sich noch eine gewisse Zeit weiter. In dieser Phase generiert der Motor eine Spannung durch elektrische Induktion (siehe Induktionsgesetze von Michael Faraday, Joseph Henry und Hans Christian Ørsted und Lenzsche Regel nach Emil Lenz), dem Back EMF. Diese Spannung kann entsprechend von einem ADC eingelesen und interpretiert werden. Es ist zu beachten, dass die Spannung ggf. erst mittels Spannungsteiler auf ein für den Microcontroller sicher messbaren Spannungsbereich herunter bricht (max. 5V).</p>
+</div>
+<div class="paragraph">
+<p><strong>Rotary Encoder</strong>: Beim Rotary Encoder bzw. Drehgeber handelt es sich in einfachsten Fall um eine eine Scheibe mit Schlitzen in gleichem Abstand zueinander wie in Abbildung <a href="#fig:rotary_wheel">16</a> zu sehen. Diese Scheibe ist an der Welle des Motors angebracht.</p>
+</div>
+<div id="fig:rotary_wheel" class="imageblock text-center">
+<div class="content">
+<img src="imgs/rotary_encoder.png" alt="rotary encoder" width="200">
+</div>
+<div class="title">Abbildung 16. Drehgeber, Scheibe, <a href="#rotary_encoder_img">[rotary_encoder_img]</a></div>
+</div>
+<div class="paragraph">
+<p>Die Schreibe dreht sich hierbei zwischen einer Lichtschranke, wie in Abbildung <a href="#fig:light_barrier">17</a>, die wiederum aufgrund der Schlitze in der Scheibe abwechselt je eine Spannung ausgibt oder nicht. Ausgelesen mit einem GPIO-Pin ergibt sich hieraus ein Signal in Sägezahnform, wobei die Frequenz der Flankenwechsel der Umdrehung des Motors entspricht.</p>
+</div>
+<div id="fig:light_barrier" class="imageblock text-center">
+<div class="content">
+<img src="imgs/light_barrier.png" alt="light barrier" width="200">
+</div>
+<div class="title">Abbildung 17. Drehgeber, Lichtschranke, <a href="#light_barrier_img">[light_barrier_img]</a></div>
 </div>
 </div>
 </div>
@@ -1344,7 +1383,13 @@ des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921.6KB benö
 <p><a id="ov7725"></a>[ov7725] OV7725 Sensor: <a href="https://www.ovt.com/sensors/OV7725" class="bare">https://www.ovt.com/sensors/OV7725</a></p>
 </li>
 <li>
-<p><a id="esp32_kevin"></a>[esp32_kevin] Projekterfahrung EspressifESP32 –Fallbeispiel "Kevin", arendi, Benno Trutmann, <a href="https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf" class="bare">https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf</a></p>
+<p><a id="esp32_kevin"></a>[esp32_kevin] Projekterfahrung EspressifESP32 –Fallbeispiel "Kevin", arendi, Benno Trutmann: <a href="https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf" class="bare">https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf</a></p>
+</li>
+<li>
+<p><a id="light_barrier_img"></a>[light_barrier_img] Bild, Lichtschranke, rs-online: <a href="https://de.rs-online.com/web/p/products/1254555/?grossPrice=Y&amp;cm_mmc=DE-PLA-DS3A-" class="bare">https://de.rs-online.com/web/p/products/1254555/?grossPrice=Y&amp;cm_mmc=DE-PLA-DS3A-</a><em>-google-</em>-PLA_DE_DE_Automation-<em>-Sensoren_Und_Messwandler%7COptische_N%C3%A4herungsschalter-</em>-PRODUCT_GROUP&amp;matchtype=&amp;pla-484761195991&amp;gclid=EAIaIQobChMIuM6t2bXP4AIVQqmaCh0CqgscEAQYByABEgJ_FfD_BwE&amp;gclsrc=aw.ds</p>
+</li>
+<li>
+<p><a id="rotary_encoder_img"></a>[rotary_encoder_img] Encoder Scheibe, eckstein-shop: <a href="https://eckstein-shop.de/Adafruit-TT-Motor-Getrieb-DC-Motor-Encoder-Pack-of-2?curr=EUR&amp;gclid=EAIaIQobChMI_NL52LjP4AIVDOh3Ch3fzAbyEAQYCyABEgId1vD_BwE" class="bare">https://eckstein-shop.de/Adafruit-TT-Motor-Getrieb-DC-Motor-Encoder-Pack-of-2?curr=EUR&amp;gclid=EAIaIQobChMI_NL52LjP4AIVDOh3Ch3fzAbyEAQYCyABEgId1vD_BwE</a></p>
 </li>
 </ul>
 </div>
@@ -1357,19 +1402,19 @@ des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921.6KB benö
 <div class="content">
 <img src="imgs/pcb_front.png" alt="pcb front">
 </div>
-<div class="title">Abbildung 16. PCB Oberseite</div>
+<div class="title">Abbildung 18. PCB Oberseite</div>
 </div>
 <div id="fig:pcb_back" class="imageblock text-center">
 <div class="content">
 <img src="imgs/pcb_back.png" alt="pcb back">
 </div>
-<div class="title">Abbildung 17. PCB Unterseite</div>
+<div class="title">Abbildung 19. PCB Unterseite</div>
 </div>
 <div id="fig:full_schematic" class="imageblock text-center">
 <div class="content">
 <img src="imgs/full_schematic.png" alt="full schematic">
 </div>
-<div class="title">Abbildung 18. Kompletter Schaltplan</div>
+<div class="title">Abbildung 20. Kompletter Schaltplan</div>
 </div>
 </div>
 </div>

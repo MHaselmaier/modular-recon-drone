@@ -11,7 +11,7 @@ Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
 Bytes per UDP über Port 4242 übertragen werden. Das erste Byte steuert den linken Motor
 und das zweite Byte steuert den rechten Motor (vgl. Abbildung <<fig:udp-packet>>).
 
-[[fig:udp-packet, Abb. {counter:figure-counter}]]
+[[fig:udp-packet, {counter:figure-counter}]]
 [ditaa, udp-packet, align="center"]
 .UDP-Paketformat
 ....

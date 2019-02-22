@@ -178,7 +178,7 @@ Sobald über die _Eventgroup_ signalisiert wurde, das der Client die Verbindung 
 
 .Kamera TCP-Server Ablauf
 [[fig:camera_tcp_server, {counter:fig}]]
-[plantuml, "camera_tcp_server"]
+[plantuml, "camera_tcp_server", align="center"]
 ....
 @startuml
 start
