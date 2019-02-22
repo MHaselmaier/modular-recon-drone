@@ -462,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_verpolschutz">Verpolschutz</a></li>
 <li><a href="#_raspberry_pi_zero_w">Raspberry PI zero W</a></li>
 <li><a href="#_alternative_stromversorgung">Alternative Stromversorgung</a></li>
-<li><a href="#_externer_spi_ram">Externer SPI RAM</a></li>
+<li><a href="#sec:vision_external_ram">Externer SPI RAM</a></li>
 </ul>
 </li>
 <li><a href="#_glossar">Glossar</a></li>
@@ -740,6 +740,10 @@ Die Konfiguration des Accesspoints ist in Tabelle <a href="#table:ap_config">AP 
 <td class="tableblock halign-left valign-top"><p class="tableblock">Beacon Interval</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">192.168.4.1</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -799,6 +803,46 @@ Sobald über die <em>Eventgroup</em> signalisiert wurde, das der Client die Verb
 </div>
 <div class="title">Abbildung 6. Kamera TCP-Server Ablauf</div>
 </div>
+<table id="table:camera_tcp_config" class="tableblock frame-all grid-all stretch">
+<caption class="title">Tabelle 3. Kamera und TCP Socket Konfiguration</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pixel Format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Grayscale</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auflösung</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">160 x 120</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCP Port</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1234</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Graustufen und die geringe Auflösung (in Graustufen jedoch auch 320 x 240 möglich) sind darauf zurückzuführen, dass der ESP32 nicht über
+ausreichend internen SRAM verfügt, um die Bilddaten vor dem Senden über TCP zwischenzupuffern (siehe Abschnitt <a href="#sec:vision_external_ram">Externer SPI RAM</a>).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_udp_motor_data_server_module">UDP Motor Data Server Module</h5>
+<div class="paragraph">
+<p>Initialisiert und startet einen UDP Socket, der Daten</p>
+</div>
 </div>
 </div>
 </div>
@@ -808,7 +852,7 @@ Sobald über die <em>Eventgroup</em> signalisiert wurde, das der Client die Verb
 <p>Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
 Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit von
 der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
-<a href="#fig:attiny25_pinout">7</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
+<a href="#fig:attiny25_pinout">8</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
 Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
 werden. Hierzu wurde eine bereits existierende Implementation von <a href="#twi_implementation">[twi_implementation]</a> verwendet, welche
 die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny254585">[attiny254585]</a>).</p>
@@ -828,7 +872,7 @@ unteren sieben Bit des empfangenen Bytes wird die Geschwindigkeit in Prozent ang
 betreiben die Mikrocontroller hiermit eine Pulsweitenmodulation, welche 127 Schritte unterstützt.
 Dieses Signal wird über den Pin <em>PWM</em> ausgegeben. Zwischen den ATTinys und dein Motoren wurde eine
 H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die beiden Mikrocontroller
-über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:full_schematic">17</a>
+über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:full_schematic">18</a>
 im Anhang gezeigt. Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das
 TWI wird über das Define-Flag <em>address</em> gesetzt werden. Um das Kompilieren des Programms für die
 beiden Mikrocontroller zu erleichtern, wurde ein Makefile erstellt. Durch den <em>make</em>
@@ -867,7 +911,7 @@ möglichst kurz zu halten ist. Wird die Verbindung zu lang, wird jediglich Rausc
 empfangen.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Tabelle 3. Anschluss der Kamera am ESP32</caption>
+<caption class="title">Tabelle 4. Anschluss der Kamera am ESP32</caption>
 <colgroup>
 <col style="width: 24%;">
 <col style="width: 24%;">
@@ -992,7 +1036,7 @@ TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.</p>
 <h3 id="_stromversorgung">Stromversorgung</h3>
 <div class="paragraph">
 <p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
-bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">17</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
+bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">18</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
 der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
 zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
 Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
@@ -1004,7 +1048,7 @@ entschieden, wodurch 11.1V als Batteriespannung anliegen.</p>
 <h3 id="_schaltplan_und_pcb">Schaltplan und PCB</h3>
 <div class="paragraph">
 <p>Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard verkabelt und getestet und anschließend auf einer
-Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <a href="#fig:prototyp">10</a> zu sehen.</p>
+Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <a href="#fig:prototyp">11</a> zu sehen.</p>
 </div>
 <div id="fig:prototyp" class="imageblock text-center">
 <div class="content">
@@ -1015,7 +1059,7 @@ Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildu
 <div class="paragraph">
 <p>Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
 (siehe <a href="#eagle">[eagle]</a>). Die Eagle-Projektdateien sind im Ordner <em>schematic_and_pcb</em> zu finden. Anschließend wurde JLCPCB (siehe <a href="#jlcpcb">[jlcpcb]</a>)
-mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildung <a href="#fig:pcb">11</a> gezeigt.</p>
+mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildung <a href="#fig:pcb">12</a> gezeigt.</p>
 </div>
 <div id="fig:pcb" class="imageblock text-center">
 <div class="content">
@@ -1062,14 +1106,14 @@ einer Android App beschrieben.</p>
 <div class="paragraph">
 <p>Zur Steuerung der Recon Drohne wurde eine simple Android App entwickelt.
 Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drohne
-und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <a href="#fig:app">12</a>
+und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <a href="#fig:app">13</a>
 gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drohne bereitgestellt
 wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
 Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum
 Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button
 gedrückt, baut die App die Verbindung zur Drohne auf. Damit die App mit der Drohne
 kommunizieren kann, müssen die mobile Internet deaktiviert sein. Diese Funktionalität
-wird durch die <em>ReconDroneConnection</em>-Klasse realisiert (vgl. Abbildung <a href="#fig:classdiagram">13</a>).
+wird durch die <em>ReconDroneConnection</em>-Klasse realisiert (vgl. Abbildung <a href="#fig:classdiagram">14</a>).
 Hat sich das Smartphone mit der Drohne verbunden, wird automatisch zur nächsten Ansicht der
 App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 </div>
@@ -1124,7 +1168,7 @@ unter Android 9.0 getestet.</p>
 <h2 id="_ausblick">Ausblick</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Auf Basis des derzeitigen Entwicklungsstandes der Drohne lassen sich weitere Zusatzfunktionen und Verbesserungen implementieren. Einige
+<p>Auf Basis des derzeitigen Entwicklungsstands der Drohne lassen sich weitere Zusatzfunktionen und Verbesserungen implementieren. Einige
 Ideen sollen im Folgenden präsentiert werden.</p>
 </div>
 <div class="sect2">
@@ -1137,17 +1181,17 @@ Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während 
 <div class="sect2">
 <h3 id="_verpolschutz">Verpolschutz</h3>
 <div class="paragraph">
-<p>Im aktuellen Stand wird der LiPo Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum Einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren.
-Des Weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#bridge_rectifier">14</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
+<p>Im aktuellen Stand wird der LiPo-Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum Einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren.
+Zum Anderen kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#fig:bridge_rectifier">15</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
 </div>
-<div id="bridge_rectifier" class="imageblock text-center">
+<div id="fig:bridge_rectifier" class="imageblock text-center">
 <div class="content">
 <img src="imgs/bridge_rectifier.png" alt="bridge rectifier" width="200">
 </div>
 <div class="title">Abbildung 15. Diodenbrückengleichrichter</div>
 </div>
 <div class="paragraph">
-<p>Die Funktionsweise der Brücke ist relativ simple. Unabhängig davon, wie der Strom angelegt wird, schließen die Konfiguration der Dioden stets so, dass am Ausgang der Brücke Plus und Minus immer gleich anliegen.
+<p>Die Funktionsweise der Brücke ist relativ simple. Unabhängig davon, wie der Strom angelegt wird, schließt die Konfiguration der Dioden stets so, dass am Ausgang der Brücke Plus und Minus immer gleich anliegen.
 Eine Diode hat entsprechend die Eigenschaft, Strom in eine Richtung hin passieren zu lassen, während sie in entgegengesetzter Richtung den Stromfluss sperrt.</p>
 </div>
 </div>
@@ -1160,31 +1204,31 @@ Eine Diode hat entsprechend die Eigenschaft, Strom in eine Richtung hin passiere
 <div class="sect2">
 <h3 id="_alternative_stromversorgung">Alternative Stromversorgung</h3>
 <div class="paragraph">
-<p>Aktuell wird ein linearer Spannungsregler verwendet, um die hohe Batteriespannung auf die 5V
+<p>Aktuell wird ein linearer Spannungsregler verwendet, um die hohe Batteriespannung von 11.1V auf die 5V
 zu reduzieren, die von der MCU und den ATTinys benötigt werden. Hierbei wird sehr viel Energie
-in Form von Wärme verschwendet. Dies beeinflusst die Batterielaufzeit der Drone negativ. Weiterhin
-besteht die möglichkeit, dass der Spannungsregler überhitzt, in welchem Fall er sich abschalten
+in Form von Wärme verschwendet. Dies beeinflusst die Batterielaufzeit der Drohne negativ. Weiterhin
+besteht die Möglichkeit, dass der Spannungsregler überhitzt, in welchem Fall er sich abschalten
 würde. Erst wenn er weit genug abgekühlt ist, gibt er wieder 5V aus. Dies würde zum Abschalten der
-Drone führen. Alternativ könnte ein <em>Step-Down-Converter</em> oder auch <em>Buck-Converter</em> verwendet werden.
-Im Vergleich zu einem linearen Spannungsregler wird so viel weniger Energie verschwendet und somit die
-Batterielaufzeit der Drone erhöht. Allerdings wird die Schaltung etwas komplexer und die benötigten
+Drohne führen. Alternativ könnte ein <em>Step-Down-Converter</em> oder auch <em>Buck-Converter</em> verwendet werden.
+Im Vergleich zu einem linearen Spannungsregler wird verschwendet diese Variante weniger Energie und erhöht
+somit die Batterielaufzeit der Drohne. Allerdings wird die Schaltung etwas komplexer und die benötigten
 Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_externer_spi_ram">Externer SPI RAM</h3>
+<h3 id="sec:vision_external_ram">Externer SPI RAM</h3>
 <div class="paragraph">
 <p>Das Kamerabild, das von der Drohne übertragen wird, kann aktuell eine maximale Auflösung von 320x240 Pixeln
 unterstützen, wenn es im Grayscale-Format übertragen wird. Diese Einschränkungen sind auf den begrenzten
 internen RAM des ESP32 zurückzuführen. Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile
 unterteilt. Aufgrund von technischen Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen
-160KB können nur während der Laufzeit dynamisch allokiert werden. Bei einer Auflösung von 320x240 Pixeln und einem
-Byte für den Grauwert eines Pixels benötigt ein Bild bereits 76,8KB RAM, um es vor dem Senden zwischenzuspeichern.
+160KB können nur während der Laufzeit dynamisch allokiert werden (vgl. <a href="#esp32_kevin">[esp32_kevin]</a>). Bei einer Auflösung von 320x240 Pixeln und einem
+Byte für den Grauwert eines Pixels benötigt ein Bild bereits 76.8KB, um es vor dem Senden zwischenzuspeichern.
 Ein farbiges Bild ist nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, eines pro Farbkanal, bei einer Größe von
-230,4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
-Es ist jedoch möglichen den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
+230.4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
+Es ist jedoch möglich, den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
 angeschlossen wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung
-des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.</p>
+des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921.6KB benötigt.</p>
 </div>
 </div>
 </div>
@@ -1298,6 +1342,9 @@ des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benö
 </li>
 <li>
 <p><a id="ov7725"></a>[ov7725] OV7725 Sensor: <a href="https://www.ovt.com/sensors/OV7725" class="bare">https://www.ovt.com/sensors/OV7725</a></p>
+</li>
+<li>
+<p><a id="esp32_kevin"></a>[esp32_kevin] Projekterfahrung EspressifESP32 –Fallbeispiel "Kevin", arendi, Benno Trutmann, <a href="https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf" class="bare">https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf</a></p>
 </li>
 </ul>
 </div>
