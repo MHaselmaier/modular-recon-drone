@@ -9,7 +9,7 @@ Port _1234_ aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
 Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei 
 Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
-das zweite Byte steuert den rechten Motor (vgl. Abbildung <<fig:upd-packet>>).
+das zweite Byte steuert den rechten Motor (vgl. Abbildung <<fig:udp-packet>>).
 
 [[fig:udp-packet, Abb. {counter:figure-counter}]]
 [ditaa, udp-packet, align="center"]

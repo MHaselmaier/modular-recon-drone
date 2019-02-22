@@ -1,5 +1,18 @@
 == Vorwort
 
+Im Rahmen der Master-Projektarbeit im Wintersemester 2018/19 wurde eine Modular-Recon-Drone
+(modulare Aufklärungsdrohne) entwickelt. Auf Abbildung <<fig:drohne>> ist der finale Aufbau 
+abgebildet. Bei der Architektur der Hard- und Software wurde auf einen modularen Aufbau geachtet,
+um die einzelnen Komponenten leicht gegen Alternativen asutauschen zu können. So wurde zum Beispiel
+das Ansteuern der Motoren in ein eigenes Modul ausgelagert, das über ein TWI-Interface angesprochen
+werden kann. Die Drohne bietet eine simple Schnittstelle, über die sie gesteuert werden kann.
+Auch hier kann das Steuersystem leicht ausgetauscht oder angepasst werden. Im Rahmen dieses Projekts
+wurden zwei Steuersystem entwickelt, welche als Basis für die Entwicklung weitere Eingabemethoden
+genutzt werden können. Um die Drohne auch aus der Ferne zu steuern, verfügt sie über ein Kameramodul.
+
 .Modular-Recon-Drone
 [[fig:drohne,{counter:fig}]]
 image::drohne.png[width=500, align="center"]
+
+Im Folgenden werden die einzelnen Komponneten der Drohne und ihr Aufbau dokumentiert. 
+Anschließend werden die Steuersysteme vorgestellt.
