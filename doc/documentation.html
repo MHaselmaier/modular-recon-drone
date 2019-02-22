@@ -461,7 +461,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_vorwort">Vorwort</h2>
 <div class="sectionbody">
-
+<div id="fig:drohne" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/drohne.png" alt="drohne" width="500">
+</div>
+<div class="title">Abbildung 1. Modular-Recon-Drone</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -495,7 +500,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <img src="imgs/esp32_devkitv1.png" alt="esp32 devkitv1" width="200">
 </div>
-<div class="title">Abbildung 1. Espressif ESP32 DevKit v1 Development Board</div>
+<div class="title">Abbildung 2. Espressif ESP32 DevKit v1 Development Board</div>
 </div>
 <div class="paragraph">
 <p>Im Detail stellt der ESP32 einen Access Point mit WPA2 PSK Sicherung zur Verfügung. Das Passwort AP wird hierbei mittels
@@ -638,7 +643,7 @@ Der eigentliche Code der Drohne befindet sich im Ordner <em>main</em>. Der Aufba
 <div class="content">
 <img src="imgs/mcu_structure.png" alt="mcu structure" width="890" height="196">
 </div>
-<div class="title">Abbildung 3. MCU Code Struktur</div>
+<div class="title">Abbildung 4. MCU Code Struktur</div>
 </div>
 <div class="paragraph">
 <p>Zunächst werden die Komponenten initialisiert. Nach der Initialisierung werden die einzelnen Module (accesspoint.c, etc) gestartet.
@@ -655,13 +660,13 @@ Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt 
 <div class="content">
 <img src="imgs/event_handling_diagram.png" alt="event handling diagram" width="920" height="301">
 </div>
-<div class="title">Abbildung 5. Ablauf, Start des AP, Client verbindet, Client trennt sich</div>
+<div class="title">Abbildung 6. Ablauf, Start des AP, Client verbindet, Client trennt sich</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="imgs/display_update_diagram.png" alt="display update diagram" width="637" height="197">
 </div>
-<div class="title">Abbildung 7. Display Textupdate</div>
+<div class="title">Abbildung 8. Display Textupdate</div>
 </div>
 </div>
 <div class="sect4">
@@ -767,7 +772,7 @@ die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (sie
 <div class="content">
 <img src="imgs/attiny25_pinout.jpg" alt="attiny25 pinout" width="300">
 </div>
-<div class="title">Abbildung 8. ATTiny25 Pinout</div>
+<div class="title">Abbildung 9. ATTiny25 Pinout</div>
 </div>
 <div class="paragraph">
 <p>Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
@@ -785,7 +790,7 @@ gezeigt.</p>
 <div class="content">
 <img src="imgs/ATTiny25_HBrücke_Schematic.png" alt="ATTiny25 HBrücke Schematic" width="500">
 </div>
-<div class="title">Abbildung 9. Schaltplan der Motorsteuerung</div>
+<div class="title">Abbildung 10. Schaltplan der Motorsteuerung</div>
 </div>
 <div class="paragraph">
 <p>Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das TWI wird
@@ -816,7 +821,7 @@ werden (vgl. <a href="#ov7725">[ov7725]</a>).</p>
 <div class="content">
 <img src="imgs/camera_module.png" alt="camera module" width="200">
 </div>
-<div class="title">Abbildung 10. Kameramodul OV7725</div>
+<div class="title">Abbildung 11. Kameramodul OV7725</div>
 </div>
 <div class="paragraph">
 <p>Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
@@ -919,7 +924,7 @@ empfangen.</p>
 <div class="content">
 <img src="imgs/oled_display.png" alt="oled display" width="200">
 </div>
-<div class="title">Abbildung 11. Oled Diplay 128x64, SSD1306</div>
+<div class="title">Abbildung 12. Oled Diplay 128x64, SSD1306</div>
 </div>
 <div class="paragraph">
 <p>Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend setzt sich der Pinout wie folgt zusammen:</p>
@@ -958,7 +963,7 @@ erhalten werden.</p>
 <div class="content">
 <img src="imgs/powersupply.png" alt="powersupply" width="400">
 </div>
-<div class="title">Abbildung 12. Stromversorgung</div>
+<div class="title">Abbildung 13. Stromversorgung</div>
 </div>
 <div class="paragraph">
 <p>Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
@@ -978,7 +983,7 @@ Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildu
 <div class="content">
 <img src="imgs/lochrasterplatine.png" alt="lochrasterplatine" width="500">
 </div>
-<div class="title">Abbildung 13. Lochrasterplatine</div>
+<div class="title">Abbildung 14. Lochrasterplatine</div>
 </div>
 <div class="paragraph">
 <p>Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
@@ -989,7 +994,7 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <div class="content">
 <img src="imgs/pcb.png" alt="pcb" width="500">
 </div>
-<div class="title">Abbildung 14. Fertige bestücktes PCB</div>
+<div class="title">Abbildung 15. Fertige bestücktes PCB</div>
 </div>
 </div>
 </div>
@@ -1013,7 +1018,7 @@ das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:upd-pack
 <div class="content">
 <img src="imgs/udp-packet.png" alt="udp packet" width="490" height="126">
 </div>
-<div class="title">Abbildung 16. UDP-Paketformat</div>
+<div class="title">Abbildung 17. UDP-Paketformat</div>
 </div>
 <div class="paragraph">
 <p>Das <em>Direction</em> bit gibt an, ob die Motoren vorwärts (0) oder rückwärst (1) drehen.
@@ -1045,7 +1050,7 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <div class="content">
 <img src="imgs/app.png" alt="app" width="500">
 </div>
-<div class="title">Abbildung 17. Ansichten der App</div>
+<div class="title">Abbildung 18. Ansichten der App</div>
 </div>
 <div class="paragraph">
 <p>Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal
@@ -1068,7 +1073,7 @@ befühlt.</p>
 <div class="content">
 <img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
 </div>
-<div class="title">Abbildung 19. Klassendiagramm</div>
+<div class="title">Abbildung 20. Klassendiagramm</div>
 </div>
 <div class="paragraph">
 <p>Das Kamerasignal der Drohne wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
@@ -1112,7 +1117,7 @@ Des Weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a hre
 <div class="content">
 <img src="imgs/bridge_rectifier.png" alt="bridge rectifier" width="200">
 </div>
-<div class="title">Abbildung 20. Diodenbrückengleichrichter</div>
+<div class="title">Abbildung 21. Diodenbrückengleichrichter</div>
 </div>
 <div class="paragraph">
 <p>Die Funktionsweise der Brücke ist relativ simple. Unabhängig davon, wie der Strom angelegt wird, schließen die Konfiguration der Dioden stets so, dass am Ausgang der Brücke Plus und Minus immer gleich anliegen.
