@@ -454,6 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_entwicklung_einer_steuerung">Entwicklung einer Steuerung</a>
 <ul class="sectlevel2">
 <li><a href="#_referenzimplementierung_für_android">Referenzimplementierung für Android</a></li>
+<li><a href="#_referenzimplementierung_desktop">Referenzimplementierung Desktop</a></li>
 </ul>
 </li>
 <li><a href="#_ausblick">Ausblick</a>
@@ -863,7 +864,7 @@ ausreichend internen RAM verfügt, um die Bilddaten vor dem Senden über TCP zwi
 Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit vom
 ESP32 mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
 <a href="#fig:attiny25_pinout">8</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
-Der genau Schaltplan, wie die ATTinys mit dem ESP32 verbunden sind, ist im Anhang aufgeführt (siehe Abbildung <a href="#fig:full_schematic">20</a>).
+Der genau Schaltplan, wie die ATTinys mit dem ESP32 verbunden sind, ist im Anhang aufgeführt (siehe Abbildung <a href="#fig:full_schematic">22</a>).
 Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
 werden. Hierzu wurde eine bereits existierende Implementation von <a href="#twi_implementation">[twi_implementation]</a> verwendet, welche
 die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny254585">[attiny254585]</a>).</p>
@@ -883,7 +884,7 @@ unteren sieben Bit des empfangenen Bytes wird die Geschwindigkeit in Prozent ang
 betreiben die Mikrocontroller hiermit eine Pulsweitenmodulation, welche 127 Schritte unterstützt.
 Dieses Signal wird über den Pin <em>PWM</em> ausgegeben. Zwischen den ATTinys und den Motoren wurde eine
 H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die beiden Mikrocontroller
-über die H-Brücke mit den beiden Motoren verbunden sind, ist auf Abbildung <a href="#fig:full_schematic">20</a>
+über die H-Brücke mit den beiden Motoren verbunden sind, ist auf Abbildung <a href="#fig:full_schematic">22</a>
 im Anhang gezeigt. Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das
 TWI wird über das Define-Flag <em>address</em> gesetzt werden. Um das Kompilieren des Programms für die
 beiden Mikrocontroller zu erleichtern, wurde ein Makefile erstellt. Durch den <em>make</em>
@@ -1047,7 +1048,7 @@ TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.</p>
 <h3 id="_stromversorgung">Stromversorgung</h3>
 <div class="paragraph">
 <p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung, sowie
-bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">20</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
+bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">22</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
 der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
 zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
 Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
@@ -1110,7 +1111,7 @@ Geschwindigkeit der beiden Motoren unterschiedlich hoch definiert werden.</p>
 </div>
 <div class="paragraph">
 <p>Im Folgenden wird eine Referenzimplementierung der Drohnensteuerung am Beispiel
-einer Android App beschrieben.</p>
+einer Android App und einer Desktopanwendung beschrieben.</p>
 </div>
 <div class="sect2">
 <h3 id="_referenzimplementierung_für_android">Referenzimplementierung für Android</h3>
@@ -1173,6 +1174,31 @@ erlaubt werden. Auf dem Smartphone muss mindestens Android 5.0 installiert sein.
 unter Android 9.0 getestet.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_referenzimplementierung_desktop">Referenzimplementierung Desktop</h3>
+<div class="paragraph">
+<p>Auch für den Desktop wurde eine simple Referenzimplementierung unter Verwendung des QT-Frameworks (QML) entwickelt.
+Diese baut nach dem Starten direkt eine Verbindung zum UDP- und TCP-Socket der Drohne auf. Zur Steuerung der Drohne bietet die Oberfläche zwei Slider an. Der obere regelt die Geschwindigkeit der Motoren von -100% bis 100%. Mit dem zweiten Slider, dem Balancer, kann die Richtung bestimmt werden, indem einer der Motoren verlangsamt wird.</p>
+</div>
+<div id="fig:qt_drone_control" class="imageblock text-center">
+<div class="content">
+<img src="imgs/drone_qt_control.png" alt="drone qt control" width="200">
+</div>
+<div class="title">Abbildung 15. Bedienoberfläche, DroneControl QT-Applikation</div>
+</div>
+<div class="paragraph">
+<p>Neben der Steuerung über die Slider, lässt sich die Drohne auch mittels Gamepad steuern (siehe Abbildung <a href="#fig:gamepad">16</a>). Die Geschwindigkeit wird mit Hilfe der y-Achse des rechten Analogsticks gesteuert und die Balance, also die Richtung, mittels der x-Achse des linken Analogsticks.</p>
+</div>
+<div id="fig:gamepad" class="imageblock text-center">
+<div class="content">
+<img src="imgs/gamepad.png" alt="gamepad" width="200">
+</div>
+<div class="title">Abbildung 16. Verwendeter Gamepad-Typ</div>
+</div>
+<div class="paragraph">
+<p>Zum Bauen der Anwendung wird ein C++ Compiler, sowie das QT-Framework benötigt. Zusätzlich sollte die Zusatzbibliothek <em>qt5-gamepad</em> installiert werden, da die Gamepad-Steuerung darauf basiert.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1193,13 +1219,13 @@ Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während 
 <h3 id="_verpolschutz">Verpolschutz</h3>
 <div class="paragraph">
 <p>Im aktuellen Stand wird der LiPo-Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum Einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren.
-Zum Anderen kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#fig:bridge_rectifier">15</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
+Zum Anderen kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#fig:bridge_rectifier">17</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
 </div>
 <div id="fig:bridge_rectifier" class="imageblock text-center">
 <div class="content">
 <img src="imgs/bridge_rectifier.png" alt="bridge rectifier" width="200">
 </div>
-<div class="title">Abbildung 15. Diodenbrückengleichrichter</div>
+<div class="title">Abbildung 17. Diodenbrückengleichrichter</div>
 </div>
 <div class="paragraph">
 <p>Die Funktionsweise der Brücke ist relativ simple. Unabhängig davon, wie der Strom angelegt wird, schließt die Konfiguration der Dioden stets so, dass am Ausgang der Brücke Plus und Minus immer gleich anliegen.
@@ -1252,22 +1278,22 @@ Um diesem Verhalten entgegenzuwirken, muss der ESP32 anhand der tatsächlichen D
 <p><strong>Back EMF - Back Electromotive Force</strong>: Da ein PWM Signal den Motor nicht durchgehend mit Spannung versorgt, sondern nur in Intervalen, befindet sich der Motor auch immer in Phasen, in denen er keine Spannungsversorgung erhält. Bedingt durch die Trägheit dreht der Motor sich noch eine gewisse Zeit weiter. In dieser Phase generiert der Motor eine Spannung durch elektrische Induktion (siehe Induktionsgesetze von Michael Faraday, Joseph Henry und Hans Christian Ørsted und Lenzsche Regel nach Emil Lenz), dem Back EMF. Diese Spannung kann entsprechend von einem ADC eingelesen und interpretiert werden. Es ist zu beachten, dass die Spannung ggf. erst mittels Spannungsteiler auf ein für den Microcontroller sicher messbaren Spannungsbereich herunter bricht (max. 5V).</p>
 </div>
 <div class="paragraph">
-<p><strong>Rotary Encoder</strong>: Beim Rotary Encoder bzw. Drehgeber handelt es sich im einfachsten Fall um eine Scheibe mit Schlitzen in gleichen Abständen zueinander, wie in Abbildung <a href="#fig:rotary_wheel">16</a> gezeigt. Diese Scheibe ist an der Welle des Motors angebracht.</p>
+<p><strong>Rotary Encoder</strong>: Beim Rotary Encoder bzw. Drehgeber handelt es sich im einfachsten Fall um eine Scheibe mit Schlitzen in gleichen Abständen zueinander, wie in Abbildung <a href="#fig:rotary_wheel">18</a> gezeigt. Diese Scheibe ist an der Welle des Motors angebracht.</p>
 </div>
 <div id="fig:rotary_wheel" class="imageblock text-center">
 <div class="content">
 <img src="imgs/rotary_encoder.png" alt="rotary encoder" width="200">
 </div>
-<div class="title">Abbildung 16. Drehgeber, Scheibe, <a href="#rotary_encoder_img">[rotary_encoder_img]</a></div>
+<div class="title">Abbildung 18. Drehgeber, Scheibe, <a href="#rotary_encoder_img">[rotary_encoder_img]</a></div>
 </div>
 <div class="paragraph">
-<p>Die Schreibe dreht sich hierbei zwischen einer Lichtschranke, wie in Abbildung <a href="#fig:light_barrier">17</a>, die wiederum aufgrund der Schlitze in der Scheibe abwechselnt eine Spannung ausgibt oder nicht. Ausgelesen mit einem GPIO-Pin ergibt sich hieraus ein Signal in Sägezahnform, wobei die Frequenz der Flankenwechsel der Umdrehung des Motors entspricht.</p>
+<p>Die Schreibe dreht sich hierbei zwischen einer Lichtschranke, wie in Abbildung <a href="#fig:light_barrier">19</a>, die wiederum aufgrund der Schlitze in der Scheibe abwechselnt eine Spannung ausgibt oder nicht. Ausgelesen mit einem GPIO-Pin ergibt sich hieraus ein Signal in Sägezahnform, wobei die Frequenz der Flankenwechsel der Umdrehung des Motors entspricht.</p>
 </div>
 <div id="fig:light_barrier" class="imageblock text-center">
 <div class="content">
 <img src="imgs/light_barrier.png" alt="light barrier" width="200">
 </div>
-<div class="title">Abbildung 17. Drehgeber, Lichtschranke, <a href="#light_barrier_img">[light_barrier_img]</a></div>
+<div class="title">Abbildung 19. Drehgeber, Lichtschranke, <a href="#light_barrier_img">[light_barrier_img]</a></div>
 </div>
 </div>
 </div>
@@ -1402,19 +1428,19 @@ Um diesem Verhalten entgegenzuwirken, muss der ESP32 anhand der tatsächlichen D
 <div class="content">
 <img src="imgs/pcb_front.png" alt="pcb front">
 </div>
-<div class="title">Abbildung 18. PCB Oberseite</div>
+<div class="title">Abbildung 20. PCB Oberseite</div>
 </div>
 <div id="fig:pcb_back" class="imageblock text-center">
 <div class="content">
 <img src="imgs/pcb_back.png" alt="pcb back">
 </div>
-<div class="title">Abbildung 19. PCB Unterseite</div>
+<div class="title">Abbildung 21. PCB Unterseite</div>
 </div>
 <div id="fig:full_schematic" class="imageblock text-center">
 <div class="content">
 <img src="imgs/full_schematic.png" alt="full schematic">
 </div>
-<div class="title">Abbildung 20. Kompletter Schaltplan</div>
+<div class="title">Abbildung 22. Kompletter Schaltplan</div>
 </div>
 </div>
 </div>

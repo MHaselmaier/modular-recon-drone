@@ -28,7 +28,7 @@ Wert im Intervall [0, 100]. Um die Drohne um Hindernisse zu manövrieren, muss d
 Geschwindigkeit der beiden Motoren unterschiedlich hoch definiert werden.
 
 Im Folgenden wird eine Referenzimplementierung der Drohnensteuerung am Beispiel
-einer Android App beschrieben.
+einer Android App und einer Desktopanwendung beschrieben.
 
 === Referenzimplementierung für Android
 
