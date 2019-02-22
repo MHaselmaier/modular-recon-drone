@@ -792,16 +792,32 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 <div class="sect2">
 <h3 id="sec:camera_module">Kameramodul</h3>
 <div class="paragraph">
-<p>Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision.</p>
+<p>Das verwendete Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision. Dieses Modul
+erfüllt die gängigen Marktansprüche an PC-Multimedia- und Smartphone-Kameras. Es kann in
+Temperaturen von -20°C bis 70°C betrieben werden und passt sich automatisch an schlechte
+Lichtverhältnisse an. Es unterstützt eine maximale Auflösung von 640x480 Pixel und unterstützt
+bis zu 60 FPS. Die Bilddaten können in verschiedenen Formaten über das SCCB Interface erhalten
+werden (vgl. <a href="#ov7725">[ov7725]</a>).</p>
 </div>
-<table class="tableblock frame-all grid-all" style="width: 75%;">
+<div id="fig:camera_module" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/camera_module.png" alt="camera module" width="200">
+</div>
+<div class="title">Abbildung 10. Kameramodul OV7725</div>
+</div>
+<div class="paragraph">
+<p>Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
+(vgl. <a href="#esp_cam">[esp_cam]</a>). In der folgenden Tabelle ist beschrieben, wie das Kameramodul mit dem ESP32
+verbunden wurde.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
 <caption class="title">Tabelle 3. Anschluss der Kamera am ESP32</caption>
 <colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
+<col style="width: 24%;">
+<col style="width: 24%;">
+<col style="width: 4%;">
+<col style="width: 24%;">
+<col style="width: 24%;">
 </colgroup>
 <thead>
 <tr>
@@ -878,12 +894,6 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <a href="#ardu
 </tr>
 </tbody>
 </table>
-<div id="fig:camera_module" class="imageblock" style="text-align: center">
-<div class="content">
-<img src="imgs/camera_module.png" alt="camera module" width="200">
-</div>
-<div class="title">Abbildung 10. Kameramodul OV7725</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="sec:oled_display">Bildschirm</h3>
@@ -1169,6 +1179,14 @@ Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 <dd>
 <p>Through Hole Technology, Durchsteckmontage</p>
 </dd>
+<dt>FPS</dt>
+<dd>
+<p>Frames per Second</p>
+</dd>
+<dt>SCCB</dt>
+<dd>
+<p>Serial Camera Control Bus</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -1191,13 +1209,13 @@ Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 <p><a id="arduino_programmer"></a>[arduino_programmer] Arduino Uno als Programmer: <a href="https://create.arduino.cc/projecthub/arjun/programming-attiny85-with-arduino-uno-afb829" class="bare">https://create.arduino.cc/projecthub/arjun/programming-attiny85-with-arduino-uno-afb829</a></p>
 </li>
 <li>
-<p><a id="eagle"></a>[eagle] <a href="https://www.autodesk.co.uk/products/eagle/overview" class="bare">https://www.autodesk.co.uk/products/eagle/overview</a></p>
+<p><a id="eagle"></a>[eagle] Eagle Software: <a href="https://www.autodesk.co.uk/products/eagle/overview" class="bare">https://www.autodesk.co.uk/products/eagle/overview</a></p>
 </li>
 <li>
-<p><a id="twi_implementation"></a>[twi_implementation] <a href="https://github.com/rambo/TinyWire" class="bare">https://github.com/rambo/TinyWire</a></p>
+<p><a id="twi_implementation"></a>[twi_implementation] TWI Implementation: <a href="https://github.com/rambo/TinyWire" class="bare">https://github.com/rambo/TinyWire</a></p>
 </li>
 <li>
-<p><a id="attiny254585"></a>[attiny254585] <a href="https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf" class="bare">https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf</a></p>
+<p><a id="attiny254585"></a>[attiny254585] ATTiny25/45/85 Datenblatt: <a href="https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf" class="bare">https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf</a></p>
 </li>
 <li>
 <p><a id="esp_idf_install"></a>[esp_idf_install] ESP-IDF Getting Started: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html" class="bare">https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html</a></p>
@@ -1210,6 +1228,9 @@ Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 </li>
 <li>
 <p><a id="openscad"></a>[openscad] OpenSCAD: <a href="http://www.openscad.org/" class="bare">http://www.openscad.org/</a></p>
+</li>
+<li>
+<p><a id="ov7725"></a>[ov7725] OV7725 Sensor: <a href="https://www.ovt.com/sensors/OV7725" class="bare">https://www.ovt.com/sensors/OV7725</a></p>
 </li>
 </ul>
 </div>
