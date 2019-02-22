@@ -38,7 +38,7 @@ Das Kamerabild, das von der Drohne übertragen wird, kann aktuell eine maximale 
 unterstützen, wenn es im Grayscale-Format übertragen wird. Diese Einschränkungen sind auf den begrenzten
 internen RAM des ESP32 zurückzuführen. Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile
 unterteilt. Aufgrund von technischen Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen
-160KB können nur während der Laufzeit dynamisch allokiert werden. Bei einer Auflösung von 320x240 Pixeln und einem
+160KB können nur während der Laufzeit dynamisch allokiert werden (vgl. <<esp32_kevin>>). Bei einer Auflösung von 320x240 Pixeln und einem
 Byte für den Grauwert eines Pixels benötigt ein Bild bereits 76,8KB RAM, um es vor dem Senden zwischenzuspeichern.
 Ein farbiges Bild ist nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, eines pro Farbkanal, bei einer Größe von
 230,4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
