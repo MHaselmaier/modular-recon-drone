@@ -31,6 +31,7 @@ Im Vergleich zu einem linearen Spannungsregler wird so viel weniger Energie vers
 Batterielaufzeit der Drone erhöht. Allerdings wird die Schaltung etwas komplexer und die benötigten 
 Komponenten kosten etwas mehr als ein linearer Spannungsregler.
 
+[[sec:vision_external_ram]]
 === Externer SPI RAM
 
 Das Kamerabild, das von der Drohne übertragen wird, kann aktuell eine maximale Auflösung von 320x240 Pixeln 

@@ -12,3 +12,4 @@
 - [[[lwip]]] LwIP TCP/IP Stack: https://savannah.nongnu.org/projects/lwip/
 - [[[openscad]]] OpenSCAD: http://www.openscad.org/
 - [[[ov7725]]] OV7725 Sensor: https://www.ovt.com/sensors/OV7725
+- [[[esp32_kevin]]] Projekterfahrung EspressifESP32 –Fallbeispiel "Kevin", arendi, Benno Trutmann, https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf
