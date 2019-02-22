@@ -27,7 +27,7 @@ static void server_task()
     
     struct MotorData motor_data;
 
-    while(1)
+    while(true)
     {
 
         int len = recvfrom(server_socket_desc, rx_buffer, sizeof(rx_buffer), 0, (struct sockaddr *) &client_addr, &client_socket_len);
