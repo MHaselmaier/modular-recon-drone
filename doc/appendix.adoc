@@ -1,0 +1,13 @@
+== Anhang
+
+.PCB Oberseite
+[[fig:pcb_front,{counter:fig}]]
+image::pcb_front.png[align="center"]
+
+.PCB Unterseite
+[[fig:pcb_back,{counter:fig}]]
+image::pcb_back.png[align="center"]
+
+.Kompletter Schaltplan
+[[fig:full_schematic,{counter:fig}]]
+image::full_schematic.png[align="center"]

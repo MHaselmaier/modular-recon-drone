@@ -22,3 +22,6 @@ include::glossary.adoc[]
 
 //---- Quellen
 include::bibliography.adoc[]
+
+//---- Anhang
+include::appendix.adoc[]

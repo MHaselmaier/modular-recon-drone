@@ -207,15 +207,9 @@ unteren sieben Bit des empfangenen Bytes wird die Geschwindigkeit in Prozent ang
 betreiben die Mikrocontroller hiermit eine Pulsweitenmodulation, welche 127 Schritte unterstützt.
 Dieses Signal wird über den Pin _PWM_ ausgegeben. Zwischen den ATTinys und dein Motoren wurde eine
 H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die beiden Mikrocontroller 
-über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <<fig:motor_controller_schematic>>
-gezeigt.
-
-.Schaltplan der Motorsteuerung
-[[fig:motor_controller_schematic, {counter:fig}]]
-image::ATTiny25_HBrücke_Schematic.png[width=500, align="center"]
-
-Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das TWI wird
-über das Define-Flag _address_ gesetzt werden. Um das Kompilieren des Programms für die 
+über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <<fig:full_schematic>>
+im Anhang gezeigt. Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das
+TWI wird über das Define-Flag _address_ gesetzt werden. Um das Kompilieren des Programms für die 
 beiden Mikrocontroller zu erleichtern, wurde ein Makefile erstellt. Durch den _make_
 Befehl werden die Programm der beiden Mikrocontroller gebaut. Durch _make flash_L_ und
 _make flash_R_ wird entsprechend das Programm für die linke und rechte Motorsteuerung 
@@ -331,17 +325,11 @@ TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.
 
 === Stromversorgung
 Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
-bis zu 12V für die Motoren. Auf Abbildung <<fig:powersupply>> wird gezeigt, wie die einzelnen Versorgungsspannungen von der Batterie
-erhalten werden.
-
-.Stromversorgung
-[[fig:powersupply, {counter:fig}]]
-image::powersupply.png[width=400, align="center"]
-
-Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
-Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen. Um ein Schwanken
-der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für das
-Kameramodul nötigen 3.3V werden von der MCU erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
+bis zu 12V für die Motoren. Auf Abbildung <<fig:full_schematic>> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
+der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
+zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
+Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
+das Kameramodul nötigen 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
 entschieden, wodurch 11.1V als Batteriespannung anliegen.
 
 

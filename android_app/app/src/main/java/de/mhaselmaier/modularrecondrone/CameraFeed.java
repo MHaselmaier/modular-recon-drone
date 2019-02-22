@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
 public class CameraFeed
