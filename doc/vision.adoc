@@ -33,7 +33,6 @@ Komponenten kosten etwas mehr als ein linearer Spannungsregler.
 
 [[sec:vision_external_ram]]
 === Externer SPI RAM
-
 Das Kamerabild, das von der Drohne übertragen wird, kann aktuell eine maximale Auflösung von 320x240 Pixeln 
 unterstützen, wenn es im Grayscale-Format übertragen wird. Diese Einschränkungen sind auf den begrenzten
 internen RAM des ESP32 zurückzuführen. Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile
@@ -45,3 +44,9 @@ Ein farbiges Bild ist nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, ei
 Es ist jedoch möglichen den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
 angeschlossen wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung
 des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.
+
+=== Drehzahlkorrektur der Motordrehzahl
+Da die Motoren bedingt durch geringfügige Fertigungsunterschiede (unterschiede in der Erregerwicklung, etc) laufen die Motoren bei gleichem PWM Signal nicht identisch schnell. Entsprechend hat die Drohne die Tendenz bei Geradeausfahrten in eine bestimmte Richtung zu fahren. 
+Um diesem Verhalten entgegenzuwirken, muss der ESP32 anhand der tatsächlichen Drehzahl der Motoren Korrekturwerte an die Motorcontroller übergeben. Um die Drehzahl bei einem Gleichstrommotor zu ermitteln, können beispielsweise folgende Verfahren angewandt werden: 
+
+*Back EMF - Back Electromotive Force*: Da ein PWM Signal den Motor nicht durchgehend mit Spannung versorgt, sondern nur in Intervalen, .
