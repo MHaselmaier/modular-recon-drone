@@ -141,7 +141,7 @@ Diese baut nach dem Starten direkt eine Verbindung zum UDP- und TCP-Socket der D
 .Bedienoberfläche, DroneControl QT-Applikation
 image::drone_qt_control.png[width=200, align="center"]
 
-Neben der Steuerung über die Slider, lässt sich die Drohne auch mittels Gamepad steuern (siehe Abbildung <<fig:gamepad>>). Die Geschwindigkeit wird mit Hilfe der y-Achse des rechten Analogsticks gesteuert und die Balance, also die Richtung, mittels der x-Achse des linken Analogsticks. 
+Neben der Steuerung über die Slider, lässt sich die Drohne auch mittels Gamepad steuern (siehe Abbildung <<fig:gamepad>>). Die Geschwindigkeit wird mit Hilfe der y-Achse des rechten Analogsticks gesteuert und die Balance, also die Richtung, mittels der x-Achse des linken Analogsticks. Auch eine rudimentäre Steuerung mittels Pfeiltasten ist möglich (jedoch nicht zu empfehlen).
 
 [[fig:gamepad, {counter:fig}]]
 .Verwendeter Gamepad-Typ
