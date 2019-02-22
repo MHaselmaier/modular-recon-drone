@@ -92,9 +92,11 @@ Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um
 ===== Main
 Neben der Initialisierung der einzelnen Software-Module, ist auch der Systemeventhandler und die Bildschirmaktualisierung untergebracht. 
 Der Eventhandler fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup. 
-Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht. 
+
+Exemplarisch ist die Ablaufreihenfolge der Accesspoint Events in Abbildung <<fig:event_handling_diagram>>.
 
 .Ablauf, Start des AP, Client verbindet, Client trennt sich
+[[fig:event_handling_diagram, {counter:fig}]]
 [plantuml, target="event_handling_diagram"]
 ....
 @startuml
@@ -108,7 +110,10 @@ Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt 
 @enduml
 ....
 
+Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht (siehe Abbildung <<fig:display_textupdate>>). 
+
 .Display Textupdate
+[[fig:display_textupdate, {counter:fig}]]
 [plantuml, target="display_update_diagram"]
 ....
 @startuml
@@ -126,9 +131,10 @@ stop
 
 ===== Access Point
 Das AP Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert. 
-Die Konfiguration des Accesspoints lautet wie folgt: 
+Die Konfiguration des Accesspoints ist in Tabelle <<table:ap_config>> aufgeführt. 
 
 .AP Konfiguration
+[[table:ap_config]]
 |===
 | SSID | Recon Drone
 | Kanal | 0
