@@ -24,8 +24,8 @@ Hardware RNG in Form einer achtstelligen, positiven Ganzzahl generiert.
 Das Passwort und die SSID des Access Points werden auf dem Bildschirm dargestellt (siehe Abschnitt <<sec:oled_screen>>). 
 
 ==== Entwicklung
-Der ESP32 ist mit 244 Mhz und zwei CPU Kernen ein relativ potenter 32 Bit Microcontroller. Zudem verfügt der Controller 
-über eine Vielzahl an Schnittstellen. Neben den oben erwähnten Funktionalitäten, verfügt der ESP noch über: 
+Der ESP32 ist mit 244 Mhz und zwei CPU Kernen ein potenter 32 Bit Microcontroller. Zudem verfügt der Controller 
+über eine Vielzahl an Schnittstellen. Neben den oben erwähnten Funktionalitäten verfügt der ESP noch über: 
 
 * Bluetooth 4.2 (inkl. BLE)
 * 18 ADC Kanäle mit 12 bit Auflösung
@@ -46,7 +46,7 @@ sie der Arduino IDE gegenüber wesentlich mächtiger ist.
 
 ==== ESP-IDF
 Die Installation der ESP-IDF ist für gängige Betriebssystemen auf der Herstellerseite (siehe <<esp_idf_install>>) dokumentiert.
-Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei.
+Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc), bei.
 Diese sind, wie auch die Komponenten der SDK selbst, umfangreich und gut dokumentiert (siehe Header-Dateien).
 Beim Aufsetzen eines neuen Projekts empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf _Make_ basierende Buildchain anbietet. 
 
@@ -75,7 +75,7 @@ Die Struktur des Projektes stellt sich wie folgt dar:
 *** u8g2
 ** main
 
-Für das Ansprechen der Komponenten Kamera (siehe Abschnitt <<sec:camera_module>>) und Display (siehe Abschnitt <<sec:oled_display>>) wurden 
+Für das Ansprechen der Kamera- (siehe Abschnitt <<sec:camera_module>>) und Display-Komponenten (siehe Abschnitt <<sec:oled_display>>) wurden 
 jeweils entsprechende externe Bibliotheken verwendet (näheres in den entsprechenden Abschnitten). Diese sind, wie andere externe Bibliotheken im Allgemeinen, im Ordner _components_ abgelegt. 
 Der eigentliche Code der Drohne befindet sich im Ordner _main_. Der Aufbau der eigentlichen Projektdateien ist in Abbildung <<fig:mcu_structure>> gezeigt.
 
@@ -174,11 +174,11 @@ Zum Anderen wird das Display initialisiert und aus dem _Standby_ aufgeweckt.
 Neben der Initialisierung der Kamera mit Hilfe der externen Bibliothek (siehe Abschnitt <<sec:camera_module>>), wird im Modul 
 noch ein Task gestartet, der mittels TCP-Server auf einkommende Verbindungen von Seiten der Steuereinheit wartet. 
 Nach Verbindungsaufbau sendet der TCP-Server konstant die aus der Kamera ausgelesenen Bilddaten an den Client.
-Sobald über die _Eventgroup_ signalisiert wurde, das der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum Einen über die _Eventgroup_ und zum Anderen über das Timeout der Schreiboperation des Sockets.
+Sobald über die _Eventgroup_ signalisiert wurde, dass der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum Einen über die _Eventgroup_ und zum Anderen über das Timeout der Schreiboperation des Sockets.
 
 .Kamera TCP-Server Ablauf
 [[fig:camera_tcp_server, {counter:fig}]]
-[plantuml, "camera_tcp_server"]
+[plantuml, "camera_tcp_server", align="center"]
 ....
 @startuml
 start
@@ -263,8 +263,8 @@ image::camera_module.png[width=200, align="center"]
 
 Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
 (vgl. <<esp_cam>>). In der folgenden Tabelle ist beschrieben, wie das Kameramodul mit dem ESP32
-verbunden wurde. Es ist zu bemerken, dass die Verbindung zwischen dem Kameramodul und dem ESP32
-möglichst kurz zu halten ist. Wird die Verbindung zu lang, wird jediglich Rauschen vom ESP32
+verbunden wurde. Es ist anzumerken, dass die Verbindung zwischen dem Kameramodul und dem ESP32
+möglichst kurz zu halten ist. Wird die Verbindung zu lang, wird lediglich Rauschen vom ESP32
 empfangen.
 
 .Anschluss der Kamera am ESP32
@@ -343,23 +343,23 @@ Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend setzt sich
 * SDL: TWI, Datenleitung
 * SCL: TWI, Taktleitung
 
-Zur Ansteuerung des Displays wird auf die *u8g2* Bibliothek für monochrome LCD- und OLED Bildschirme zurückgegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Verwendung unter Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren. 
+Zur Ansteuerung des Displays wird auf die *u8g2* Bibliothek für monochrome LCD- und OLED Bildschirme zurückgegriffen. Diese unterstützt eine Vielzahl an Display Controllern. Die Standardimplementierung ist für die Verwendung unter Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren. 
 Für den ESP32 existiert diese Implementierung bereits unter dem Namen _u8g2_esp_ (siehe <<u8g2_esp>>). Jedoch wurde die Implementierung so 
 vorgesehen, dass sie neben dem Ansteuern des Bildschirms auch die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung 
 TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1. 
 
 === Stromversorgung
-Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
+Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung, sowie
 bis zu 12V für die Motoren. Auf Abbildung <<fig:full_schematic>> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
 der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
 zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
 Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
-das Kameramodul benötigten 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
-entschieden, wodurch 11.1V als Batteriespannung anliegen.
+das Kameramodul benötigten 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes fiel die Entscheidung auf einen 3-Zellen LiPo-Akku,
+wodurch 11.1V als Batteriespannung anliegen.
 
 
 === Schaltplan und PCB
-Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard verkabelt und getestet und anschließend auf einer
+Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard verkabelt, getestet und anschließend auf einer
 Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <<fig:prototyp>> zu sehen.
 
 .Lochrasterplatine
