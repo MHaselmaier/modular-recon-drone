@@ -2,14 +2,14 @@
 
 Aufgrund der schlichten Schnittstelle zur Drohne ist es sehr einfach, eine
 beliebige Steuerung zu implementieren. Um die Drohne anzusteuern, muss sich 
-zuerst mit dem bereitgestellt W-Lan-Netzwerk verbunden werden. Innerhalb
+zuerst mit dem bereitgestellten W-Lan-Netzwerk verbunden werden. Innerhalb
 dieses Netzwerkes hat die Drohne immer die IP-Addresse _192.168.4.1_. Um 
 das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über den 
 Port _1234_ aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
 Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei 
-Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
-das zweite Byte steuert den rechten Motor (vgl. Abbildung <<fig:udp-packet>>).
+Bytes per UDP über Port 4242 übertragen werden. Das erste Byte steuert den linken Motor
+und das zweite Byte steuert den rechten Motor (vgl. Abbildung <<fig:udp-packet>>).
 
 [[fig:udp-packet, Abb. {counter:figure-counter}]]
 [ditaa, udp-packet, align="center"]
@@ -33,15 +33,15 @@ einer Android App beschrieben.
 
 === Referenzimplementierung für Android
 
-Zur Steuerung der Recon Drohne wurde eine simple Android App entwickelt.
+Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
 Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drohne
 und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <<fig:app>>
-gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drohne bereitgestellt
-wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
+gezeigt. Die App sucht nach dem W-Lan-Netzwerk, dass von der Drohne bereitgestellt
+wird. Damit W-Lan-Netzwerke gesucht werden können, muss der Standort-Service des
 Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum 
 Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button 
 gedrückt, baut die App die Verbindung zur Drohne auf. Damit die App mit der Drohne
-kommunizieren kann, müssen die mobile Internet deaktiviert sein. Diese Funktionalität
+kommunizieren kann, muss das mobile Internet deaktiviert sein. Diese Funktionalität
 wird durch die _ReconDroneConnection_-Klasse realisiert (vgl. Abbildung <<fig:classdiagram>>).
 Hat sich das Smartphone mit der Drohne verbunden, wird automatisch zur nächsten Ansicht der
 App gewechselt, welche durch die _ReconDrone_-Klasse realisiert wird.
@@ -53,7 +53,7 @@ image::app.png[width=500, align="center"]
 Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal 
 eingesehen werden. Die Steuerung wird von der _TouchController_-Klasse implementiert.
 Die Touchevents des Benutzer werden in der _onTouch()_-Methode verarbeitet. In ihr 
-werden die Startposition und aktuelle Position der Touchbewegungen verarbeitet und 
+werden die Startposition und die aktuelle Position der Touchbewegungen verarbeitet und 
 in den Attributen _startingPositions_ und _currentPositions_ zwischengespeichert.
 Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
 der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto 
