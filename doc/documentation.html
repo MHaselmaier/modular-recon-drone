@@ -681,17 +681,22 @@ Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um
 <div class="sect4">
 <h5 id="_main">Main</h5>
 <div class="paragraph">
-<p>Neben der Initialisierung der einzelnen Software-Module, ist auch der Systemeventhandler und die Bildschirmaktualisierung untergebracht.
-Der Eventhandler fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup.
-Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht.</p>
+<p>Neben der Initialisierung der einzelnen Software-Module, ist auch der <em>Systemeventhandler</em> und die Bildschirmaktualisierung untergebracht.
+Der <em>Eventhandler</em> fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup.</p>
 </div>
-<div class="imageblock">
+<div class="paragraph">
+<p>Exemplarisch ist die Ablaufreihenfolge der Accesspoint Events in Abbildung <a href="#fig:event_handling_diagram">4</a>.</p>
+</div>
+<div id="fig:event_handling_diagram" class="imageblock">
 <div class="content">
 <img src="imgs/event_handling_diagram.png" alt="event handling diagram" width="920" height="301">
 </div>
 <div class="title">Abbildung 4. Ablauf, Start des AP, Client verbindet, Client trennt sich</div>
 </div>
-<div class="imageblock">
+<div class="paragraph">
+<p>Mit Hilfe der <em>Eventgroup</em> kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht (siehe Abbildung <a href="#fig:display_textupdate">5</a>).</p>
+</div>
+<div id="fig:display_textupdate" class="imageblock">
 <div class="content">
 <img src="imgs/display_update_diagram.png" alt="display update diagram" width="637" height="197">
 </div>
@@ -699,12 +704,12 @@ Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt 
 </div>
 </div>
 <div class="sect4">
-<h5 id="_access_point">Access Point</h5>
+<h5 id="_access_point_module">Access Point Module</h5>
 <div class="paragraph">
 <p>Das AP Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert.
-Die Konfiguration des Accesspoints lautet wie folgt:</p>
+Die Konfiguration des Accesspoints ist in Tabelle <a href="#table:ap_config">AP Konfiguration</a> aufgeführt.</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
+<table id="table:ap_config" class="tableblock frame-all grid-all stretch">
 <caption class="title">Tabelle 1. AP Konfiguration</caption>
 <colgroup>
 <col style="width: 50%;">
@@ -739,7 +744,7 @@ Die Konfiguration des Accesspoints lautet wie folgt:</p>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_twi_master">TWI Master</h5>
+<h5 id="_i2c_master_module">I<sup>2</sup>C Master Module</h5>
 <div class="paragraph">
 <p>Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTiny (siehe Abschnitt <a href="#sec:attiny">Motor Controller</a>).</p>
 </div>
@@ -781,8 +786,19 @@ Die Konfiguration des Accesspoints lautet wie folgt:</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_camera">Camera</h5>
-
+<h5 id="_camera_module">Camera Module</h5>
+<div class="paragraph">
+<p>Neben der Initialisierung der Kamera mit Hilfe der externen Bibliothek (siehe Abschnitt <a href="#sec:camera_module">Kameramodul</a>), wird im Modul
+noch ein Task gestartet, der mittels TCP-Server auf einkommende Verbindungen von Seiten der Steuereinheit wartet.
+Nach Verbindungsaufbau sendet der TCP-Server konstant die aus der Kamera ausgelesenen Bilddaten an den Client.
+Sobald über die <em>Eventgroup</em> signalisiert wurde, das der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum einen über die <em>Eventgroup</em> und zum anderen über das Timeout der Schreiboperation des Sockets.</p>
+</div>
+<div id="fig:camera_tcp_server" class="imageblock">
+<div class="content">
+<img src="imgs/camera_tcp_server.png" alt="camera tcp server" width="211" height="462">
+</div>
+<div class="title">Abbildung 6. Kamera TCP-Server Ablauf</div>
+</div>
 </div>
 </div>
 </div>
@@ -792,7 +808,7 @@ Die Konfiguration des Accesspoints lautet wie folgt:</p>
 <p>Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
 Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit von
 der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
-<a href="#fig:attiny25_pinout">4</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
+<a href="#fig:attiny25_pinout">7</a> sind die Pins für die Takt- (<em>SCL</em>) und Datenleitung (<em>SDA</em>) des TWIs gezeigt.
 Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
 werden. Hierzu wurde eine bereits existierende Implementation von <a href="#twi_implementation">[twi_implementation]</a> verwendet, welche
 die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <a href="#attiny254585">[attiny254585]</a>).</p>
@@ -801,7 +817,7 @@ die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (sie
 <div class="content">
 <img src="imgs/attiny25_pinout.jpg" alt="attiny25 pinout" width="300">
 </div>
-<div class="title">Abbildung 6. ATTiny25 Pinout</div>
+<div class="title">Abbildung 7. ATTiny25 Pinout</div>
 </div>
 <div class="paragraph">
 <p>Die ATTinys erwarten ein Byte, in dem die Richtung und die Geschwindigkeit kodiert sind.
@@ -812,7 +828,7 @@ unteren sieben Bit des empfangenen Bytes wird die Geschwindigkeit in Prozent ang
 betreiben die Mikrocontroller hiermit eine Pulsweitenmodulation, welche 127 Schritte unterstützt.
 Dieses Signal wird über den Pin <em>PWM</em> ausgegeben. Zwischen den ATTinys und dein Motoren wurde eine
 H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die beiden Mikrocontroller
-über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:full_schematic">14</a>
+über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:full_schematic">17</a>
 im Anhang gezeigt. Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das
 TWI wird über das Define-Flag <em>address</em> gesetzt werden. Um das Kompilieren des Programms für die
 beiden Mikrocontroller zu erleichtern, wurde ein Makefile erstellt. Durch den <em>make</em>
@@ -841,7 +857,7 @@ werden (vgl. <a href="#ov7725">[ov7725]</a>).</p>
 <div class="content">
 <img src="imgs/camera_module.png" alt="camera module" width="200">
 </div>
-<div class="title">Abbildung 7. Kameramodul OV7725</div>
+<div class="title">Abbildung 8. Kameramodul OV7725</div>
 </div>
 <div class="paragraph">
 <p>Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
@@ -944,7 +960,7 @@ empfangen.</p>
 <div class="content">
 <img src="imgs/oled_display.png" alt="oled display" width="200">
 </div>
-<div class="title">Abbildung 8. Oled Diplay 128x64, SSD1306</div>
+<div class="title">Abbildung 9. Oled Diplay 128x64, SSD1306</div>
 </div>
 <div class="paragraph">
 <p>Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend setzt sich der Pinout wie folgt zusammen:</p>
@@ -976,7 +992,7 @@ TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.</p>
 <h3 id="_stromversorgung">Stromversorgung</h3>
 <div class="paragraph">
 <p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
-bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">14</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
+bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">17</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
 der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
 zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
 Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
@@ -988,24 +1004,24 @@ entschieden, wodurch 11.1V als Batteriespannung anliegen.</p>
 <h3 id="_schaltplan_und_pcb">Schaltplan und PCB</h3>
 <div class="paragraph">
 <p>Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard verkabelt und getestet und anschließend auf einer
-Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <a href="#fig:prototyp">7</a> zu sehen.</p>
+Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <a href="#fig:prototyp">10</a> zu sehen.</p>
 </div>
 <div id="fig:prototyp" class="imageblock text-center">
 <div class="content">
 <img src="imgs/lochrasterplatine.png" alt="lochrasterplatine" width="500">
 </div>
-<div class="title">Abbildung 9. Lochrasterplatine</div>
+<div class="title">Abbildung 10. Lochrasterplatine</div>
 </div>
 <div class="paragraph">
 <p>Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
 (siehe <a href="#eagle">[eagle]</a>). Die Eagle-Projektdateien sind im Ordner <em>schematic_and_pcb</em> zu finden. Anschließend wurde JLCPCB (siehe <a href="#jlcpcb">[jlcpcb]</a>)
-mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildung <a href="#fig:pcb">8</a> gezeigt.</p>
+mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildung <a href="#fig:pcb">11</a> gezeigt.</p>
 </div>
 <div id="fig:pcb" class="imageblock text-center">
 <div class="content">
 <img src="imgs/pcb.png" alt="pcb" width="500">
 </div>
-<div class="title">Abbildung 10. Fertige bestücktes PCB</div>
+<div class="title">Abbildung 11. Fertige bestücktes PCB</div>
 </div>
 </div>
 </div>
@@ -1029,7 +1045,7 @@ das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:udp-pack
 <div class="content">
 <img src="imgs/udp-packet.png" alt="udp packet" width="490" height="126">
 </div>
-<div class="title">Abbildung 11. UDP-Paketformat</div>
+<div class="title">Abbildung 12. UDP-Paketformat</div>
 </div>
 <div class="paragraph">
 <p>Das <em>Direction</em> bit gibt an, ob die Motoren vorwärts (0) oder rückwärst (1) drehen.
@@ -1046,14 +1062,14 @@ einer Android App beschrieben.</p>
 <div class="paragraph">
 <p>Zur Steuerung der Recon Drohne wurde eine simple Android App entwickelt.
 Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drohne
-und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <a href="#fig:app">9</a>
+und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <a href="#fig:app">12</a>
 gezeigt. Die App sucht nach dem W-Lan Netzwerk, dass von der Drohne bereitgestellt
 wird. Damit W-Lan Netzwerke gesucht werden können, muss der Standort-Service des
 Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum
 Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button
 gedrückt, baut die App die Verbindung zur Drohne auf. Damit die App mit der Drohne
 kommunizieren kann, müssen die mobile Internet deaktiviert sein. Diese Funktionalität
-wird durch die <em>ReconDroneConnection</em>-Klasse realisiert (vgl. Abbildung <a href="#fig:classdiagram">10</a>).
+wird durch die <em>ReconDroneConnection</em>-Klasse realisiert (vgl. Abbildung <a href="#fig:classdiagram">13</a>).
 Hat sich das Smartphone mit der Drohne verbunden, wird automatisch zur nächsten Ansicht der
 App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 </div>
@@ -1061,7 +1077,7 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <div class="content">
 <img src="imgs/app.png" alt="app" width="500">
 </div>
-<div class="title">Abbildung 12. Ansichten der App</div>
+<div class="title">Abbildung 13. Ansichten der App</div>
 </div>
 <div class="paragraph">
 <p>Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal
@@ -1084,7 +1100,7 @@ befühlt.</p>
 <div class="content">
 <img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
 </div>
-<div class="title">Abbildung 13. Klassendiagramm</div>
+<div class="title">Abbildung 14. Klassendiagramm</div>
 </div>
 <div class="paragraph">
 <p>Das Kamerasignal der Drohne wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
@@ -1122,13 +1138,13 @@ Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während 
 <h3 id="_verpolschutz">Verpolschutz</h3>
 <div class="paragraph">
 <p>Im aktuellen Stand wird der LiPo Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum Einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren.
-Des Weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#bridge_rectifier">11</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
+Des Weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#bridge_rectifier">14</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
 </div>
 <div id="bridge_rectifier" class="imageblock text-center">
 <div class="content">
 <img src="imgs/bridge_rectifier.png" alt="bridge rectifier" width="200">
 </div>
-<div class="title">Abbildung 14. Diodenbrückengleichrichter</div>
+<div class="title">Abbildung 15. Diodenbrückengleichrichter</div>
 </div>
 <div class="paragraph">
 <p>Die Funktionsweise der Brücke ist relativ simple. Unabhängig davon, wie der Strom angelegt wird, schließen die Konfiguration der Dioden stets so, dass am Ausgang der Brücke Plus und Minus immer gleich anliegen.
@@ -1294,19 +1310,19 @@ des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benö
 <div class="content">
 <img src="imgs/pcb_front.png" alt="pcb front">
 </div>
-<div class="title">Abbildung 15. PCB Oberseite</div>
+<div class="title">Abbildung 16. PCB Oberseite</div>
 </div>
 <div id="fig:pcb_back" class="imageblock text-center">
 <div class="content">
 <img src="imgs/pcb_back.png" alt="pcb back">
 </div>
-<div class="title">Abbildung 16. PCB Unterseite</div>
+<div class="title">Abbildung 17. PCB Unterseite</div>
 </div>
 <div id="fig:full_schematic" class="imageblock text-center">
 <div class="content">
 <img src="imgs/full_schematic.png" alt="full schematic">
 </div>
-<div class="title">Abbildung 17. Kompletter Schaltplan</div>
+<div class="title">Abbildung 18. Kompletter Schaltplan</div>
 </div>
 </div>
 </div>

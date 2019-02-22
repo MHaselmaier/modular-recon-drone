@@ -91,11 +91,13 @@ Zunächst werden die Komponenten initialisiert. Nach der Initialisierung werden 
 Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um möglichst parallel zu laufen.
 
 ===== Main
-Neben der Initialisierung der einzelnen Software-Module, ist auch der Systemeventhandler und die Bildschirmaktualisierung untergebracht. 
-Der Eventhandler fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup. 
-Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht. 
+Neben der Initialisierung der einzelnen Software-Module, ist auch der _Systemeventhandler_ und die Bildschirmaktualisierung untergebracht. 
+Der _Eventhandler_ fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup. 
+
+Exemplarisch ist die Ablaufreihenfolge der Accesspoint Events in Abbildung <<fig:event_handling_diagram>>.
 
 .Ablauf, Start des AP, Client verbindet, Client trennt sich
+[[fig:event_handling_diagram, {counter:fig}]]
 [plantuml, target="event_handling_diagram"]
 ....
 @startuml
@@ -109,7 +111,10 @@ Mit Hilfe der Eventgroup kann nun entsprechender Text auf dem Display angezeigt 
 @enduml
 ....
 
+Mit Hilfe der _Eventgroup_ kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht (siehe Abbildung <<fig:display_textupdate>>). 
+
 .Display Textupdate
+[[fig:display_textupdate, {counter:fig}]]
 [plantuml, target="display_update_diagram"]
 ....
 @startuml
@@ -125,11 +130,12 @@ stop
 @enduml
 ....
 
-===== Access Point
+===== Access Point Module
 Das AP Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert. 
-Die Konfiguration des Accesspoints lautet wie folgt: 
+Die Konfiguration des Accesspoints ist in Tabelle <<table:ap_config>> aufgeführt. 
 
 .AP Konfiguration
+[[table:ap_config]]
 |===
 | SSID | Recon Drone
 | Kanal | 0
@@ -139,7 +145,7 @@ Die Konfiguration des Accesspoints lautet wie folgt:
 | Beacon Interval | 100
 |===
 
-===== TWI Master
+===== I^2^C Master Module
 Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTiny (siehe Abschnitt <<sec:attiny>>). 
 
 .TWI Bus Konfiguration
@@ -154,7 +160,30 @@ Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Se
 
 Zusätzlich wird das Display initialisiert und aus dem _Standby_ aufgeweckt.
 
-===== Camera
+===== Camera Module
+Neben der Initialisierung der Kamera mit Hilfe der externen Bibliothek (siehe Abschnitt <<sec:camera_module>>), wird im Modul 
+noch ein Task gestartet, der mittels TCP-Server auf einkommende Verbindungen von Seiten der Steuereinheit wartet. 
+Nach Verbindungsaufbau sendet der TCP-Server konstant die aus der Kamera ausgelesenen Bilddaten an den Client.
+Sobald über die _Eventgroup_ signalisiert wurde, das der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum einen über die _Eventgroup_ und zum anderen über das Timeout der Schreiboperation des Sockets.
+
+.Kamera TCP-Server Ablauf
+[[fig:camera_tcp_server, {counter:fig}]]
+[plantuml, "camera_tcp_server"]
+....
+@startuml
+start
+:Init Socket;
+repeat
+        :Accept connection;
+        repeat
+                :camera run\n ->request data;
+                :socket write data;
+        repeat while (client connected or \nwrite without error)
+repeat while (While ESP running)
+@enduml
+....
+
+
 
 [[sec:attiny]]
 === Motor Controller
