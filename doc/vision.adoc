@@ -7,7 +7,7 @@ Derzeit ist das Chassis der Drohne noch im Prototypenzustand, gefertigt aus Stah
 Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während des Projektes wurde bereits eine erste Version des Gehäuses mittels CAD Software (siehe <<openscad>>)  modeliert. Dieses kann evaluiert und gedruckt werden oder durch ein anderes, völlig neues Design ersetzt werden. 
 
 === Verpolschutz
-Im aktuellen Stand wird der LiPo-Akku mittels _Male Headern_ am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ _JST RCY_. Zum Einen könnte ein entsprechender _Female_ Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren. 
+Im aktuellen Stand wird der LiPo-Akku mittels _Male Headern_ am PCB der Drohne angeschlossen. Der Akku verfügt über eine Buchse vom Typ _JST RCY_. Zum Einen könnte ein entsprechender _Female_ Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren. 
 Zum Anderen kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <<fig:bridge_rectifier>>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden. 
 
 .Diodenbrückengleichrichter
@@ -35,14 +35,14 @@ Komponenten kosten etwas mehr als ein linearer Spannungsregler.
 === Externer SPI RAM
 Das Kamerabild, das von der Drohne übertragen wird, kann aktuell eine maximale Auflösung von 320x240 Pixeln 
 unterstützen, wenn es im Grayscale-Format übertragen wird. Diese Einschränkungen sind auf den begrenzten
-internen RAM des ESP32 zurückzuführen. Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile
+internen RAM des ESP32 zurückzuführen. Er besitzt eine Größe von 320KB, welche sich in zwei Teile
 unterteilt. Aufgrund von technischen Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen
 160KB können nur während der Laufzeit dynamisch allokiert werden (vgl. <<esp32_kevin>>). Bei einer Auflösung von 320x240 Pixeln und einem
 Byte für den Grauwert eines Pixels benötigt ein Bild bereits 76.8KB, um es vor dem Senden zwischenzuspeichern.
 Ein farbiges Bild ist nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, eines pro Farbkanal, bei einer Größe von
 230.4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
 Es ist jedoch möglich, den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
-angeschlossen wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung
+angeschlossen wird. Ist der gewählte externe RAM groß genug, kann ein farbiges Bild in der maximalen Auflösung
 des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.
 
 === Drehzahlkorrektur der Motordrehzahl

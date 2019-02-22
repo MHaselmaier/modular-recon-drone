@@ -479,12 +479,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Im Rahmen der Master-Projektarbeit im Wintersemester 2018/19 wurde eine Modular-Recon-Drone
 (modulare Aufklärungsdrohne) entwickelt. Auf Abbildung <a href="#fig:drohne">1</a> ist der finale Aufbau
-abgebildet. Bei der Architektur der Hard- und Software wurde auf einen modularen Aufbau geachtet,
+gezeigt. Bei der Architektur der Hard- und Software wurde auf einen modularen Aufbau geachtet,
 um die einzelnen Komponenten leicht gegen Alternativen austauschen zu können. So wurde zum Beispiel
 das Ansteuern der Motoren in ein eigenes Modul ausgelagert, das über ein TWI-Interface angesprochen
 werden kann. Die Drohne bietet eine simple Schnittstelle über die sie gesteuert werden kann.
 Auch hier kann das Steuersystem leicht ausgetauscht oder angepasst werden. Im Rahmen dieses Projekts
-wurden zwei Steuersystem entwickelt, welche als Basis für die Entwicklung weiterer Eingabemethoden
+wurden zwei Steuersysteme entwickelt, welche als Basis für die Entwicklung weiterer Eingabemethoden
 genutzt werden können. Um die Drohne auch aus der Ferne zu steuern, verfügt sie über ein Kameramodul.</p>
 </div>
 <div id="fig:drohne" class="imageblock text-center">
@@ -546,8 +546,8 @@ Das Passwort und die SSID des Access Points werden auf dem Bildschirm dargestell
 <div class="sect3">
 <h4 id="_entwicklung">Entwicklung</h4>
 <div class="paragraph">
-<p>Der ESP32 ist mit 244 Mhz und zwei CPU Kernen ein relativ potenter 32 Bit Microcontroller. Zudem verfügt der Controller
-über eine Vielzahl an Schnittstellen. Neben den oben erwähnten Funktionalitäten, verfügt der ESP noch über:</p>
+<p>Der ESP32 ist mit 244 Mhz und zwei CPU Kernen ein potenter 32 Bit Microcontroller. Zudem verfügt der Controller
+über eine Vielzahl an Schnittstellen. Neben den oben erwähnten Funktionalitäten verfügt der ESP noch über:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -601,7 +601,7 @@ sie der Arduino IDE gegenüber wesentlich mächtiger ist.</p>
 <h4 id="_esp_idf">ESP-IDF</h4>
 <div class="paragraph">
 <p>Die Installation der ESP-IDF ist für gängige Betriebssystemen auf der Herstellerseite (siehe <a href="#esp_idf_install">[esp_idf_install]</a>) dokumentiert.
-Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei.
+Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc), bei.
 Diese sind, wie auch die Komponenten der SDK selbst, umfangreich und gut dokumentiert (siehe Header-Dateien).
 Beim Aufsetzen eines neuen Projekts empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf <em>Make</em> basierende Buildchain anbietet.</p>
 </div>
@@ -673,7 +673,7 @@ Beim Aufsetzen eines neuen Projekts empfiehlt es sich, eines der Beispielprojekt
 </ul>
 </div>
 <div class="paragraph">
-<p>Für das Ansprechen der Komponenten Kamera (siehe Abschnitt <a href="#sec:camera_module">Kameramodul</a>) und Display (siehe Abschnitt <a href="#sec:oled_display">Bildschirm</a>) wurden
+<p>Für das Ansprechen der Kamera- (siehe Abschnitt <a href="#sec:camera_module">Kameramodul</a>) und Display-Komponenten (siehe Abschnitt <a href="#sec:oled_display">Bildschirm</a>) wurden
 jeweils entsprechende externe Bibliotheken verwendet (näheres in den entsprechenden Abschnitten). Diese sind, wie andere externe Bibliotheken im Allgemeinen, im Ordner <em>components</em> abgelegt.
 Der eigentliche Code der Drohne befindet sich im Ordner <em>main</em>. Der Aufbau der eigentlichen Projektdateien ist in Abbildung <a href="#fig:mcu_structure">3</a> gezeigt.</p>
 </div>
@@ -805,7 +805,7 @@ Die Motorsteuerdaten werden über eine Messagequeue, die vom UDP Socket (siehe A
 <p>Neben der Initialisierung der Kamera mit Hilfe der externen Bibliothek (siehe Abschnitt <a href="#sec:camera_module">Kameramodul</a>), wird im Modul
 noch ein Task gestartet, der mittels TCP-Server auf einkommende Verbindungen von Seiten der Steuereinheit wartet.
 Nach Verbindungsaufbau sendet der TCP-Server konstant die aus der Kamera ausgelesenen Bilddaten an den Client.
-Sobald über die <em>Eventgroup</em> signalisiert wurde, das der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum Einen über die <em>Eventgroup</em> und zum Anderen über das Timeout der Schreiboperation des Sockets.</p>
+Sobald über die <em>Eventgroup</em> signalisiert wurde, dass der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum Einen über die <em>Eventgroup</em> und zum Anderen über das Timeout der Schreiboperation des Sockets.</p>
 </div>
 <div id="fig:camera_tcp_server" class="imageblock text-center">
 <div class="content">
@@ -917,8 +917,8 @@ werden (vgl. <a href="#ov7725">[ov7725]</a>).</p>
 <div class="paragraph">
 <p>Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
 (vgl. <a href="#esp_cam">[esp_cam]</a>). In der folgenden Tabelle ist beschrieben, wie das Kameramodul mit dem ESP32
-verbunden wurde. Es ist zu bemerken, dass die Verbindung zwischen dem Kameramodul und dem ESP32
-möglichst kurz zu halten ist. Wird die Verbindung zu lang, wird jediglich Rauschen vom ESP32
+verbunden wurde. Es ist anzumerken, dass die Verbindung zwischen dem Kameramodul und dem ESP32
+möglichst kurz zu halten ist. Wird die Verbindung zu lang, wird lediglich Rauschen vom ESP32
 empfangen.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -1037,7 +1037,7 @@ empfangen.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>Zur Ansteuerung des Displays wird auf die <strong>u8g2</strong> Bibliothek für monochrome LCD- und OLED Bildschirme zurückgegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Verwendung unter Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren.
+<p>Zur Ansteuerung des Displays wird auf die <strong>u8g2</strong> Bibliothek für monochrome LCD- und OLED Bildschirme zurückgegriffen. Diese unterstützt eine Vielzahl an Display Controllern. Die Standardimplementierung ist für die Verwendung unter Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren.
 Für den ESP32 existiert diese Implementierung bereits unter dem Namen <em>u8g2_esp</em> (siehe <a href="#u8g2_esp">[u8g2_esp]</a>). Jedoch wurde die Implementierung so
 vorgesehen, dass sie neben dem Ansteuern des Bildschirms auch die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung
 TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.</p>
@@ -1046,19 +1046,19 @@ TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.</p>
 <div class="sect2">
 <h3 id="_stromversorgung">Stromversorgung</h3>
 <div class="paragraph">
-<p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
+<p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung, sowie
 bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">20</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
 der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
 zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
 Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
-das Kameramodul benötigten 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
-entschieden, wodurch 11.1V als Batteriespannung anliegen.</p>
+das Kameramodul benötigten 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes fiel die Entscheidung auf einen 3-Zellen LiPo-Akku,
+wodurch 11.1V als Batteriespannung anliegen.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_schaltplan_und_pcb">Schaltplan und PCB</h3>
 <div class="paragraph">
-<p>Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard verkabelt und getestet und anschließend auf einer
+<p>Zu Beginn des Projekts wurden die einzelnen Komponenten auf einem Breadboard verkabelt, getestet und anschließend auf einer
 Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildung <a href="#fig:prototyp">11</a> zu sehen.</p>
 </div>
 <div id="fig:prototyp" class="imageblock text-center">
@@ -1089,8 +1089,8 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 beliebige Steuerung zu implementieren. Um die Drohne anzusteuern, muss sich
 zuerst mit dem bereitgestellten W-Lan-Netzwerk verbunden werden. Innerhalb
 dieses Netzwerkes hat die Drohne immer die IP-Addresse <em>192.168.4.1</em>. Um
-das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über den
-Port <em>1234</em> aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
+das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über
+Port <em>1234</em> aufgebaut werden. Die Drohne sendet das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
 Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
 Bytes per UDP über Port 4242 übertragen werden. Das erste Byte steuert den linken Motor
@@ -1109,7 +1109,7 @@ Wert im Intervall [0, 100]. Um die Drohne um Hindernisse zu manövrieren, muss d
 Geschwindigkeit der beiden Motoren unterschiedlich hoch definiert werden.</p>
 </div>
 <div class="paragraph">
-<p>Im Folgenden wird eine Referenzimplementierung der Steuerung der Drohne am Beispiel
+<p>Im Folgenden wird eine Referenzimplementierung der Drohnensteuerung am Beispiel
 einer Android App beschrieben.</p>
 </div>
 <div class="sect2">
@@ -1118,10 +1118,10 @@ einer Android App beschrieben.</p>
 <p>Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
 Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drohne
 und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <a href="#fig:app">13</a>
-gezeigt. Die App sucht nach dem W-Lan-Netzwerk, dass von der Drohne bereitgestellt
+gezeigt. Die App sucht nach dem W-Lan-Netzwerk, das von der Drohne bereitgestellt
 wird. Damit W-Lan-Netzwerke gesucht werden können, muss der Standort-Service des
 Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum
-Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button
+Verbinden verlangt. Wurde das Passwort eingegeben und der "Verbinden"-Button
 gedrückt, baut die App die Verbindung zur Drohne auf. Damit die App mit der Drohne
 kommunizieren kann, muss das mobile Internet deaktiviert sein. Diese Funktionalität
 wird durch die <em>ReconDroneConnection</em>-Klasse realisiert (vgl. Abbildung <a href="#fig:classdiagram">14</a>).
@@ -1138,18 +1138,18 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <p>Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal
 eingesehen werden. Die Steuerung wird von der <em>TouchController</em>-Klasse implementiert.
 Die Touchevents des Benutzer werden in der <em>onTouch()</em>-Methode verarbeitet. In ihr
-werden die Startposition und die aktuelle Position der Touchbewegungen verarbeitet und
+werden die Startpositionen und die aktuellen Positionen der Touchbewegungen verarbeitet und
 in den Attributen <em>startingPositions</em> und <em>currentPositions</em> zwischengespeichert.
 Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
 der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto
-schneller bewegt sich die Drohne. Die linke Hälft des Bildschirms dient zur Lenkung
+schneller bewegt sich die Drohne. Die linke Hälfte des Bildschirms dient zur Lenkung
 der Drohne. In den Attributen <em>accerleration</em> und <em>steering</em> wird die ID des jeweiligen
 Touchevents gespeichert. Wenn kein Touchevent vorliegt, enthalten die beiden Attribute
 den Wert -1. Alle 50 Millisekunden wird die Methode <em>sendControllerUpdate()</em> aufgerufen,
 welche der Drohne die Steuersignale sendet. Es werden zwei Bytes übertragen, die jeweils
 die Geschwindigkeit und Richtung für einen Motor definieren. Die beiden Bytes werden in
 den Methoden <em>setAcceleration()</em>, <em>setSteering()</em>, <em>setDirection()</em> und <em>adjustForInPlaceTurn()</em>
-befühlt.</p>
+befüllt.</p>
 </div>
 <div id="fig:classdiagram" class="imageblock text-center">
 <div class="content">
@@ -1160,7 +1160,7 @@ befühlt.</p>
 <div class="paragraph">
 <p>Das Kamerasignal der Drohne wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
 ihrem Konstruktor das <em>ImageView</em>-Objekt entgegen, in dem sie das Kamerasignal anzeigen
-soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen werde
+soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen werden
 und wandelt die Byte-Daten in ein Bitmap um. Da in Android das User-Interface nicht aus
 einem Hintergrundthread angepasst werden kann, wird ein <em>Handler</em> verwendet, der das
 Bitmap im <em>ImageView</em> anzeigt.</p>
@@ -1192,7 +1192,7 @@ Es bietet sich deshalb an, ein Gehäuse mittels 3D-Druck anzufertigen. Während 
 <div class="sect2">
 <h3 id="_verpolschutz">Verpolschutz</h3>
 <div class="paragraph">
-<p>Im aktuellen Stand wird der LiPo-Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku selbst verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum Einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren.
+<p>Im aktuellen Stand wird der LiPo-Akku mittels <em>Male Headern</em> am PCB der Drohne angeschlossen. Der Akku verfügt über eine Buchse vom Typ <em>JST RCY</em>. Zum Einen könnte ein entsprechender <em>Female</em> Verbinder für THT Platinen verbaut werden, um eine richtige Polung beim Anschließen zu garantieren.
 Zum Anderen kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a href="#fig:bridge_rectifier">15</a>) hinter dem Akkuanschluss ein Schutz vor Verpolung garantiert werden.</p>
 </div>
 <div id="fig:bridge_rectifier" class="imageblock text-center">
@@ -1231,14 +1231,14 @@ Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 <div class="paragraph">
 <p>Das Kamerabild, das von der Drohne übertragen wird, kann aktuell eine maximale Auflösung von 320x240 Pixeln
 unterstützen, wenn es im Grayscale-Format übertragen wird. Diese Einschränkungen sind auf den begrenzten
-internen RAM des ESP32 zurückzuführen. Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile
+internen RAM des ESP32 zurückzuführen. Er besitzt eine Größe von 320KB, welche sich in zwei Teile
 unterteilt. Aufgrund von technischen Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen
 160KB können nur während der Laufzeit dynamisch allokiert werden (vgl. <a href="#esp32_kevin">[esp32_kevin]</a>). Bei einer Auflösung von 320x240 Pixeln und einem
 Byte für den Grauwert eines Pixels benötigt ein Bild bereits 76.8KB, um es vor dem Senden zwischenzuspeichern.
 Ein farbiges Bild ist nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, eines pro Farbkanal, bei einer Größe von
 230.4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
 Es ist jedoch möglich, den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
-angeschlossen wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung
+angeschlossen wird. Ist der gewählte externe RAM groß genug, kann ein farbiges Bild in der maximalen Auflösung
 des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.</p>
 </div>
 </div>
@@ -1252,7 +1252,7 @@ Um diesem Verhalten entgegenzuwirken, muss der ESP32 anhand der tatsächlichen D
 <p><strong>Back EMF - Back Electromotive Force</strong>: Da ein PWM Signal den Motor nicht durchgehend mit Spannung versorgt, sondern nur in Intervalen, befindet sich der Motor auch immer in Phasen, in denen er keine Spannungsversorgung erhält. Bedingt durch die Trägheit dreht der Motor sich noch eine gewisse Zeit weiter. In dieser Phase generiert der Motor eine Spannung durch elektrische Induktion (siehe Induktionsgesetze von Michael Faraday, Joseph Henry und Hans Christian Ørsted und Lenzsche Regel nach Emil Lenz), dem Back EMF. Diese Spannung kann entsprechend von einem ADC eingelesen und interpretiert werden. Es ist zu beachten, dass die Spannung ggf. erst mittels Spannungsteiler auf ein für den Microcontroller sicher messbaren Spannungsbereich herunter bricht (max. 5V).</p>
 </div>
 <div class="paragraph">
-<p><strong>Rotary Encoder</strong>: Beim Rotary Encoder bzw. Drehgeber handelt es sich in einfachsten Fall um eine eine Scheibe mit Schlitzen in gleichem Abstand zueinander wie in Abbildung <a href="#fig:rotary_wheel">16</a> zu sehen. Diese Scheibe ist an der Welle des Motors angebracht.</p>
+<p><strong>Rotary Encoder</strong>: Beim Rotary Encoder bzw. Drehgeber handelt es sich im einfachsten Fall um eine Scheibe mit Schlitzen in gleichen Abständen zueinander, wie in Abbildung <a href="#fig:rotary_wheel">16</a> gezeigt. Diese Scheibe ist an der Welle des Motors angebracht.</p>
 </div>
 <div id="fig:rotary_wheel" class="imageblock text-center">
 <div class="content">
@@ -1261,7 +1261,7 @@ Um diesem Verhalten entgegenzuwirken, muss der ESP32 anhand der tatsächlichen D
 <div class="title">Abbildung 16. Drehgeber, Scheibe, <a href="#rotary_encoder_img">[rotary_encoder_img]</a></div>
 </div>
 <div class="paragraph">
-<p>Die Schreibe dreht sich hierbei zwischen einer Lichtschranke, wie in Abbildung <a href="#fig:light_barrier">17</a>, die wiederum aufgrund der Schlitze in der Scheibe abwechselt je eine Spannung ausgibt oder nicht. Ausgelesen mit einem GPIO-Pin ergibt sich hieraus ein Signal in Sägezahnform, wobei die Frequenz der Flankenwechsel der Umdrehung des Motors entspricht.</p>
+<p>Die Schreibe dreht sich hierbei zwischen einer Lichtschranke, wie in Abbildung <a href="#fig:light_barrier">17</a>, die wiederum aufgrund der Schlitze in der Scheibe abwechselnt eine Spannung ausgibt oder nicht. Ausgelesen mit einem GPIO-Pin ergibt sich hieraus ein Signal in Sägezahnform, wobei die Frequenz der Flankenwechsel der Umdrehung des Motors entspricht.</p>
 </div>
 <div id="fig:light_barrier" class="imageblock text-center">
 <div class="content">

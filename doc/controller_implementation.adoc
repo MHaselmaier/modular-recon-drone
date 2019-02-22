@@ -4,8 +4,8 @@ Aufgrund der schlichten Schnittstelle zur Drohne ist es sehr einfach, eine
 beliebige Steuerung zu implementieren. Um die Drohne anzusteuern, muss sich 
 zuerst mit dem bereitgestellten W-Lan-Netzwerk verbunden werden. Innerhalb
 dieses Netzwerkes hat die Drohne immer die IP-Addresse _192.168.4.1_. Um 
-das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über den 
-Port _1234_ aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
+das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über 
+Port _1234_ aufgebaut werden. Die Drohne sendet das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
 Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei 
 Bytes per UDP über Port 4242 übertragen werden. Das erste Byte steuert den linken Motor
@@ -27,7 +27,7 @@ In den sieben _Speed_ bits wird die prozentuale Geschwindigkeit definiert, also 
 Wert im Intervall [0, 100]. Um die Drohne um Hindernisse zu manövrieren, muss die 
 Geschwindigkeit der beiden Motoren unterschiedlich hoch definiert werden.
 
-Im Folgenden wird eine Referenzimplementierung der Steuerung der Drohne am Beispiel
+Im Folgenden wird eine Referenzimplementierung der Drohnensteuerung am Beispiel
 einer Android App beschrieben.
 
 
@@ -36,10 +36,10 @@ einer Android App beschrieben.
 Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
 Sie besteht im Grunde aus zwei Ansichten, eine zum Verbinden mit der Drohne
 und eine zum Steuern der Drohne. Beide Ansichten sind auf Abbildung <<fig:app>>
-gezeigt. Die App sucht nach dem W-Lan-Netzwerk, dass von der Drohne bereitgestellt
+gezeigt. Die App sucht nach dem W-Lan-Netzwerk, das von der Drohne bereitgestellt
 wird. Damit W-Lan-Netzwerke gesucht werden können, muss der Standort-Service des
 Smartphones aktiviert sein. Wurde das Netzwerk gefunden, wird das Passwort zum 
-Verbinden verlagt. Wurde das Passwort eingegeben und der "Verbinden"-Button 
+Verbinden verlangt. Wurde das Passwort eingegeben und der "Verbinden"-Button 
 gedrückt, baut die App die Verbindung zur Drohne auf. Damit die App mit der Drohne
 kommunizieren kann, muss das mobile Internet deaktiviert sein. Diese Funktionalität
 wird durch die _ReconDroneConnection_-Klasse realisiert (vgl. Abbildung <<fig:classdiagram>>).
@@ -53,18 +53,18 @@ image::app.png[width=500, align="center"]
 Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal 
 eingesehen werden. Die Steuerung wird von der _TouchController_-Klasse implementiert.
 Die Touchevents des Benutzer werden in der _onTouch()_-Methode verarbeitet. In ihr 
-werden die Startposition und die aktuelle Position der Touchbewegungen verarbeitet und 
+werden die Startpositionen und die aktuellen Positionen der Touchbewegungen verarbeitet und 
 in den Attributen _startingPositions_ und _currentPositions_ zwischengespeichert.
 Die komplette rechte Hälfte des Bildschirms dient zur Beschleunigung
 der Drohne. Je weiter der Finger vom Startpunkt der Touchbewegung entfernt ist, desto 
-schneller bewegt sich die Drohne. Die linke Hälft des Bildschirms dient zur Lenkung
+schneller bewegt sich die Drohne. Die linke Hälfte des Bildschirms dient zur Lenkung
 der Drohne. In den Attributen _accerleration_ und _steering_ wird die ID des jeweiligen 
 Touchevents gespeichert. Wenn kein Touchevent vorliegt, enthalten die beiden Attribute
 den Wert -1. Alle 50 Millisekunden wird die Methode _sendControllerUpdate()_ aufgerufen,
 welche der Drohne die Steuersignale sendet. Es werden zwei Bytes übertragen, die jeweils 
 die Geschwindigkeit und Richtung für einen Motor definieren. Die beiden Bytes werden in 
 den Methoden _setAcceleration()_, _setSteering()_, _setDirection()_ und _adjustForInPlaceTurn()_
-befühlt.
+befüllt.
 
 [[fig:classdiagram,{counter:fig}]]
 [plantuml, diagram-classes, png, align="center"]
@@ -122,7 +122,7 @@ ReconDrone *-- CameraFeed : feed
 
 Das Kamerasignal der Drohne wird in der _CameraFeed_-Klasse verarbeitet. Sie nimmt in
 ihrem Konstruktor das _ImageView_-Objekt entgegen, in dem sie das Kamerasignal anzeigen
-soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen werde
+soll. Sie startet einen Hintergrundthread, in dem die einzelnen Bilder empfangen werden
 und wandelt die Byte-Daten in ein Bitmap um. Da in Android das User-Interface nicht aus
 einem Hintergrundthread angepasst werden kann, wird ein _Handler_ verwendet, der das
 Bitmap im _ImageView_ anzeigt.
