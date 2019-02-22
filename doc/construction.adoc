@@ -153,7 +153,7 @@ Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Se
 
 Zusätzlich wird das Display initialisiert und aus dem _Standby_ aufgeweckt.
 
-===== Camera 
+===== Camera
 
 [[sec:attiny]]
 === Motor Controller
@@ -200,10 +200,24 @@ davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <<arduino_prog
 
 [[sec:camera_module]]
 === Kameramodul
-Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision. 
+
+Das verwendete Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision. Dieses Modul
+erfüllt die gängigen Marktansprüche an PC-Multimedia- und Smartphone-Kameras. Es kann in 
+Temperaturen von -20°C bis 70°C betrieben werden und passt sich automatisch an schlechte
+Lichtverhältnisse an. Es unterstützt eine maximale Auflösung von 640x480 Pixel und unterstützt
+bis zu 60 FPS. Die Bilddaten können in verschiedenen Formaten über das SCCB Interface erhalten
+werden (vgl. <<ov7725>>).
+
+.Kameramodul OV7725
+[[fig:camera_module, {counter:fig}]]
+image::camera_module.png[width=200, align="center"]
+
+Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
+(vgl. <<esp_cam>>). In der folgenden Tabelle ist beschrieben, wie das Kameramodul mit dem ESP32
+verbunden wurde.
 
 .Anschluss der Kamera am ESP32
-[width="75%", align="center"]
+[cols="24%,24%,4%,24%,24%", align="center"]
 |===
 |Kamera Pin |ESP32 Pin | |Kamera Pin | ESP32 Pin
 
@@ -262,10 +276,6 @@ Das Kameramodul basiert auf dem OV7725 VGA Sensor von Omnivision.
 |GND
 |===
 
-.Kameramodul OV7725
-[[fig:camera_module, {counter:fig}]]
-image::camera_module.png[width=200, align="center"]
-
 
 [[sec:oled_display]]
 === Bildschirm
@@ -275,17 +285,17 @@ Verwendung findet ein monochromes OLED-Display mit einer Auflösung von 128x64 P
 [[fig:oled_display, {counter:fig}]]
 image::oled_display.png[width=200, align="center"]
 
-Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend Pinout setzt sich wie folgt zusammen:
+Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend setzt sich der Pinout wie folgt zusammen:
 
 * GND: Ground, Masse
 * VCC: Spannung, 3,3V - 5V
 * SDL: TWI, Datenleitung
 * SCL: TWI, Taktleitung
 
-Zur Ansteuerung des Displays wird auf die *u8g2* Bibliothek für monochrome LCD- und OLED Bildschirme zurück gegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Nutzung auf Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren. 
+Zur Ansteuerung des Displays wird auf die *u8g2* Bibliothek für monochrome LCD- und OLED Bildschirme zurückgegriffen. Diese unterstützt eine vielzahl an Display Controllern. Die Standardimplementierung ist für die Verwendung unter Arduinos vorgesehen. Jedoch ist die Bibliothek mit hoher Abstraktion aufgebaut und bietet eine Schnittstelle um hardwarespefizische Funktionalitäten anderer Microcontroller wie dem ESP32 zu implementieren. 
 Für den ESP32 existiert diese Implementierung bereits unter dem Namen _u8g2_esp_ (siehe <<u8g2_esp>>). Jedoch wurde die Implementierung so 
-vorgesehen, dass sie gleichzeitig die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung 
-TWI-Controller 2 vor. Die Drohne nutzt jedoch TWI-Controller 1. 
+vorgesehen, dass sie neben dem Ansteuern des Bildschirms auch die Initialisierung des TWI-Controllers übernimmt. Da dies im Projekt bereits geschieht, wurde der entsprechende Teil in der Implementierung entfernt. Auch wurde der verwendete TWI-Controller angepasst. Ursprünglich sah die Implementierung 
+TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1. 
 
 === Stromversorgung
 Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
