@@ -23,12 +23,12 @@ Alternativ kann als MCU der Raspberry PI zero W evaluiert werden. Vorteil dieses
 === Alternative Stromversorgung
 Aktuell wird ein linearer Spannungsregler verwendet, um die hohe Batteriespannung von 11.1V auf die 5V
 zu reduzieren, die von der MCU und den ATTinys benötigt werden. Hierbei wird sehr viel Energie
-in Form von Wärme verschwendet. Dies beeinflusst die Batterielaufzeit der Drone negativ. Weiterhin
-besteht die möglichkeit, dass der Spannungsregler überhitzt, in welchem Fall er sich abschalten
+in Form von Wärme verschwendet. Dies beeinflusst die Batterielaufzeit der Drohne negativ. Weiterhin
+besteht die Möglichkeit, dass der Spannungsregler überhitzt, in welchem Fall er sich abschalten
 würde. Erst wenn er weit genug abgekühlt ist, gibt er wieder 5V aus. Dies würde zum Abschalten der
-Drone führen. Alternativ könnte ein _Step-Down-Converter_ oder auch _Buck-Converter_ verwendet werden.
-Im Vergleich zu einem linearen Spannungsregler wird so viel weniger Energie verschwendet und somit die
-Batterielaufzeit der Drone erhöht. Allerdings wird die Schaltung etwas komplexer und die benötigten 
+Drohne führen. Alternativ könnte ein _Step-Down-Converter_ oder auch _Buck-Converter_ verwendet werden.
+Im Vergleich zu einem linearen Spannungsregler wird verschwendet diese Variante weniger Energie und erhöht
+somit die Batterielaufzeit der Drohne. Allerdings wird die Schaltung etwas komplexer und die benötigten 
 Komponenten kosten etwas mehr als ein linearer Spannungsregler.
 
 [[sec:vision_external_ram]]
@@ -39,9 +39,9 @@ unterstützen, wenn es im Grayscale-Format übertragen wird. Diese Einschränkun
 internen RAM des ESP32 zurückzuführen. Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile
 unterteilt. Aufgrund von technischen Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen
 160KB können nur während der Laufzeit dynamisch allokiert werden (vgl. <<esp32_kevin>>). Bei einer Auflösung von 320x240 Pixeln und einem
-Byte für den Grauwert eines Pixels benötigt ein Bild bereits 76,8KB RAM, um es vor dem Senden zwischenzuspeichern.
+Byte für den Grauwert eines Pixels benötigt ein Bild bereits 76.8KB, um es vor dem Senden zwischenzuspeichern.
 Ein farbiges Bild ist nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, eines pro Farbkanal, bei einer Größe von
-230,4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
-Es ist jedoch möglichen den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
+230.4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
+Es ist jedoch möglich, den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
 angeschlossen wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung
-des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.
+des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921.6KB benötigt.
