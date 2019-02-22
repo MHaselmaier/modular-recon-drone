@@ -7,7 +7,7 @@ dieses Netzwerkes hat die Drohne immer die IP-Addresse _192.168.4.1_. Um
 das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über den 
 Port _1234_ aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
-Auflösung von 320x240 Pixeln. Um die Drohne zu steuern, müssen ihr zwei 
+Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei 
 Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
 das zweite Byte steuert den rechten Motor (vgl. Abbildung <<fig:upd-packet>>).
 

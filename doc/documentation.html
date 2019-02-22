@@ -1005,7 +1005,7 @@ dieses Netzwerkes hat die Drohne immer die IP-Addresse <em>192.168.4.1</em>. Um
 das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über den
 Port <em>1234</em> aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
-Auflösung von 320x240 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
+Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
 Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
 das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:upd-packet">[fig:upd-packet]</a>).</p>
 </div>
@@ -1142,17 +1142,17 @@ Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 <div class="sect2">
 <h3 id="_externer_spi_ram">Externer SPI RAM</h3>
 <div class="paragraph">
-<p>Das Kamerabild, das von der Drohne übertragen wird, besitzt aktuell nur eine Auflösung von 320x240 Pixeln
-und ist im Grayscale-Format. Diese Einschränkungen sind auf den begrenzten internen RAM des ESP32 zurückzuführen.
-Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile unterteilt. Aufgrund von technischen
-Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen 160KB können nur während der
-Laufzeit dynamisch allokiert werden. Bei einer Auflösung von 320x240 Pixeln und einem Byte für den Grauwert
-eines Pixels benötigt ein Bild bereits 76,8KB RAM, um es vor dem Senden zwischenzuspeichern. Ein farbiges Bild
-war nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, einer pro Farbkanal, bei Größe von 230,4KB liegt.
-Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus. Es ist jedoch
-möglichen den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface angeschlossen
-wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung des Sensors
-von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.</p>
+<p>Das Kamerabild, das von der Drohne übertragen wird, kann aktuell eine maximale Auflösung von 320x240 Pixeln
+unterstützen, wenn es im Grayscale-Format übertragen wird. Diese Einschränkungen sind auf den begrenzten
+internen RAM des ESP32 zurückzuführen. Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile
+unterteilt. Aufgrund von technischen Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen
+160KB können nur während der Laufzeit dynamisch allokiert werden. Bei einer Auflösung von 320x240 Pixeln und einem
+Byte für den Grauwert eines Pixels benötigt ein Bild bereits 76,8KB RAM, um es vor dem Senden zwischenzuspeichern.
+Ein farbiges Bild ist nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, eines pro Farbkanal, bei einer Größe von
+230,4KB liegen würde. Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus.
+Es ist jedoch möglichen den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface
+angeschlossen wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung
+des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.</p>
 </div>
 </div>
 </div>
