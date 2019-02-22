@@ -30,3 +30,16 @@ Drone führen. Alternativ könnte ein _Step-Down-Converter_ oder auch _Buck-Conv
 Im Vergleich zu einem linearen Spannungsregler wird so viel weniger Energie verschwendet und somit die
 Batterielaufzeit der Drone erhöht. Allerdings wird die Schaltung etwas komplexer und die benötigten 
 Komponenten kosten etwas mehr als ein linearer Spannungsregler.
+
+=== Externer SPI RAM
+Das Kamerabild, das von der Drohne übertragen wird, besitzt aktuell nur eine Auflösung von 320x240 Pixeln
+und ist im Grayscale-Format. Diese Einschränkungen sind auf den begrenzten internen RAM des ESP32 zurückzuführen.
+Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile unterteilt. Aufgrund von technischen
+Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen 160KB können nur während der
+Laufzeit dynamisch allokiert werden. Bei einer Auflösung von 320x240 Pixeln und einem Byte für den Grauwert
+eines Pixels benötigt ein Bild bereits 76,8KB RAM, um es vor dem Senden zwischenzuspeichern. Ein farbiges Bild
+war nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, einer pro Farbkanal, bei Größe von 230,4KB liegt.
+Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus. Es ist jedoch 
+möglichen den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface angeschlossen
+wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung des Sensors
+von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.

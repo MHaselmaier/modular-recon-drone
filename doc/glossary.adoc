@@ -16,3 +16,4 @@ SDK:: Software Development Kit
 THT:: Through Hole Technology, Durchsteckmontage
 FPS:: Frames per Second
 SCCB:: Serial Camera Control Bus
+SPI:: Serial Peripheral Interface

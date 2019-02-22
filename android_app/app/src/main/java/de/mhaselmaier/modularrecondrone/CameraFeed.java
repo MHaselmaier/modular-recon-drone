@@ -9,13 +9,12 @@ import android.widget.ImageView;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
 public class CameraFeed
 {
-    private static final int IMAGE_WIDTH = 160;
-    private static final int IMAGE_HEIGHT = 120;
+    private static final int IMAGE_WIDTH = 320;
+    private static final int IMAGE_HEIGHT = 240;
     private static final Matrix ROTATION_MATRIX;
     static
     {

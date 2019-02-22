@@ -449,6 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_verpolschutz">Verpolschutz</a></li>
 <li><a href="#_raspberry_pi_zero_w">Raspberry PI zero W</a></li>
 <li><a href="#_alternative_stromversorgung">Alternative Stromversorgung</a></li>
+<li><a href="#_externer_spi_ram">Externer SPI RAM</a></li>
 </ul>
 </li>
 <li><a href="#_glossar">Glossar</a></li>
@@ -469,11 +470,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_main_control_unit">Main Control Unit</h3>
 <div class="paragraph">
-<p>Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind:
-* Hosten eines Access Points
-* Hosten eines UDP-Sockets
-* Hosten eines TCP-Servers
-* Hosten des TWI Master</p>
+<p>Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Hosten eines Access Points</p>
+</li>
+<li>
+<p>Hosten eines UDP-Sockets</p>
+</li>
+<li>
+<p>Hosten eines TCP-Servers</p>
+</li>
+<li>
+<p>Hosten des TWI Master</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Grundlage der MCU bildet ein <em>Espressif ESP32</em> (DevKit v.1, siehe <a href="#fig:esp32_devkitv1">{counter:fig}</a>).</p>
@@ -808,7 +821,9 @@ werden (vgl. <a href="#ov7725">[ov7725]</a>).</p>
 <div class="paragraph">
 <p>Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
 (vgl. <a href="#esp_cam">[esp_cam]</a>). In der folgenden Tabelle ist beschrieben, wie das Kameramodul mit dem ESP32
-verbunden wurde.</p>
+verbunden wurde. Es ist zu bemerken, dass die Verbindung zwischen dem Kameramodul und dem ESP32
+möglichst kurz zu halten ist. Wird die Verbindung zu lang, wird jediglich Rauschen vom ESP32
+empfangen.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <caption class="title">Tabelle 3. Anschluss der Kamera am ESP32</caption>
@@ -990,7 +1005,7 @@ dieses Netzwerkes hat die Drohne immer die IP-Addresse <em>192.168.4.1</em>. Um
 das Kamerasignal zu erhalten, muss eine TCP-Verbindung zur Drohne über den
 Port <em>1234</em> aufgebaut werden. Die Drohne sendet dann das Bildsignal Byteweise
 an den Client. Das übersendete Bild ist im Grayscale-Format und besitzt eine
-Auflösung von 160x120 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
+Auflösung von 320x240 Pixeln. Um die Drohne zu steuern, müssen ihr zwei
 Bytes per UDP übertragen werden. Das erste Byte steuert den linken Motor und
 das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:upd-packet">[fig:upd-packet]</a>).</p>
 </div>
@@ -1124,6 +1139,22 @@ Batterielaufzeit der Drone erhöht. Allerdings wird die Schaltung etwas komplexe
 Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_externer_spi_ram">Externer SPI RAM</h3>
+<div class="paragraph">
+<p>Das Kamerabild, das von der Drohne übertragen wird, besitzt aktuell nur eine Auflösung von 320x240 Pixeln
+und ist im Grayscale-Format. Diese Einschränkungen sind auf den begrenzten internen RAM des ESP32 zurückzuführen.
+Er besitzt eine insgesamte Größe von 320KB, welche sich in zwei Teile unterteilt. Aufgrund von technischen
+Einschränkungen können maximal 160KB statisch allokiert werden. Die restlichen 160KB können nur während der
+Laufzeit dynamisch allokiert werden. Bei einer Auflösung von 320x240 Pixeln und einem Byte für den Grauwert
+eines Pixels benötigt ein Bild bereits 76,8KB RAM, um es vor dem Senden zwischenzuspeichern. Ein farbiges Bild
+war nicht möglich, da dies Aufgrund der 3 Bytes pro Pixel, einer pro Farbkanal, bei Größe von 230,4KB liegt.
+Wird versucht ein Byte-Array dieser Größe zu allokieren, gibt der ESP32 eine Fehlermeldung aus. Es ist jedoch
+möglichen den internen RAM des ESP32 um einen externen RAM zu erweiteren, der über das SPI-Interface angeschlossen
+wird. Ist der gewählte externe RAM groß genug, kann sogar ein farbiges Bild in der maximalen Auflösung des Sensors
+von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benötigt.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1186,6 +1217,10 @@ Komponenten kosten etwas mehr als ein linearer Spannungsregler.</p>
 <dt>SCCB</dt>
 <dd>
 <p>Serial Camera Control Bus</p>
+</dd>
+<dt>SPI</dt>
+<dd>
+<p>Serial Peripheral Interface</p>
 </dd>
 </dl>
 </div>
