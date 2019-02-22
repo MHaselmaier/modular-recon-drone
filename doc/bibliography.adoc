@@ -1,3 +1,4 @@
+<<<
 [bibliography]
 == Quellen
 - [[[u8g2]]] Graustufenbildschirm Bibliothek: https://github.com/olikraus/u8g2
