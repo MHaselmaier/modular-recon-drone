@@ -1,6 +1,7 @@
 == Aufbau der Drohne
 === Main Control Unit
-Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind: 
+Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind:
+
 * Hosten eines Access Points
 * Hosten eines UDP-Sockets
 * Hosten eines TCP-Servers
@@ -220,7 +221,9 @@ image::camera_module.png[width=200, align="center"]
 
 Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
 (vgl. <<esp_cam>>). In der folgenden Tabelle ist beschrieben, wie das Kameramodul mit dem ESP32
-verbunden wurde.
+verbunden wurde. Es ist zu bemerken, dass die Verbindung zwischen dem Kameramodul und dem ESP32
+möglichst kurz zu halten ist. Wird die Verbindung zu lang, wird jediglich Rauschen vom ESP32
+empfangen.
 
 .Anschluss der Kamera am ESP32
 [cols="24%,24%,4%,24%,24%", align="center"]
