@@ -454,6 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_glossar">Glossar</a></li>
 <li><a href="#_quellen">Quellen</a></li>
+<li><a href="#_anhang">Anhang</a></li>
 </ul>
 </div>
 </div>
@@ -783,18 +784,9 @@ unteren sieben Bit des empfangenen Bytes wird die Geschwindigkeit in Prozent ang
 betreiben die Mikrocontroller hiermit eine Pulsweitenmodulation, welche 127 Schritte unterstützt.
 Dieses Signal wird über den Pin <em>PWM</em> ausgegeben. Zwischen den ATTinys und dein Motoren wurde eine
 H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die beiden Mikrocontroller
-über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:motor_controller_schematic">{counter:fig}</a>
-gezeigt.</p>
-</div>
-<div id="fig:motor_controller_schematic" class="imageblock" style="text-align: center">
-<div class="content">
-<img src="imgs/ATTiny25_HBrücke_Schematic.png" alt="ATTiny25 HBrücke Schematic" width="500">
-</div>
-<div class="title">Abbildung 10. Schaltplan der Motorsteuerung</div>
-</div>
-<div class="paragraph">
-<p>Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das TWI wird
-über das Define-Flag <em>address</em> gesetzt werden. Um das Kompilieren des Programms für die
+über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <a href="#fig:full_schematic">{counter:fig}</a>
+im Anhang gezeigt. Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das
+TWI wird über das Define-Flag <em>address</em> gesetzt werden. Um das Kompilieren des Programms für die
 beiden Mikrocontroller zu erleichtern, wurde ein Makefile erstellt. Durch den <em>make</em>
 Befehl werden die Programm der beiden Mikrocontroller gebaut. Durch <em>make flash_L</em> und
 <em>make flash_R</em> wird entsprechend das Programm für die linke und rechte Motorsteuerung
@@ -821,7 +813,7 @@ werden (vgl. <a href="#ov7725">[ov7725]</a>).</p>
 <div class="content">
 <img src="imgs/camera_module.png" alt="camera module" width="200">
 </div>
-<div class="title">Abbildung 11. Kameramodul OV7725</div>
+<div class="title">Abbildung 10. Kameramodul OV7725</div>
 </div>
 <div class="paragraph">
 <p>Zum Ansprechen des Kameramoduls wurde eine bereits existierende Bibliothek verwendet
@@ -924,7 +916,7 @@ empfangen.</p>
 <div class="content">
 <img src="imgs/oled_display.png" alt="oled display" width="200">
 </div>
-<div class="title">Abbildung 12. Oled Diplay 128x64, SSD1306</div>
+<div class="title">Abbildung 11. Oled Diplay 128x64, SSD1306</div>
 </div>
 <div class="paragraph">
 <p>Das Display wird hierbei über einen TWI-Bus angebunden. Entsprechend setzt sich der Pinout wie folgt zusammen:</p>
@@ -956,20 +948,11 @@ TWI-Controller 2 vor, die Drohne nutzt jedoch TWI-Controller 1.</p>
 <h3 id="_stromversorgung">Stromversorgung</h3>
 <div class="paragraph">
 <p>Im gesamten Projekt werden drei Versorgungsspannungen benötigt: 3.3V für das Kameramodul, 5V für die MCU und die Motorsteuerung und
-bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:powersupply">{counter:fig}</a> wird gezeigt, wie die einzelnen Versorgungsspannungen von der Batterie
-erhalten werden.</p>
-</div>
-<div id="fig:powersupply" class="imageblock" style="text-align: center">
-<div class="content">
-<img src="imgs/powersupply.png" alt="powersupply" width="400">
-</div>
-<div class="title">Abbildung 13. Stromversorgung</div>
-</div>
-<div class="paragraph">
-<p>Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung zu erhalten, wurde der
-Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen. Um ein Schwanken
-der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für das
-Kameramodul nötigen 3.3V werden von der MCU erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
+bis zu 12V für die Motoren. Auf Abbildung <a href="#fig:full_schematic">{counter:fig}</a> im Anhang ist gezeigt, wie die einzelnen Versorgungsspannungen von
+der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
+zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
+Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
+das Kameramodul nötigen 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
 entschieden, wodurch 11.1V als Batteriespannung anliegen.</p>
 </div>
 </div>
@@ -983,7 +966,7 @@ Lochrasterplatine in einem Prototypen verlötet. Dieser Prototyp ist auf Abbildu
 <div class="content">
 <img src="imgs/lochrasterplatine.png" alt="lochrasterplatine" width="500">
 </div>
-<div class="title">Abbildung 14. Lochrasterplatine</div>
+<div class="title">Abbildung 12. Lochrasterplatine</div>
 </div>
 <div class="paragraph">
 <p>Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
@@ -994,7 +977,7 @@ mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildu
 <div class="content">
 <img src="imgs/pcb.png" alt="pcb" width="500">
 </div>
-<div class="title">Abbildung 15. Fertige bestücktes PCB</div>
+<div class="title">Abbildung 13. Fertige bestücktes PCB</div>
 </div>
 </div>
 </div>
@@ -1018,7 +1001,7 @@ das zweite Byte steuert den rechten Motor (vgl. Abbildung <a href="#fig:upd-pack
 <div class="content">
 <img src="imgs/udp-packet.png" alt="udp packet" width="490" height="126">
 </div>
-<div class="title">Abbildung 17. UDP-Paketformat</div>
+<div class="title">Abbildung 15. UDP-Paketformat</div>
 </div>
 <div class="paragraph">
 <p>Das <em>Direction</em> bit gibt an, ob die Motoren vorwärts (0) oder rückwärst (1) drehen.
@@ -1050,7 +1033,7 @@ App gewechselt, welche durch die <em>ReconDrone</em>-Klasse realisiert wird.</p>
 <div class="content">
 <img src="imgs/app.png" alt="app" width="500">
 </div>
-<div class="title">Abbildung 18. Ansichten der App</div>
+<div class="title">Abbildung 16. Ansichten der App</div>
 </div>
 <div class="paragraph">
 <p>Aus dieser zweiten Ansicht kann die Drohne gesteuert werden und das Kamerasignal
@@ -1073,7 +1056,7 @@ befühlt.</p>
 <div class="content">
 <img src="imgs/diagram-classes.png" alt="diagram classes" width="662" height="728">
 </div>
-<div class="title">Abbildung 20. Klassendiagramm</div>
+<div class="title">Abbildung 18. Klassendiagramm</div>
 </div>
 <div class="paragraph">
 <p>Das Kamerasignal der Drohne wird in der <em>CameraFeed</em>-Klasse verarbeitet. Sie nimmt in
@@ -1117,7 +1100,7 @@ Des Weiteren kann mit Hilfe eines Brückengleichrichters (siehe Abbildung <a hre
 <div class="content">
 <img src="imgs/bridge_rectifier.png" alt="bridge rectifier" width="200">
 </div>
-<div class="title">Abbildung 21. Diodenbrückengleichrichter</div>
+<div class="title">Abbildung 19. Diodenbrückengleichrichter</div>
 </div>
 <div class="paragraph">
 <p>Die Funktionsweise der Brücke ist relativ simple. Unabhängig davon, wie der Strom angelegt wird, schließen die Konfiguration der Dioden stets so, dass am Ausgang der Brücke Plus und Minus immer gleich anliegen.
@@ -1276,10 +1259,33 @@ des Sensors von 640x480 Pixeln aufgenommen werden. Hierfür werden 921,6KB benö
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_anhang">Anhang</h2>
+<div class="sectionbody">
+<div id="fig:pcb_front" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/pcb_front.png" alt="pcb front">
+</div>
+<div class="title">Abbildung 20. PCB Oberseite</div>
+</div>
+<div id="fig:pcb_back" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/pcb_back.png" alt="pcb back">
+</div>
+<div class="title">Abbildung 21. PCB Unterseite</div>
+</div>
+<div id="fig:full_schematic" class="imageblock" style="text-align: center">
+<div class="content">
+<img src="imgs/full_schematic.png" alt="full schematic">
+</div>
+<div class="title">Abbildung 22. Kompletter Schaltplan</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-21 14:23:35 STD
+Last updated 2019-02-22 11:07:46 STD
 </div>
 </div>
 </body>
