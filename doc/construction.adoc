@@ -1,6 +1,7 @@
 == Aufbau der Drohne
 === Main Control Unit
-Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind: 
+Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind:
+
 * Hosten eines Access Points
 * Hosten eines UDP-Sockets
 * Hosten eines TCP-Servers
