@@ -30,7 +30,6 @@ Geschwindigkeit der beiden Motoren unterschiedlich hoch definiert werden.
 Im Folgenden wird eine Referenzimplementierung der Steuerung der Drohne am Beispiel
 einer Android App beschrieben.
 
-
 === Referenzimplementierung für Android
 
 Zur Steuerung der Recon Drone wurde eine simple Android App entwickelt.
@@ -133,3 +132,19 @@ Sie befindet sich im Ordner _android_app/app/build/outputs/apk/debug_. Um sie zu
 muss in den Einstellungen des Smartphones die Installation von Apps aus unsicheren Quellen
 erlaubt werden. Auf dem Smartphone muss mindestens Android 5.0 installiert sein. Die App wurde
 unter Android 9.0 getestet.
+
+=== Referenzimplementierung Desktop
+Auch für den Desktop wurde eine simple Referenzimplementierung unter Verwendung des QT-Frameworks (QML) entwickelt. 
+Diese baut nach dem Starten direkt eine Verbindung zum UDP- und TCP-Socket der Drohne auf. Zur Steuerung der Drohne bietet die Oberfläche zwei Slider an. Der obere regelt die Geschwindigkeit der Motoren von -100% bis 100%. Mit dem zweiten Slider, dem Balancer, kann die Richtung bestimmt werden, indem einer der Motoren verlangsamt wird.
+
+[[fig:qt_drone_control, {counter:fig}]]
+.Bedienoberfläche, DroneControl QT-Applikation
+image::drone_qt_control.png[width=200, align="center"]
+
+Neben der Steuerung über die Slider, lässt sich die Drohne auch mittels Gamepad steuern (siehe Abbildung <<fig:gamepad>>). Die Geschwindigkeit wird mit Hilfe der y-Achse des rechten Analogsticks gesteuert und die Balance, also die Richtung, mittels der x-Achse des linken Analogsticks. 
+
+[[fig:gamepad, {counter:fig}]]
+.Verwendeter Gamepad-Typ
+image::gamepad.png[width=200, align="center"]
+
+Zum Bauen der Anwendung wird ein C++ Compiler, sowie das QT-Framework benötigt. Zusätzlich sollte die Zusatzbibliothek _qt5-gamepad_ installiert werden, da die Gamepad-Steuerung darauf basiert.
