@@ -1,4 +1,10 @@
 == Aufbau der Drohne
+
+In diesem Abschnitt werden die einzelnen Komponente der Drohne beschrieben.
+Zuerst wird auf die Hauptkontrolleinheit eingegangen. Anschließend wird die
+Motorsteuerung beschrieben, gefolgt vom Kameramodul und dem Bildschirm.
+Abschließend wird auf die Stromversorgung und das erstellte PCB eingegangen.
+
 === Main Control Unit
 Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind:
 
@@ -7,15 +13,15 @@ Die MCU ist die Hauptkontrolleinheit. Ihre Hauptaufgaben sind:
 * Hosten eines TCP-Servers
 * Hosten des TWI Master
 
-Grundlage der MCU bildet ein _Espressif ESP32_ (DevKit v.1, siehe <<fig:esp32_devkitv1>>).
+Grundlage der MCU bildet ein _Espressif ESP32_ (DevKit v.1, siehe Abbildung <<fig:esp32_devkitv1>>).
 
 .Espressif ESP32 DevKit v1 Development Board
 [[fig:esp32_devkitv1, {counter:fig}]]
 image::esp32_devkitv1.png[width=200, align="center"]
 
-Im Detail stellt der ESP32 einen Access Point mit WPA2 PSK Sicherung zur Verfügung. Das Passwort AP wird hierbei mittels 
-des Hardware RNG in Form einer achtstelligen positiven Ganzzahl generiert. 
-Das Passwort und die SSID des AP werden auf dem Bildschirm (siehe Abbildung <<sec:oled_screen>>) dargestellt. 
+Im Detail stellt der ESP32 einen Access Point mit WPA2 PSK Sicherung zur Verfügung. Das Passwort des Access Points wird hierbei mittels 
+Hardware RNG in Form einer achtstelligen, positiven Ganzzahl generiert. 
+Das Passwort und die SSID des Access Points werden auf dem Bildschirm dargestellt (siehe Abschnitt <<sec:oled_screen>>). 
 
 ==== Entwicklung
 Der ESP32 ist mit 244 Mhz und zwei CPU Kernen ein relativ potenter 32 Bit Microcontroller. Zudem verfügt der Controller 
@@ -39,8 +45,10 @@ Software für den ESP32 kann mit Hilfe der Arduino IDE entwickelt werden. Jedoch
 sie der Arduino IDE gegenüber wesentlich mächtiger ist. 
 
 ==== ESP-IDF
-Die Installation der ESP-IDF ist unter den gängigen Betriebssystemen mit Hilfe der 
-Anleitung auf der Herstellerseite (siehe <<esp_idf_install>>) unkompliziert möglich. Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei. Diese sind, wie auch die Komponenten der SDK selbst (Header Dateien) umfangreich und gut dokumentiert. Beim Aufsetzen eines neuen Projektes empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf Make basierende Buildchain anbietet. 
+Die Installation der ESP-IDF ist für gängige Betriebssystemen auf der Herstellerseite (siehe <<esp_idf_install>>) dokumentiert.
+Dem SDK liegt zusätzlich noch eine Ansammlung an Beispielprojekten, sortiert nach Modulen (Wifi, Bluetooth, GPIO, etc) bei.
+Diese sind, wie auch die Komponenten der SDK selbst, umfangreich und gut dokumentiert (siehe Header-Dateien).
+Beim Aufsetzen eines neuen Projekts empfiehlt es sich, eines der Beispielprojekte zu nehmen (im Zweifelsfall das Hello World), da die ESP-IDF bereits eine auf _Make_ basierende Buildchain anbietet. 
 
 Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis heraus):
 
@@ -50,11 +58,11 @@ Diese lässt sich mit folgenden Befehlen bedienen (aus dem Projektverzeichnis he
 * make clean -> Bereinigung des Build-Verzeichnisses
 * make monitor -> Starten des pythonbasierten seriellen Monitors
 
-Um die Buildchain des SDK ohne Einschränkungen verwenden zu können, wird eine Python 2 installation benötigt. Diese sollte entsprechend unter Verwendung von _menuconfig_ unter _SDK Tool Configuration_ -> _Python 2 Interpreter_ gesetzt werden.
+Um die Buildchain des SDK ohne Einschränkungen verwenden zu können, wird eine Python 2 Installation benötigt. Diese sollte entsprechend unter Verwendung von _menuconfig_ unter _SDK Tool Configuration_ -> _Python 2 Interpreter_ gesetzt werden.
 
 Danach muss noch der serielle Port, unter dem der ESP im Betriebssystem angebunden wird, konfiguiert werden. Dies geschieht unter _Serial flasher options_ -> _Default serial port_.
 
-Die ESP-IDF nutzt das Echtzeitbetriebssystem FreeRTOS (siehe <<freertos>>). Dieses stellt Tasks, Message Queues zur Intertaskkommunikation, Tasksynchronisationsmechanismen (Mutex, etc) zur Verfügung.
+Die ESP-IDF nutzt das Echtzeitbetriebssystem FreeRTOS (siehe <<freertos>>). Dieses stellt Tasks, Message Queues zur Intertaskkommunikation und Tasksynchronisationsmechanismen (Mutex, etc) zur Verfügung.
 
 Als TCP/IP Stack wird LwIP (siehe <<lwip>>) genutzt. Es handelt sich um eine leichtgewichtige Implementierung, deren Fokus auf Embedded Systems liegt. Angelehnt ist die API an die der POSIX Sockets.
 
@@ -68,8 +76,8 @@ Die Struktur des Projektes stellt sich wie folgt dar:
 ** main
 
 Für das Ansprechen der Komponenten Kamera (siehe Abschnitt <<sec:camera_module>>) und Display (siehe Abschnitt <<sec:oled_display>>) wurden 
-jeweils entsprechende externe Bibliotheken verwandt (näheres in den entsprechenden Kapiteln). Diese sind, wie andere externe Bibliotheken im Allgemeinen, im Ordner _components_ abgelegt. 
-Der eigentliche Code der Drohne befindet sich im Ordner _main_. Der Aufbau der eigentlichen Projektdateien ist in Abbildung <<fig:mcu_structure>> definiert.
+jeweils entsprechende externe Bibliotheken verwendet (näheres in den entsprechenden Abschnitten). Diese sind, wie andere externe Bibliotheken im Allgemeinen, im Ordner _components_ abgelegt. 
+Der eigentliche Code der Drohne befindet sich im Ordner _main_. Der Aufbau der eigentlichen Projektdateien ist in Abbildung <<fig:mcu_structure>> gezeigt.
 
 .MCU Code Struktur
 [[fig:mcu_structure, {counter:fig}]]
@@ -88,13 +96,13 @@ Der eigentliche Code der Drohne befindet sich im Ordner _main_. Der Aufbau der e
 ....
 
 Zunächst werden die Komponenten initialisiert. Nach der Initialisierung werden die einzelnen Module (accesspoint.c, etc) gestartet. 
-Hierbei werden entsprechend für die einzelnen Module jeweils Tasks generiert um möglichst parallel zu laufen.
+Hierbei werden jeweils für die einzelnen Module Tasks generiert, um möglichst parallel zu laufen.
 
 ===== Main
-Neben der Initialisierung der einzelnen Software-Module, ist auch der _Systemeventhandler_ und die Bildschirmaktualisierung untergebracht. 
-Der _Eventhandler_ fängt die einzelnen Zustände des Accesspoints ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup. 
+Neben der Initialisierung der einzelnen Software-Module, ist hier auch der _Systemeventhandler_ und die Bildschirmaktualisierung untergebracht. 
+Der _Eventhandler_ fängt die einzelnen Zustände des Access Points ab (Client verbindet sich, Client trennt sich) und setzt entsprechende Flags in der definierten Systemeventgroup. 
 
-Exemplarisch ist die Ablaufreihenfolge der Accesspoint Events in Abbildung <<fig:event_handling_diagram>>.
+Exemplarisch ist die Ablaufreihenfolge der Access Point Events in Abbildung <<fig:event_handling_diagram>> gezeigt.
 
 .Ablauf, Start des AP, Client verbindet, Client trennt sich
 [[fig:event_handling_diagram, {counter:fig}]]
@@ -111,7 +119,7 @@ Exemplarisch ist die Ablaufreihenfolge der Accesspoint Events in Abbildung <<fig
 @enduml
 ....
 
-Mit Hilfe der _Eventgroup_ kann nun entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht (siehe Abbildung <<fig:display_textupdate>>). 
+Mit Hilfe der _Eventgroup_ kann nun ein entsprechender Text auf dem Display angezeigt werden, abhängig davon, ob ein Nutzer verbunden ist oder nicht (siehe Abbildung <<fig:display_textupdate>>). 
 
 .Display Textupdate
 [[fig:display_textupdate, {counter:fig}]]
@@ -130,9 +138,9 @@ stop
 @enduml
 ....
 
-===== Access Point Module
-Das AP Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert. 
-Die Konfiguration des Accesspoints ist in Tabelle <<table:ap_config>> aufgeführt. 
+===== Access Point Modul
+Das Access Point Modul übernimmt neben der Initialisierung des Wifi auch die Initialisierung des TCP/IP Stacks. Während des Initialisierungsvorgangs wird mit Hilfe des RNG, wie bereits erwähnt, ein acht stelliges numerisches Passwort generiert. 
+Die Konfiguration des Access Points ist in Tabelle <<table:ap_config>> aufgeführt. 
 
 .AP Konfiguration
 [[table:ap_config]]
@@ -146,8 +154,8 @@ Die Konfiguration des Accesspoints ist in Tabelle <<table:ap_config>> aufgeführ
 | IP | 192.168.4.1
 |===
 
-===== I^2^C Master Module
-Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTiny (siehe Abschnitt <<sec:attiny>>). 
+===== I^2^C Master Modul
+Zum Einen initialisiert das Modul den Bus als Master und startet den Task zum Senden der Motorsteuerdaten an die jeweiligen ATTinys (siehe Abschnitt <<sec:attiny>>). 
 
 .TWI Bus Konfiguration
 |===
@@ -159,13 +167,13 @@ Zum einen initialisiert das Modul den Bus als Master und startet den Task zum Se
 | RX Puffer | Nein
 |===
 
-Zusätzlich wird das Display initialisiert und aus dem _Standby_ aufgeweckt.
+Zum Anderen wird das Display initialisiert und aus dem _Standby_ aufgeweckt.
 
-===== Camera Module
+===== Camera Modul
 Neben der Initialisierung der Kamera mit Hilfe der externen Bibliothek (siehe Abschnitt <<sec:camera_module>>), wird im Modul 
 noch ein Task gestartet, der mittels TCP-Server auf einkommende Verbindungen von Seiten der Steuereinheit wartet. 
 Nach Verbindungsaufbau sendet der TCP-Server konstant die aus der Kamera ausgelesenen Bilddaten an den Client.
-Sobald über die _Eventgroup_ signalisiert wurde, das der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum einen über die _Eventgroup_ und zum anderen über das Timeout der Schreiboperation des Sockets.
+Sobald über die _Eventgroup_ signalisiert wurde, das der Client die Verbindung unterbrochen hat, wartet der TCP-Server auf einen erneuten Verbindungsaufbau. Dies geschieht zum Einen über die _Eventgroup_ und zum Anderen über das Timeout der Schreiboperation des Sockets.
 
 .Kamera TCP-Server Ablauf
 [[fig:camera_tcp_server, {counter:fig}]]
@@ -193,8 +201,8 @@ repeat while (While ESP running)
 |===
 
 [NOTE]
-Graustufen und die geringe Auflösung (in Graustufen jedoch auch 320 x 240 möglich) sind darauf zurückzuführen, dass der ESP32 nicht über 
-ausreichend internen SRAM verfügt, um die Bilddaten vor dem Senden über TCP zwischenzupuffern (siehe Abschnitt <<sec:vision_external_ram>>). 
+Die Wahl des Grayscale-Formats und die geringe Auflösung (bei Graustufen jedoch auch 320 x 240 möglich) sind darauf zurückzuführen, dass der ESP32 nicht über 
+ausreichend internen RAM verfügt, um die Bilddaten vor dem Senden über TCP zwischenzupuffern (siehe Abschnitt <<sec:vision_external_ram>>). 
 
 ===== UDP Motor Data Server Module
 Initialisiert und startet einen UDP Socket, der Daten 
@@ -202,9 +210,10 @@ Initialisiert und startet einen UDP Socket, der Daten
 [[sec:attiny]]
 === Motor Controller
 Um die beiden Motoren anzusteuern, wurde ein ATTiny25 Mikrocontroller pro Motor verwendet.
-Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit von
-der MCU mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
+Über das TWI wird den beiden Mikrocontrollern die gewüschte Richtung und Geschwindigkeit vom
+ESP32 mitgeteilt. Sie werden über die Adressen 0x01 und 0x02 angesprochen. Auf Abbildung
 <<fig:attiny25_pinout>> sind die Pins für die Takt- (_SCL_) und Datenleitung (_SDA_) des TWIs gezeigt.
+Der genau Schaltplan, wie die ATTinys mit dem ESP32 verbunden sind, ist im Anhang aufgeführt (siehe Abbildung <<fig:full_schematic>>).
 Da die ATTinys nicht über eine Hardwareimplementierung des TWIs verfügen, musste sie in Software realisiert
 werden. Hierzu wurde eine bereits existierende Implementation von <<twi_implementation>> verwendet, welche
 die USI Schnittstelle der Mikrocontroller passend für das TWI konfiguriert (siehe <<attiny254585>>).
@@ -219,18 +228,18 @@ gesetzt und der Pin _DIR1_ auf _LOW_ gesetzt. Wird eine _1_ empfangen, wird enst
 auf _LOW_ und Pin _DIR1_ auf _HIGH_ gesetzt. Diese beiden Pins sind nie zeitgleich _HIGH_. Durch die 
 unteren sieben Bit des empfangenen Bytes wird die Geschwindigkeit in Prozent angegeben. Intern
 betreiben die Mikrocontroller hiermit eine Pulsweitenmodulation, welche 127 Schritte unterstützt.
-Dieses Signal wird über den Pin _PWM_ ausgegeben. Zwischen den ATTinys und dein Motoren wurde eine
+Dieses Signal wird über den Pin _PWM_ ausgegeben. Zwischen den ATTinys und den Motoren wurde eine
 H-Brücken eingebaut, um die Motoren mit 11.1V betreiben zu können. Wie die beiden Mikrocontroller 
-über die H-Brücke mit den beiden Motoren verbunden ist, ist auf Abbildung <<fig:full_schematic>>
+über die H-Brücke mit den beiden Motoren verbunden sind, ist auf Abbildung <<fig:full_schematic>>
 im Anhang gezeigt. Der Programmcode für beide Mikrocontroller ist identisch. Die Adresse für das
 TWI wird über das Define-Flag _address_ gesetzt werden. Um das Kompilieren des Programms für die 
 beiden Mikrocontroller zu erleichtern, wurde ein Makefile erstellt. Durch den _make_
-Befehl werden die Programm der beiden Mikrocontroller gebaut. Durch _make flash_L_ und
+Befehl werden die Programme der beiden Mikrocontroller gebaut. Durch _make flash_L_ und
 _make flash_R_ wird entsprechend das Programm für die linke und rechte Motorsteuerung 
 auf die Mikrocontroller geschrieben. Damit das Kompilieren und Programmieren der ATTinys
 funktioniert, müssen die AVR-Entwicklungstools _avr-gcc_, _avr-objcopy_ und _avrdude_ 
 installiert sein. Bevor die Programme auf die Mikrocontroller geschrieben werden können,
-muss sichergestellt werden, dass der Port des Programmers richtig gesetzt ist. Hierzu
+muss sichergestellt werden, dass der serielle Port des Programmers richtig gesetzt ist. Hierzu
 kann das _-P_-Flag des _avrdude_-Befehls angepasst werden. Je nachdem, welche Programmer 
 verwendet wird, muss auch das _-c_-Flag angepasst werden. In der aktuellen Version wird
 davon ausgegangen, dass mit einem AVRISP programmiert wird (siehe <<arduino_programmer>>).
@@ -343,7 +352,7 @@ bis zu 12V für die Motoren. Auf Abbildung <<fig:full_schematic>> im Anhang ist 
 der Batterie erhalten werden. Die Motoren werden direkt mit der Batteriespannung betrieben. Um die 5V für die MCU und die Motorsteuerung
 zu erhalten, wurde der Spannungsregler 7805 verwendet. Er benötigt mindest 7V als Eingangspannung, um 5V als Ausgungsspannung zu erzeugen.
 Um ein Schwanken der Betriebsspannungen zu vermeiden wurden Kondensatoren vor dem Ein- und Ausgang des Spannungsreglers platziert. Die für
-das Kameramodul nötigen 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
+das Kameramodul benötigten 3.3V werden vom ESP32 erzeugt. Bei der Realisierung dieses Projektes wurde sich für einen 3-Zellen LiPo-Akku
 entschieden, wodurch 11.1V als Batteriespannung anliegen.
 
 
@@ -358,7 +367,6 @@ image::lochrasterplatine.png[width=500, align="center"]
 Nachdem die Funktionalität des Aufbaus der Hardware verifiziert wurde, wurde ein PCB mit der Eagle Software von Autodesk designed
 (siehe <<eagle>>). Die Eagle-Projektdateien sind im Ordner _schematic_and_pcb_ zu finden. Anschließend wurde JLCPCB (siehe <<jlcpcb>>)
 mit der Fertigung des PCBs beauftragt. Das fertig bestückte PCB ist auf Abbildung <<fig:pcb>> gezeigt.
-
 
 .Fertige bestücktes PCB
 [[fig:pcb, {counter:fig}]]
