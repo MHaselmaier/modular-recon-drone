@@ -12,4 +12,6 @@
 - [[[lwip]]] LwIP TCP/IP Stack: https://savannah.nongnu.org/projects/lwip/
 - [[[openscad]]] OpenSCAD: http://www.openscad.org/
 - [[[ov7725]]] OV7725 Sensor: https://www.ovt.com/sensors/OV7725
-- [[[esp32_kevin]]] Projekterfahrung EspressifESP32 –Fallbeispiel "Kevin", arendi, Benno Trutmann, https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf
+- [[[esp32_kevin]]] Projekterfahrung EspressifESP32 –Fallbeispiel "Kevin", arendi, Benno Trutmann: https://www.swisst.net/fileadmin/swissTmeetings/ECC2018/Referate/2B1_Trutmann_Arendi.pdf
+- [[[light_barrier_img]]] Bild, Lichtschranke, rs-online: https://de.rs-online.com/web/p/products/1254555/?grossPrice=Y&cm_mmc=DE-PLA-DS3A-_-google-_-PLA_DE_DE_Automation-_-Sensoren_Und_Messwandler%7COptische_N%C3%A4herungsschalter-_-PRODUCT_GROUP&matchtype=&pla-484761195991&gclid=EAIaIQobChMIuM6t2bXP4AIVQqmaCh0CqgscEAQYByABEgJ_FfD_BwE&gclsrc=aw.ds
+- [[[rotary_encoder_img]]] Encoder Scheibe, eckstein-shop: https://eckstein-shop.de/Adafruit-TT-Motor-Getrieb-DC-Motor-Encoder-Pack-of-2?curr=EUR&gclid=EAIaIQobChMI_NL52LjP4AIVDOh3Ch3fzAbyEAQYCyABEgId1vD_BwE

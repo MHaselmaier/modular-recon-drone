@@ -53,12 +53,12 @@ Um diesem Verhalten entgegenzuwirken, muss der ESP32 anhand der tatsächlichen D
 
 *Rotary Encoder*: Beim Rotary Encoder bzw. Drehgeber handelt es sich in einfachsten Fall um eine eine Scheibe mit Schlitzen in gleichem Abstand zueinander wie in Abbildung <<fig:rotary_wheel>> zu sehen. Diese Scheibe ist an der Welle des Motors angebracht. 
 
-.Drehgeber, Scheibe
+.Drehgeber, Scheibe, <<rotary_encoder_img>>
 [[fig:rotary_wheel, {counter:fig}]]
 image::rotary_encoder.png[width=200, align="center"]
 
 Die Schreibe dreht sich hierbei zwischen einer Lichtschranke, wie in Abbildung <<fig:light_barrier>>, die wiederum aufgrund der Schlitze in der Scheibe abwechselt je eine Spannung ausgibt oder nicht. Ausgelesen mit einem GPIO-Pin ergibt sich hieraus ein Signal in Sägezahnform, wobei die Frequenz der Flankenwechsel der Umdrehung des Motors entspricht.
 
-.Drehgeber, Lichtschranke
+.Drehgeber, Lichtschranke, <<light_barrier_img>>
 [[fig:light_barrier, {counter:fig}]]
 image::light_barrier.png[width=200, align="center"]
